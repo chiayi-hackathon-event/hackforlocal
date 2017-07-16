@@ -1,0 +1,406 @@
+@(iiimodels: List[IIIModel], totalCount: Int,pageIdx:String, orderby:String, designers: List[Member], categories: List[IIIModelCategory],category:String,categoryName:String)
+@header = {
+
+
+<script type="text/javascript">
+		// $(document).ready(function() {
+		// 	$('.gallery-item-box:nth-of-type(4n)').addClass('gallery-item-box-last');
+		// 	$(window).resize(function() {
+		// 		if($( window ).width() <= 969 && !$('.gallery-item-box:nth-of-type(3n)').hasClass('gallery.item.box-last')) {
+		// 			$('.gallery-item-box:nth-of-type(4n)').removeClass('gallery-item-box-last');
+		// 			$('.gallery-item-box:nth-of-type(3n)').addClass('gallery-item-box-last');
+		// 		}
+
+		// 	})
+		// });
+        $(document).ready(function() {
+            $('.input-list-box-container').click(function(e) {
+                e.stopPropagation();
+                $(this).find('.input-list-box').toggle();
+            });
+            $('.input-list-box > div').click(function(e) {
+                e.stopPropagation();
+                var listBox = $($(this).parent());
+                var selectBox = $(listBox.next());
+                var inputEle = $(selectBox.next());
+                selectBox.val($(this).attr('data-value'));
+                inputEle.attr('placeholder', $(selectBox.find('option:selected')).text());
+                listBox.hide();
+            });
+        });
+
+
+
+        function designerPage(x){
+            location.href = "/Fast-Lab-3D-Model-Gallery/DesignerDetail/" + x;
+        }
+
+ 
+//width size<480 hide
+    $(function() {
+      var nav = $('#nav');
+      var win = $(window);
+      $('#menu').on('click', function(e) {
+        e.preventDefault();
+        nav.slideToggle();
+      });
+
+      win.resize(function() {
+        if (win.width() > 480 && nav.is(':hidden')) {
+          nav.removeAttr('style');
+        }
+      });
+    });
+
+
+
+
+	</script>
+
+<style>
+
+
+
+</style>
+
+
+
+}
+@main("Model Gallery - Fast Lab")("")(header) {
+
+	<section>
+		<noscript><div class="text-center">您的網站不支援Javascript，有部分功能受影響無法使用，但並不會影響您閱覽本網站。</div></noscript>
+
+
+		<div class="container">
+			<div class="column-l-12 column-m-12 column-s-12">
+
+ <nav class="navbar navbar-default fix-margin" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" 
+          data-target="#bs-menu-collapse" aria-expanded="false"><span class="sr-only">選單狀態</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand visible-xs" href="#" alt="選單按鈕" tabindex="7">選單</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-btn" id="bs-menu-collapse">
+          <ul class="nav navbar-nav"  id="nav">
+  
+                <li><a href="@routes.Application.listModel("0","1",category)" tabindex="21"><span  class=" @if(orderby.equals("0")){switch-button-selected}">
+              @Messages("listM.news")</span></a></li>
+                <li><a href="@routes.Application.listModel("1","1",category)" tabindex="22"><span class=" @if(orderby.equals("1")){switch-button-selected}">
+              @Messages("listM.hot")</span></a></li> 
+
+
+
+
+                <li class="dropdown">
+                  <a href="#" alt="作品分類" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">作品分類<span class="caret"></a>
+
+              <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+                <li role="presentation" style="text-align: center;"><div class="column-12" data-value="0"><a href="@routes.Application.listModel(orderby,"1","0")" role="menuitem" tabindex="-1" tabindex="23">ALL</a></div></li>
+
+                @for(category <- categories) {
+            <li role="presentation" style="text-align: center;"><div class="column-12" data-value="@category.categoryID"><a href="@routes.Application.listModel(orderby,"1",String.valueOf(category.categoryID))" role="menuitem" tabindex="-1" tabindex="23">@category.categoryName</a></div></li>
+            }
+            <select name="category" hidden >
+            <option value="0">ALL</option>
+
+                    @for(category <-  categories) {
+
+            <option value="@category.categoryID">@category.categoryName</option>
+            }
+                    </select>
+              </ul> </li>
+           
+
+
+            <li class="dropdown">
+                  <a href="#" alt="設計師專區" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">設計師專區<span class="caret"></a>
+
+              <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+                <li role="presentation" style="text-align: center;"><div class="column-12" data-value="0"><a href="@routes.Application.listModel(orderby,"1","0")" role="menuitem" tabindex="-1" tabindex="23">ALL</a></div></li>
+
+                @for(designer <- designers) {
+            <li role="presentation" style="text-align: center;"><div class="column-12" data-value="@designer.memberID"><a href="/Fast-Lab-3D-Model-Gallery/DesignerDetail/@designer.memberID" role="menuitem" tabindex="-1" tabindex="23">@designer.nickName</a></div></li>
+            }
+            <select name="designer" hidden >
+            <option value="0">ALL</option>
+
+                    @for(designer <- designers) {
+
+            <option value="@designer.memberID">@designer.nickName</option>
+            }
+                    </select>
+             </ul>  </li>
+             
+        
+            <li class="dropdown">
+              <a id="drop1" href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">特色文物<span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+                <li role="presentation" style="text-align: center;"><div class="column-12" data-value="0"><a role="menuitem" tabindex="-1" href="https://fastlab.tw/Fast-Lab-3D-Model-Gallery/0?pageIdx=1&category=9">數位典藏</a></div></li>
+                <li role="presentation"><div class="column-12" data-value="0"><a role="menuitem" tabindex="-1" href="https://fastlab.tw/Fast-Lab-3D-Model-Gallery/0?pageIdx=1&category=10" style="text-align: center;">複雜計算</a></div></li>
+                <li role="presentation" class="divider"></li>
+                <li role="presentation" style="text-align: center;"><div class="column-12" data-value="0"><a role="menuitem" tabindex="-1" href="#">Separated link</a></div></li>
+              </ul>
+            </li>
+
+                <!--
+                <li>
+                  <a href="#" alt="測試專區" >測試專區</a>
+                </li>
+                -->
+                
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+
+
+<!--
+ <nav-m>
+    <ul id="nav">
+
+        <li><a href="@routes.Application.listModel("0","1",category)" tabindex="21"><div  class="switch-button-left @if(orderby.equals("0")){switch-button-selected}">
+              @Messages("listM.news")</a></div></li>
+
+        <li><a href="@routes.Application.listModel("1","1",category)" tabindex="22"><div class="switch-button-left @if(orderby.equals("1")){switch-button-selected}">
+              @Messages("listM.hot")</a></div></li> 
+
+        <li><a href="#"><div>作品分類</a></div></a>
+        <ul>
+
+        <li><div class="column-12" data-value="0"><a href="@routes.Application.listModel(orderby,"1","0")" tabindex="23">ALL</a></div></li>
+
+	    @for(category <- categories) {
+            <li><div class="column-12" data-value="@category.categoryID"><a href="@routes.Application.listModel(orderby,"1",String.valueOf(category.categoryID))" tabindex="23">@category.categoryName</a></div></li>
+		}
+            <select name="category" hidden >
+            <option value="0">ALL</option>
+
+                    @for(category <-  categories) {
+
+            <option value="@category.categoryID">@category.categoryName</option>
+		    }
+                    </select>
+        </li>
+        </ul> 
+
+
+        <li><a href="#"><div>設計師專區</a></div>
+        <ul >
+
+        @for(designer <- designers) {
+          <li><div  class="column-12" data-value="@designer.memberID"><a href="/Fast-Lab-3D-Model-Gallery/DesignerDetail/@designer.memberID">@designer.nickName</a></div></li>
+                    }
+                    
+           <select name="designer" hidden>
+                    @for(designer <- designers) {
+                            <option value="@designer.memberID">@designer.nickName</option>
+                    }
+                    </select>
+        </ul>
+
+        </li>
+
+	<li><a href="#"><div>特色內容</a></div>
+        <ul >
+
+          <li><div  class="column-12" data-value=""><a href="https://fastlab.cc/Fast-Lab-3D-Model-Gallery/0?pageIdx=1&category=10">台博館</a></div></li>
+          <li><div  class="column-12" data-value=""><a href="https://fastlab.cc/Fast-Lab-3D-Model-Gallery/0?pageIdx=1&category=10">台博館</a></div></li>
+          <li><div  class="column-12" data-value=""><a href="https://fastlab.cc/Fast-Lab-3D-Model-Gallery/0?pageIdx=1&category=10">台博館</a></div></li>
+        </ul>
+
+        </li>
+
+
+    </ul>  
+</nav-m>
+-->
+
+
+<!--
+  <div id="menu_div">
+    <a id="menu" href="#"><img src="http://fastlab.cc/myUpload/images/ic_list4.png"></a>
+  </div>
+-->
+
+
+
+
+
+		
+<!--				<div class="float-left column-2-tenth switch-button switch-button-left @if(orderby.equals("0")){switch-button-selected}">
+					<a href="@routes.Application.listModel("0","1",category)" tabindex="21">@Messages("listM.news")</a>
+				</div>
+				<div class="float-left column-2-tenth switch-button @if(orderby.equals("1")){switch-button-selected}">
+					<a href="@routes.Application.listModel("1","1",category)" tabindex="22">@Messages("listM.hot")</a>
+				</div>
+-->
+<!--選單原本是用javascript,修正成css-->
+<!--2016/09/5
+<nav>
+  <ul>
+
+    <li><a href="@routes.Application.listModel("0","1",category)" tabindex="21"><div  class="float-left switch-button-left @if(orderby.equals("0")){switch-button-selected}">
+					@Messages("listM.news")</a></div></li>
+
+    <li><a href="@routes.Application.listModel("1","1",category)" tabindex="22"><div class="float-left switch-button-left @if(orderby.equals("1")){switch-button-selected}">
+					@Messages("listM.hot")</a></div></li>					
+
+	
+
+    <li><a href="#"><div class="float-left column-2-tenth">作品分類</a></div></a>
+      <ul>
+	
+		<li><div class="column-12" data-value="0"><a href="@routes.Application.listModel(orderby,"1","0")" tabindex="23">ALL</a></div></li>
+
+                    @for(category <- categories) {
+						<li><div class="column-12" data-value="@category.categoryID"><a href="@routes.Application.listModel(orderby,"1",String.valueOf(category.categoryID))" tabindex="23">@category.categoryName</a></div></li>
+                    }
+                    
+                    <select name="category" hidden >
+						<option value="0">ALL</option>
+
+                    @for(category <- categories) {
+						<option value="@category.categoryID">@category.categoryName</option>
+                    }
+                    </select>
+
+
+
+    </li>
+      </ul>
+	
+   <li><a href="#"><div class="float-left column-2-tenth">設計師專區</a></div>
+      <ul>
+
+				@for(designer <- designers) {
+                             <li><div  class="column-12" data-value="@designer.memberID"><a href="/Fast-Lab-3D-Model-Gallery/DesignerDetail/@designer.memberID">@designer.nickName</a></div></li>
+                    }
+                    
+                    <select name="designer" hidden>
+                    @for(designer <- designers) {
+                            <option value="@designer.memberID">@designer.nickName</option>
+                    }
+                    </select>
+
+      </ul>
+    </li>
+
+
+  </ul>
+</nav>  
+2016/09/05-->     
+<!--修改開始-->
+<!--
+
+			<div class="float-left column-2-tenth switch-button input-list-box-container">作品分類
+
+                    <div class="column-12 input-list-box hide button-hover-new" >
+						<div class="column-12" data-value="0"><a href="@routes.Application.listModel(orderby,"1","0")" tabindex="23">ALL</a></div>
+                    @for(category <- categories) {
+						<div class="column-12" data-value="@category.categoryID"><a href="@routes.Application.listModel(orderby,"1",String.valueOf(category.categoryID))" tabindex="23">@category.categoryName</a></div>
+                    }
+                    </div>
+                    <select name="category" hidden >
+						<option value="0">ALL</option>
+
+                    @for(category <- categories) {
+						<option value="@category.categoryID">@category.categoryName</option>
+                    }
+                    </select>
+-->
+<!--
+                    <img class="image-arrow" src="@routes.Application.imageAt("images", "ic_list1.png")" title="icon image" alt="icon image">
+    -->
+    <!--            </div>
+		-->
+<!--
+<div class="float-left column-2-tenth switch-button input-list-box-container">設計師專區
+                    <div class="column-12  input-list-box hide button-hover-new ">
+                    @for(designer <- designers) {
+                            <div  onclick="designerPage(@designer.memberID)" OnKeypress="designerPage(@designer.memberID)" class="column-12" data-value="@designer.memberID">@designer.nickName</div>
+                    }
+                    </div>
+                    <select name="designer" hidden>
+                    @for(designer <- designers) {
+                            <option value="@designer.memberID">@designer.nickName</option>
+                    }
+                    </select>
+
+-->
+<!--<img class="image-arrow" src="@routes.Application.imageAt("images", "ic_list1.png")" title="icon image" alt="icon image">
+ -->
+ <!--               </div>
+-->
+<!--修改結束-->
+</div>
+    </div>
+
+				<div class="clear"></div>
+			
+
+<!--圖庫列表-->
+		<div class="container container-gallery">
+			<div class="inner-container-gallery block-center">
+			@if(iiimodels != null) {
+				@for(i<-0 to iiimodels.size()-1) {
+					<div class="float-left gallery-item-box">
+						<div class="column-12 gallery-item">
+							<h2 class="column-12">@iiimodels.get(i).modelName</h2>
+							<a href="@routes.Application.modelDetail(iiimodels.get(i).modelID)" tabindex="@(28+i)">
+                                @if(iiimodels.get(i).modelThumbnails.size > 0){
+                                    <img src="@routes.Application.imageAt("thumbnail", iiimodels.get(i).modelThumbnails(0).thumbnailFilename)"  width="235" height="200" title="@iiimodels.get(i).modelName 的第一張縮圖" title="@iiimodels.get(i).modelName 的第一張縮圖" alt="@iiimodels.get(i).modelName 的第一張縮圖">
+                                }
+							</a>
+							<div class="column-12 gallery-item-info">
+								<!--TODO: The avatar URL of the user.  -->
+                                <a href="@routes.Application.designerDetail(iiimodels.get(i).member.memberID)" tabindex="@(28+i)">
+                                @if(iiimodels.get(i).member.bannerImageName != null) {
+                                    <img class="image-middle" src="@routes.Application.imageAt("myProfile", iiimodels.get(i).member.bannerImageName)" title="@iiimodels.get(i).member.nickName 的照片" alt="@iiimodels.get(i).member.nickName 的照片" width="18" height="18" style="padding:0;margin-right:5px;">@iiimodels.get(i).member.nickName
+                                } else {
+                                    <img class="image-middle" src="@routes.Application.imageAt("images", "ic_user_s.png")" title="使用者的照片" alt="使用者的照片" width="18" height="18" style="padding:0;margin-right:5px;">@iiimodels.get(i).member.nickName
+                                }
+                                </a>
+							</div>
+						</div>
+					</div>
+
+				}
+				<div class="clear"></div>
+			}
+			</div>
+		</div>
+
+
+		<div class="container container-gallery">
+			<div class="text-center block-center column-l-4 column-m-8 column-s-10">
+				<p class="float-left column-1 text-right">
+					<a @if(Integer.valueOf(pageIdx)>5){href="@routes.Application.listModel(orderby,String.valueOf(5*((Integer.valueOf(pageIdx)-5)/5)+1),category)"}else{href="#"} tabindex="53">
+						<img class="image-bottom" src="@routes.Application.imageAt("images", "ic_previous.png")" title="前一頁" alt="前一頁"/>
+					</a>
+				</p>
+				<p class="float-left column-10 text-center">
+					@if(5*((Integer.valueOf(pageIdx)-1)/5) + 1 <= totalCount){<a class="pagination-button @if(Integer.valueOf(pageIdx) ==5*((Integer.valueOf(pageIdx)-1)/5)+1){pagination-button-selected}" href="@routes.Application.listModel(orderby,String.valueOf(5*((Integer.valueOf(pageIdx)-1)/5)+1),category)" tabindex="54">@String.valueOf(5*((Integer.valueOf(pageIdx)-1)/5)+1)</a>}
+					@if(5*((Integer.valueOf(pageIdx)-1)/5) + 2 <= totalCount){<a class="pagination-button @if(Integer.valueOf(pageIdx) ==5*((Integer.valueOf(pageIdx)-1)/5)+2){pagination-button-selected}" href="@routes.Application.listModel(orderby,String.valueOf(5*((Integer.valueOf(pageIdx)-1)/5)+2),category)" tabindex="55">@String.valueOf(5*((Integer.valueOf(pageIdx)-1)/5)+2)</a>}
+					@if(5*((Integer.valueOf(pageIdx)-1)/5) + 3 <= totalCount){<a class="pagination-button @if(Integer.valueOf(pageIdx) ==5*((Integer.valueOf(pageIdx)-1)/5)+3){pagination-button-selected}" href="@routes.Application.listModel(orderby,String.valueOf(5*((Integer.valueOf(pageIdx)-1)/5)+3),category)" tabindex="56">@String.valueOf(5*((Integer.valueOf(pageIdx)-1)/5)+3)</a>}
+					@if(5*((Integer.valueOf(pageIdx)-1)/5) + 4 <= totalCount){<a class="pagination-button @if(Integer.valueOf(pageIdx) ==5*((Integer.valueOf(pageIdx)-1)/5)+4){pagination-button-selected}" href="@routes.Application.listModel(orderby,String.valueOf(5*((Integer.valueOf(pageIdx)-1)/5)+4),category)" tabindex="57">@String.valueOf(5*((Integer.valueOf(pageIdx)-1)/5)+4)</a>}
+					@if(5*((Integer.valueOf(pageIdx)-1)/5) + 5 <= totalCount){<a class="pagination-button @if(Integer.valueOf(pageIdx) ==5*((Integer.valueOf(pageIdx)-1)/5)+5){pagination-button-selected}" href="@routes.Application.listModel(orderby,String.valueOf(5*((Integer.valueOf(pageIdx)-1)/5)+5),category)" tabindex="58">@String.valueOf(5*((Integer.valueOf(pageIdx)-1)/5)+5)</a>}
+				</p>
+				<p class="float-left column-1 text-left">
+					<a  @if(5*((Integer.valueOf(pageIdx)-1)/5) + 6 < totalCount){href="@routes.Application.listModel(orderby,String.valueOf(5*((Integer.valueOf(pageIdx)-1)/5)+6),category)"}else{href="#"} tabindex="60">
+					<img class="image-bottom" src="@routes.Application.imageAt("images", "ic_next.png")" title="下一頁" alt="下一頁">
+					</a>
+				</p>
+				<div class="clear"></div>
+			</div>
+		</div>
+	</section>
+	<div class="on-footer">
+		<div class="section-bottom">
+			<img src="@routes.Application.imageAt("images" ,"section_bottom.png")" title="buttonimage" alt="buttonimage">
+		</div>
+	</div>
+
+}

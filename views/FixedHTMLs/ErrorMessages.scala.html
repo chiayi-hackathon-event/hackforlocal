@@ -1,0 +1,36 @@
+@(message: String)
+
+@header = {}
+
+@main("Home - Fast Lab")(message)(header) {
+
+        <section>
+            <div class="container">
+
+            <div class="column-12">
+                <p class="article-title guideline-title text-center">抱歉，這個頁面無法取得。</p>
+	    	</div>
+	    <div class="column-12">
+		<p class="article-title guideline-title text-center">為什麼會發生這種狀況?</p>
+		<p class="article-content text-center">可能是您輸入錯誤的帳號與密碼。</p>
+		<p class="article-content text-center">可能是您未授權進入該頁面。</p>
+		<p class="article-content text-center">可能是我們已經刪除該頁面，該頁面已經不存在。</p>
+		<p class="article-content text-center">可能您輸入錯誤的URL。</p>
+		<p class="article-content text-center">可能是您登入後閒置時間過長。</p>
+		<p class="article-content text-center">可能是我們網站發生技術問題。</p>
+	    </div>
+	    <div class="column-12">
+		<p class="article-title guideline-title text-center">您可以做些什麼?</p>	
+		<p class="article-content text-center">輸入正確的URL，再嘗試一次。</p>
+		<p class="article-content text-center">確認您輸入的資料是否正確，再嘗試一次。</p>
+		<p class="article-content text-center">回到我們的<a href="/" style="color:red">FAST LAB首頁</a>，重新嘗試一次。</p>
+	   </div> 	
+
+	   </div>
+	</section>
+        <div class="on-footer">
+                <div class="section-bottom">
+                        <img src="@routes.Application.imageAt("images", "section_bottom.png")" title="buttonimage" alt="buttonimage">
+                </div>
+        </div>
+}

@@ -1,0 +1,290 @@
+package controllers;
+
+import play.*;
+import play.libs.*;
+import play.mvc.*;
+import play.data.*;
+import play.mvc.Http.Session;
+import views.html.*;
+import views.html.outsite.*;
+import forms.*;
+import models.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class outsite extends Controller {
+
+/*
+    public Result toolDetail(String eventName) {
+        Promise<JsonNode> jsonPromise = ws.url(webServiceUrl + "/getevent?eventID="+eventName)
+                .get().map(response -> response.asJson());
+        JsonNode jsonNode = jsonPromise.get(wsTimeout);
+        objRetEvent objRetE = Util.transferJSON2Event(jsonNode);
+        Events iiievent = objRetE.event;
+        return ok(eventDetail.render(iiievent));
+    }
+
+*/
+    public Result toolDetail(String programName) {
+        List<Tool> tool = Tool.find.where().eq("program",programName).findList();
+        return ok(toolDetail.render("Tool Detail",tool));
+    }
+
+
+   public Result test()
+   {
+        return ok(test.render();
+    }
+
+
+   public Result activegenFigure()
+   {
+    DynamicForm dynamicForm = Form.form().bindFromRequest();
+    String test = dynamicForm.toString();
+  //  Map<String,String> data = dynamicForm.getdata();
+    return ok("123");
+   }
+
+
+/*
+
+public Result activegenFigure()
+    {
+     DynamicForm dynamicForm = Form.form().bindFromRequest();
+     Session session = Http.Context.current().session();
+     String home = System.getProperty("user.home");
+     String content = "";
+     String scad_template= null;
+     String scad_final =  null;
+     String title = "";
+     String db_title ="";
+     String viewpoint ="";
+     String mail_subject ="FAST Lab 客製化3D建模體驗";
+     char type;
+     int index=0;
+  //   String temp = "";
+     switch(dynamicForm.get("figure")) {
+            case "2":
+                 type = '2';
+                 toolLog(2,3);
+                 scad_template = "Keychain_2words.scad";
+                 scad_final = "Keychain_2words_final.scad";
+                 viewpoint ="--camera=20,0,0,55,0,25,150";
+                 mail_subject ="FAST Lab 客製化鑰匙圈體驗";
+                 if (dynamicForm.get("title") !="" )
+                 {
+                 db_title = dynamicForm.get("title");
+                 title = "title =\"" +  dynamicForm.get("title") + "\";";
+                 }
+                 else
+                 {
+                 title = "title =\"PRESIDENT\";";
+                 db_title = "PRESIDENT";
+                 }
+                 content =  title;
+                 Logger.info("title is : " + title);
+                 Logger.info("content is : " + content);
+                break;
+            case "3":
+                 type = '3';
+                 toolLog(2,4);
+                 scad_template = "KeyChain_words.scad";
+                 scad_final = "KeyChain_words_final.scad";
+                 viewpoint ="--camera=20,0,0,55,0,25,150";
+                 mail_subject ="FAST Lab 客製化鑰匙圈體驗";
+                break;
+            case "4":
+                 type = '4';
+                 toolLog(2,5);
+                 scad_template = "NameCard_Holder.scad";
+                 scad_final = "NameCard_Holder_final.scad";
+                 viewpoint ="--camera=35,20,0,55,0,25,250";
+                 mail_subject ="FAST Lab 客製化名片座體驗";
+                break;
+            case "5":
+                 type = '5';
+                 toolLog(2,6);
+                 scad_template = "NameCard.scad";
+                 scad_final = "NameCard_final.scad";
+                 viewpoint ="--camera=35,55,0,55,0,25,340";
+                 mail_subject ="FAST Lab 客製化名片座體驗";
+                 if (dynamicForm.get("title_5-1") !="" )
+                 {
+                 db_title = dynamicForm.get("title_5-1");
+                 title = "title =\"     " +  dynamicForm.get("title_5-1") + "\";";
+                 }
+
+                 content =  title;
+                 Logger.info("title5-1 is : " + title);
+                 Logger.info("content5-1 is : " + content);
+                break;
+            case "6":
+                 type = '6';
+                 toolLog(2,7);
+                 scad_template = "id_card.scad";
+                 scad_final = "id_card_final.scad";
+                 viewpoint ="--camera=45,0,0,55,0,25,250";
+                 mail_subject ="FAST Lab 客製化識別證名條體驗";
+                 if (dynamicForm.get("title_6-1") !="" )
+                 {
+                 db_title = dynamicForm.get("title_6-1");
+                 title = "title =\"     " +  dynamicForm.get("title_6-1") + "\";";
+                 }
+
+                 content =  title;
+                 Logger.info("title6-1 is : " + title);
+                 Logger.info("content6-1 is : " + content);
+                break;
+            case "7":
+                 type = '7';
+                 toolLog(2,8);
+                 scad_template = "seal.scad";
+                 scad_final = "seal_final.scad";
+                 viewpoint ="--camera=0,0,0,330,0,95,240";
+                 mail_subject ="FAST Lab 客製化印章體驗";
+
+                 if (dynamicForm.get("title_7-1") !="" )
+                 {
+
+                   String[] temp = {" "," "," "};
+                   char[] cArray = dynamicForm.get("title_7-1").toCharArray();
+                   for(char c:cArray)
+                   {
+                     temp[index] = String.valueOf(c);
+                     index++;
+                   }
+
+                  title = "title=[\""+ temp[0] + "\",\"" + temp[1] + "\",\"" + temp[2] + "\"];";
+                  Logger.info("title7-1 is : " + title);
+                 db_title = title;
+                 }
+                 else
+                 {
+                 title ="title=[\"無\",\"名\",\"氏\"];";
+                 db_title = title;
+                 }
+
+                 content =  title;
+                 break;
+            case "8":
+                 type = '8';
+                 toolLog(2,9);
+                 scad_template = "skylight.scad";
+                 scad_final = "skylight_final.scad";
+                 viewpoint ="--camera=15,10,15,55,00,45,100";
+                 mail_subject ="FAST Lab 客製化天燈體驗";
+
+                 if (dynamicForm.get("title_8-1") !="" )
+                 {
+
+                   String[] temp = {" "," "," "," "};
+                   char[] cArray = dynamicForm.get("title_8-1").toCharArray();
+                   for(char c:cArray)
+                   {
+                     temp[index] = String.valueOf(c);
+                     index++;
+                   }
+
+                  title = "title=[\""+ temp[0] + "\",\"" + temp[1] + "\",\"" + temp[2] + "\",\""  + temp[3] + "\"];";
+                  Logger.info("title8-1 is : " + title);
+                 db_title = title;
+                 }
+                 else
+                 {
+                 title ="title=[\"福\",\"祿\",\"壽\",\"喜\"];";
+                 db_title = title;
+                 }
+
+                 content =  title;
+                 break;
+
+            case "9":
+                 type = '9';
+                 toolLog(2,10);
+                 scad_template = "skylantern_Big.scad";
+                 scad_final = "skylantern_Big.scad_final.scad";
+                 viewpoint ="--camera=5,10,15,65,00,45,155";
+                 mail_subject ="FAST Lab 客製化大天燈體驗";
+
+                 if (dynamicForm.get("title_9-1") !="" )
+                 {
+
+                   String[] temp = {" "," "," "," "," "," "," "," "};
+                   char[] cArray = dynamicForm.get("title_9-1").toCharArray();
+                   for(char c:cArray)
+                   {
+                     temp[index] = String.valueOf(c);
+                     index++;
+                   }
+
+                  title = "title=[\""+ temp[0] + "\",\"" + temp[1] + "\",\"" + temp[2] + "\",\""  + temp[3] + "\",\""  + temp[4] +  "\",\"" + temp[5]  +  "\",\"" + temp[6]  +  "\",\"" + temp[7] + "\"];";
+                  Logger.info("title9-1 is : " + title);
+                 db_title = title;
+                 }
+                 else
+                 {
+                 title ="title=[\"福\",\"祿\",\"壽\",\"喜\",\"恭\",\"喜\",\"發\",\"財\"];";
+                 db_title = title;
+                 }
+
+                 content =  title;
+                 break;
+
+            default:
+                 type = '1';
+                 toolLog(2,2);
+                 scad_template = "BookMark_1words.scad";
+                 scad_final = "BookMark_1words_final.scad";
+                 viewpoint ="--camera=20,0,0,55,0,25,150";
+                 mail_subject ="FAST Lab 客製化鑰匙圈體驗";
+             }
+
+     content = "content =\"" +  dynamicForm.get("print_name") + "\";" + content;
+     Logger.info(" activegenFigure content is : " + content);
+     Logger.info(" activegenFigure print_name is : " + dynamicForm.get("print_name"));
+     Logger.info("user.dir:" + System.getProperty("user.dir"));
+     String mail = dynamicForm.get("email");
+     String outputFile = "";
+     try {
+     outputFile = DatatypeConverter.printHexBinary(
+           MessageDigest.getInstance("MD5").digest(mail.getBytes("UTF-8")));
+     } catch (Exception e) {
+             e.printStackTrace();
+     }
+     String MD5 = outputFile;
+     activeDb(mail,MD5,dynamicForm.get("print_name"),db_title,type);
+     if(dynamicForm.get("option_agreement").equals("1"))
+      {
+       Logger.info("agreement_option ok");
+       informationDb(mail);
+      }
+     session.put("email",dynamicForm.get("email"));
+     session.put("MD5",outputFile);
+     content = content + FileToString(scad_template);
+     StringToFile(content,scad_final);
+     outputFile = "../images/outsite/" + outputFile;
+
+     genPng(scad_final,outputFile,viewpoint);
+     content = scad_final;
+
+     outputFile = outputFile + ".png";
+     Logger.info("outputFile : " + outputFile);
+     content = FiletoBase64(outputFile,"png");
+     Logger.info(" activegenFigure Email is:" + mail);
+     Email email = new Email();
+ //    email.setSubject("開幕式體驗3D模型檔");
+       email.setSubject(mail_subject);
+     email.setFrom("FastLab Service <fastlab.tw@gmail.com>");
+     email.addTo("<"+mail+">");
+     email.addBcc("FastLab Service <fastlab.tw@gmail.com>");
+     email.addAttachment("3D_model.stl", new File("public/images/outsite/" + MD5 + ".stl"  ));
+    // email.setBodyText("message:歡迎參加此活動!!!!" );
+       email.setBodyText("message:歡迎參加此活動!!!!");
+     mailerClient.send(email);
+     return ok(content);
+    }   
+*/
+
+}

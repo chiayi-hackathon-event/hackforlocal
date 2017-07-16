@@ -1,0 +1,443 @@
+@(message: String,new_models: List[IIIModel], iiimodels: List[IIIModel], jBanners: String, designers:List[Member])
+
+@import org.apache.commons.lang3.StringEscapeUtils.escapeEcmaScript
+
+@header = {
+
+
+
+        <meta property="fb:app_id" content="521623248016004">
+        <meta property="og:url" content="device-width">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="FAST LAB">
+        <meta property='og:image'  content="http://www.gettyimages.pt/gi-resources/images/Homepage/Hero/PT/PT_hero_42_153645159.jpg">
+        <meta property="og:description" content="這是描述">
+
+
+    <script type="text/javascript">
+        var bannerJSON = '', bannerList = [];
+        try {
+            bannerJSON = '@Html(escapeEcmaScript(jBanners))';
+            bannerList = JSON.parse(bannerJSON).banners;
+        } catch(e) {
+            alert('Web Service is not available now.')
+        }
+
+
+
+        $(document).ready(function() {
+
+            bannerList.forEach(function(e, i) {
+                var div = $('<div>'),
+                    a = $('<a tabindex="20">').append($('<img class="column-12" alt="banner imag">').attr('src', "/myUpload/" + e.bannerImage)).attr('href', e.externalUrl).attr('target', '_blank').attr('title', 'banner imag');
+                div.append(a);
+                
+                div.addClass('item');
+                $('.test1').append(div);
+
+                var option = $('<a tabindex="' + (11+i) + '">').addClass('select-area-option');
+                option.append($('<img alt="btn_banner.png">').addClass('item-not-hover').attr('src', "@routes.Application.imageAt("images", "btn_banner.png")"));
+                option.append($('<span>')
+                    .append($('<img alt="btn_banner_hover.png">').addClass('item-hover').attr('src', "@routes.Application.imageAt("images", "btn_banner_hover.png")"))
+                    .append($('<img alt="btn_banner_selected.png">').addClass('item-selected').attr('src', "@routes.Application.imageAt("images", "btn_banner_selected.png")")));
+                $('.select-area').append(option);   
+            });
+
+            var bannerDOMArr = $('.test1 > .item');
+            //bannerDOMArr.hide();
+            //$(bannerDOMArr[bannerDOMArr.length - 1]).show();
+
+            var bannerOption = $('.select-area-option');
+            $('.select-area-option:eq(' + (bannerDOMArr.length - 1) + ')').find('.item-hover, .item-not-hover').addClass('item-not-selected');
+            $('.select-area-option:eq(' + (bannerDOMArr.length - 1) + ')').find('.item-selected').show();
+
+            var timer;
+            function startTimer(sn) {
+                if(bannerDOMArr.length > 1)
+                    timer = setTimeout(delay.bind({amount: bannerList.length, num: sn || 0}), 6000);
+                function delay() {
+                    $('.item-not-selected').removeClass('item-not-selected');
+                    $('.item-selected').hide();
+                    $('.select-area-option:eq(' + (this.num % this.amount) + ')').find('.item-hover, .item-not-hover').addClass('item-not-selected');
+                    $('.select-area-option:eq(' + (this.num % this.amount) + ')').find('.item-selected').show();
+                    $(bannerDOMArr[this.num - 1 % this.amount]).fadeOut();
+                    bannerDOMArr.hide();
+                    $(bannerDOMArr[this.num % this.amount]).fadeIn();
+                    timer = setTimeout(delay.bind({amount: this.amount, num: this.num + 1}), 6000);
+                }
+            }
+
+            function stopTimer() {
+                clearTimeout(timer);
+            }
+
+            $('.select-area-option').click(function() {
+                stopTimer();
+                $('.item-not-selected').removeClass('item-not-selected');
+                $('.item-selected').hide();
+                $($(this).find('.item-hover, .item-not-hover')).addClass('item-not-selected');
+                $($(this).find('.item-selected')).show();
+                bannerDOMArr.hide();
+                $(bannerDOMArr[$(this).index()]).show();
+                startTimer(($(this).index() + 1) % bannerDOMArr.length);
+            });
+
+            startTimer();
+
+
+        })
+    </script>
+}
+@main("Home - Fast Lab")(message)(header) {
+
+    <section>
+    <div class="container">
+<!--<gcse:searchresults-only>
+
+</gcse:searchresults-only>
+-->    
+
+ <!--  <div class="gcse-searchresults-only"></div>-->
+            
+    <noscript>
+    <div class="text-center">您的網站不支援Javascript，有部分功能受影響無法使用，但並不會影響您閱覽本網站。
+    </div>
+    </noscript>
+
+    <div id="myCarousel" class="carousel slide">
+    <div class="carousel-inner test1 ">
+         <div class="select-area row clearfix text-center" style="position:absolute;top:80%; left:50%;z-index:1;"></div>
+    </div>
+    </div>
+    </div>              
+    <script>
+       $(function(){
+          // 初始化
+         $(document).ready(function(){
+             $("#myCarousel").carousel('cycle');
+         });   
+       });
+    </script>
+
+    <!-- <div class="select-area row clearfix text-center"></div>-->
+    </div>
+
+
+    <div class="container">
+    <div class="col-md-12 column">
+    <div class="row">
+        <a class="qLink03" href="#" accesskey="C" title="主要內容區(Alt+C)">:::</a>
+     </div>    
+    </div>
+    </div>
+    <div class="container">
+        <div class="col-md-12 column">
+        <!--往上移
+        <div class="row clearfix">
+        <a class="qLink03" href="#" accesskey="C" title="主要內容區(Alt+C)" style="position:absolute;">:::</a>
+        </div>
+        -->
+        <!--Row-1 fastlab funtion start-->    
+        <div class="row clearfix">
+        <div class="col-md-4">
+            <div class="banner-secondary text-center">
+            
+                    <a href="@routes.Application.event" tabindex="21">
+                        <div id="ic_news" title="Fasl Lab的活動" alt="Fasl Lab的活動"></div>
+                    </a>
+                      <h2>
+                            <a href="@routes.Application.event" tabindex="21"><p>@Messages("index.event")</p></a>
+                      </h2>
+            
+            </div>
+        </div>
+
+
+        <div class="col-md-4">
+            <div class="banner-secondary text-center">
+            
+                        <a href="http://resource.fastlab.tw/" tabindex="22">
+                            <div class="ic_share" title="Fasl Lab的資訊分享" alt="Fasl Lab的資訊分享"></div>
+                        </a>
+                        <h2>
+                            <a href="http://resource.fastlab.tw/" tabindex="22"><p>@Messages("index.resource")</p></a>
+                        </h2>
+            
+            </div>
+        </div>
+
+        <div class="col-md-4 ">
+            <div class="banner-secondary text-center">
+            
+                        <a href="@routes.Application.toolLab" tabindex="23">
+                            <div class="ic_scad" title="Fast Lab的客製化工具" alt="Fast Lab的客製化工具"></div>
+                        </a>
+                        <h2>
+                            <a href="@routes.Application.toolLab" tabindex="23"><p>@Messages("index.tool")</p></a>
+                        </h2>
+                  
+                    </div>
+        </div>
+
+        <div class="col-md-4 ">
+            <div class="banner-secondary text-center">
+            
+                        <a href="@routes.FixedHTMLs.champion" tabindex="24">
+                            <div class="ic_champion" title="3DP競賽區" alt="3DP競賽區"></div>
+                        </a>
+                        <h2>
+                            <a href="#" tabindex="24"><p>3DP競賽區</p></a>
+                        </h2>
+                  
+                    </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="banner-secondary text-center">
+            
+                        <a href="http://resource.fastlab.tw/?cat=111" tabindex="25">
+                            <div class="ic_teaching" title="3DP教學區" alt="3DP教學區"></div>
+                        </a>
+                        <h2>
+                            <a href="#" tabindex="25"><p>3DP教學區</p></a>
+                        </h2>
+                  
+            </div>
+        </div>
+
+        <div class="col-md-4 ">
+            <div class="banner-secondary text-center">
+            
+                        <a href="@routes.Application.listModel("0","1","0")" tabindex="26">
+                            <div class="ic_fastlab" title="3D創作集" alt="3D創作集"></div>
+                        </a>
+                        <h2>
+                            <a href="@routes.Application.listModel("0","1","0")" tabindex="26"><p>@Messages("main.3d")</p></a>
+                        </h2>
+                  
+                    </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        
+        </section>
+        <section>
+        <!--Row-1 fastlab funtion end-->
+        <!--Row-2 fastlab block start-->
+        <div class="container">
+        <div class="col-md-12 column">
+        <div class="row clearfix">
+        <h2><p class="float-left title-font-size">近期創作</p></h2>
+        </div>
+        <div class="row clearfix">
+        <br>
+                                @for(iiimodel<-new_models) {
+                                <div class="col-md-4 banner-secondary ">
+                                     <div class="gallery-item">
+                                                <h2>@iiimodel.modelName</h2>
+                                                <a href="@routes.Application.modelDetail(iiimodel.modelID)" target="_blank" tabindex="24">
+                                                        <img src="@routes.Application.imageAt("thumbnail", iiimodel.modelThumbnails(0).thumbnailFilename)" width="310" height="200" title="@iiimodel.modelName" alt="@iiimodel.modelName">
+                                                </a>
+
+                                     </div>
+                                </div>
+                        }
+        
+        </div>
+        <!--Row-2 fastlab block end-->
+        <!--Row-3 fastlab block start--> 
+        <div class="row clearfix">
+        <h2><p class="float-left title-font-size">熱門創作</p></h2>
+        </div>
+        <div class="row">
+        <br>
+                                @for(iiimodel<-iiimodels) {
+                                <div class="col-md-4 banner-secondary ">
+                                    <div class="gallery-item">
+                                        <h2 class="column-12">@iiimodel.modelName</h2>
+                                        <a href="@routes.Application.modelDetail(iiimodel.modelID)" target="_blank" tabindex="24">
+                                            <img src="@routes.Application.imageAt("thumbnail", iiimodel.modelThumbnails(0).thumbnailFilename)" width="310" height="200" title="@iiimodel.modelName" alt="@iiimodel.modelName">
+                                        </a>
+                                    </div>                
+                                </div>
+            }
+        </div>  
+
+        <!--Row-3 fastlab block end-->
+        <div class="row clearfix">
+        <h2><p class="float-left title-font-size">設計師專區</p></h2>
+        </div>
+        <div class="row clearfix">
+        <br>
+                                @for(designer<-designers) {
+                                <div class="col-md-2 col-xs-4 column center-block">
+                                    <div class="gallery-item">
+                                    <h2 class="column-12">@designer.nickName</h2>
+                                    <a href="@routes.Application.designerDetail(designer.memberID)" target="_blank" tabindex="25">
+                                @if(designer.bannerImageName != null) {
+                                        <img src="@routes.Application.imageAt("myProfile", designer.bannerImageName)" title="User's avatar" alt="User's avatar" width="120px" >
+                                } else {
+                                        <img src="@routes.Application.imageAt("images", "ic_user_l.png")" title="User's avatar" alt="User's avatar" width="120px" >
+                                }
+                                    </a>
+                                  </div>  
+                                </div>
+                
+            }
+        </div>
+        <!--Row-4 fastlab block start-->
+        <div class="row clearfix">
+        <h2 class="float-left title-font-size">廠商作品專區</h2>
+        </div>
+        <div class="row clearfix">
+        <br>
+                                <div class="col-md-2 col-xs-4 column center-block">
+                                    <div class="gallery-item">
+                                    <h2 class="column-12"></h2>
+                                  </div>
+                                </div>
+
+        </div>
+        <!--Row-4 fastlab block end-->
+        <!--Row-5 fastlab block start-->
+
+
+        <!--Row-5 fastlab block end-->
+        <!--Row-6 fastlab block start-->
+        <!--Row-6 fastlab block end-->
+        <!--Row-7 fastlab block start-->
+        <!--Row-7 fastlab block end-->
+        </div>
+    </div>
+</section>
+
+
+        <!--廣告區-->
+<!--
+<section>
+    <div class="container">
+        <div class="col-md-12 column">
+        <div class="row">
+            <h2><p class="text-center title-font-size bg-primary">跨領域產業社群</p></h2>
+                    <div class="col-md-2 col-xs-4 column ">
+                                    <div class="gallery-item">
+                                    <h2 class="column-12">產業升級轉型服務團粉絲專頁</h2>
+                                    <a href="http://www.moeaidb.gov.tw/external/ctlr?PRO=link.LinkList&cate=2519" target="_blank" tabindex="25">
+               &nbsp;&nbsp;&nbsp;<img src="http://www.moeaidb.gov.tw/external/ctlr?PRO=filepath.DownloadFile&f=adv&t=i&id=3405" title="User's avatar" alt="social" style="height:145px;width:140px;"></a>
+                                    </div>
+                    </div>
+
+                    <div class="col-md-2 col-xs-4 column ">
+                                    <div class="gallery-item ">
+                                    <h2 class="column-12">黑豬金礦幫-open data</h2>
+                                    <a href="https://www.facebook.com/opendataup" target="_blank" tabindex="25">
+               &nbsp;&nbsp;&nbsp;<img src="http://www.moeaidb.gov.tw/external/ctlr?PRO=filepath.DownloadFile&f=adv&t=i&id=3369" title="User's avatar" alt="social" style="height:145px;width:140px;"></a>
+                                    </div>
+                    </div>
+                    
+                    <div class="col-md-2 col-xs-4 column ">
+                                    <div class="gallery-item">
+                                    <h2 class="column-12">台灣製產品 MIT 微笑標章臉書粉絲專頁</h2>
+                                    <a href="http://www.facebook.com/smilemit" target="_blank" tabindex="25">
+               &nbsp;&nbsp;&nbsp;<img src="http://www.moeaidb.gov.tw/external/ctlr?PRO=filepath.DownloadFile&f=adv&t=i&id=3368" title="User's avatar" alt="social" style="height:145px;width:140px;"></a>
+                                    </div>
+                    </div>
+
+                    <div class="col-md-2 col-xs-4 column ">
+                                    <div class="gallery-item">
+                                    <h2 class="column-12">Taiwan E-Scooter電動機車</h2>
+                                    <a href="https://www.facebook.com/likeTES" target="_blank" tabindex="25">
+               &nbsp;&nbsp;&nbsp;<img src="http://www.moeaidb.gov.tw/external/ctlr?PRO=filepath.DownloadFile&f=adv&t=i&id=3366" title="User's avatar" alt="social" style="height:145px;width:140px;"></a>
+                                    </div>
+                    </div>                    
+
+                    <div class="col-md-2 col-xs-4 column ">
+                                    <div class="gallery-item">
+                                    <h2 class="column-12">台灣發明讚臉書粉絲專頁</h2>
+                                    <a href="https://www.facebook.com/itritwtm/" target="_blank" tabindex="25">
+               &nbsp;&nbsp;&nbsp;<img src="http://www.moeaidb.gov.tw/external/ctlr?PRO=filepath.DownloadFile&f=adv&t=i&id=3367" title="User's avatar" alt="social" style="height:145px;width:140px;"></a>
+                                    </div>
+                    </div>  
+
+                    <div class="col-md-2 col-xs-4 column ">
+                                    <div class="gallery-item">
+                                    <h2 class="column-12">經濟部產業競爭力強化中心</h2>
+                                    <a href="https://www.facebook.com/moeaiac" target="_blank" tabindex="25">
+               &nbsp;&nbsp;&nbsp;<img src="http://www.moeaidb.gov.tw/external/ctlr?PRO=filepath.DownloadFile&f=adv&t=i&id=3365" title="User's avatar" alt="social" style="height:145px;width:140px;"></a>
+                                    </div>
+                    </div> 
+                    <div class="col-md-2 col-xs-4 column ">
+                                    <div class="gallery-item">
+                                    <h2 class="column-12">貨貿官網</h2>
+                                    <a href="http://ecfagoods.tw/" target="_blank" tabindex="25">
+               &nbsp;&nbsp;&nbsp;<img src="http://www.moeaidb.gov.tw/external/_layout/style18/lang0/images/content/ECFAGoods.png" title="User's avatar" alt="social" style="height:75px;width:140px;"></a>
+                                    </div>
+                    </div> 
+
+                    <div class="col-md-2 col-xs-4 column ">
+                                    <div class="gallery-item">
+                                    <h2 class="column-12">企業輔導網</h2>
+                                    <a href="http://assist.nat.gov.tw/GIP/" target="_blank" tabindex="25">
+               &nbsp;&nbsp;&nbsp;<img src="http://www.moeaidb.gov.tw/external/_layout/style18/lang0/images/content/index_33.jpg" title="User's avatar" alt="social" style="height:75px;width:140px;"></a>
+                                    </div>
+                    </div>
+
+                    <div class="col-md-2 col-xs-4 column ">
+                                    <div class="gallery-item">
+                                    <h2 class="column-12">促進投資</h2>
+                                    <a href="http://investtaiwan.nat.gov.tw/cht/show.jsp?ID=2311&LV=1&Stage=0" target="_blank" tabindex="25">
+               &nbsp;&nbsp;&nbsp;<img src="http://www.moeaidb.gov.tw/external/_layout/style18/lang0/images/content/banner_0218.png" title="User's avatar" alt="social" style="height:75px;width:140px;"></a>
+                                    </div>
+                    </div>
+
+                    <div class="col-md-2 col-xs-4 column ">
+                                    <div class="gallery-item">
+                                    <h2 class="column-12">工業區港服務資訊</h2>
+                                    <a href="http://www.moeaidb.gov.tw/external/ctlr?PRO=indpark.rwdIndParkList" target="_blank" tabindex="25">
+               &nbsp;&nbsp;&nbsp;<img src="http://www.moeaidb.gov.tw/external/_layout/style18/lang0/images/content/indParkICON.jpg" title="User's avatar" alt="social" style="height:75px;width:140px;"></a>
+                                    </div>
+                    </div>
+                    <div class="col-md-2 col-xs-4 column ">
+                                    <div class="gallery-item">
+                                    <h2 class="column-12">台灣工業用地供給與服務資訊網</h2>
+                                    <a href="http://idbpark.moeaidb.gov.tw/" target="_blank" tabindex="25">
+               &nbsp;&nbsp;&nbsp;<img src="http://www.moeaidb.gov.tw/external/_layout/style18/lang0/images/content/indpark_banner.jpg" title="User's avatar" alt="social" style="height:75px;width:140px;"></a>
+                                    </div>
+                    </div>  
+
+                    <div class="col-md-2 col-xs-4 column ">
+                                    <div class="gallery-item">
+                                    <h2 class="column-12">因應貿易自由化產業調整支援方案</h2>
+                                    <a href="http://www.mittw.org.tw/trade/Home/" target="_blank" tabindex="25">
+               &nbsp;&nbsp;&nbsp;<img src="http://www.moeaidb.gov.tw/external/ctlr?PRO=filepath.DownloadFile&f=adv&t=i&id=3545" title="User's avatar" alt="social" style="height:75px;width:140px;"></a>
+                                    </div>
+                    </div>
+
+                    <div class="col-md-2 col-xs-4 column ">
+                                    <div class="gallery-item">
+                                    <h2 class="column-12">經濟部工業局</h2>
+                                    <a href="https://zh-tw.facebook.com/moeaidb" target="_blank" tabindex="25">
+               &nbsp;&nbsp;&nbsp;<img src="@routes.Application.imageAt("banners", "IDB_FB-2.png")" title="User's avatar" alt="social" style="height:75px;width:140px;"></a>
+                                    </div>
+                    </div>
+
+                    <div class="col-md-2 col-xs-4 column ">
+                                    <div class="gallery-item">
+                                    <h2 class="column-12">經濟部</h2>
+                                    <a href="https://www.facebook.com/moea.gov.tw" target="_blank" tabindex="25">
+               &nbsp;&nbsp;&nbsp;<img src="http://www.moeaidb.gov.tw/external/ctlr?PRO=filepath.DownloadFile&f=adv&t=i&id=2205" title="User's avatar" alt="social" style="height:75px;width:140px;"></a>
+                                    </div>
+                    </div>
+
+
+        </div>
+        </div>                                    
+    </div>
+
+</section>
+-->
+
+
+}

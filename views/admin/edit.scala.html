@@ -1,0 +1,95 @@
+@(list:List[Map[Integer,String]],size:String)
+@import helper._
+
+<html>
+<head>
+<title>創客資料庫-編輯</title>
+<link rel="stylesheet" media="screen" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" media="screen" href="https://955f94d0bbdc9e74bb31fada63cefbf20b476b6c.googledrive.com/host/0B27nlsVVtYCtU2hhXzd6amJodFU">
+<link rel="https://googledrive.com/host/0B27nlsVVtYCtSDRHLWVZR2lzREk">
+<!--<script src="@routes.Assets.versioned("bootstrap/js/bootstrap.min.js")" type="text/javascript"></script>-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+
+<style>
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+}
+p{
+ font-size:18px;
+}
+
+h1{
+ font-size:18px;
+ font-family:'cwTeXHei', serif;
+ letter-spacing: 2px;
+　}
+ul,li{margin:10;}
+h3{
+color: #FFFFFF;
+}
+
+#content{
+margin-top:0px;
+}
+
+
+</style>
+
+</head>
+
+<body>
+
+<div id="content" class="container">
+<div class="column-12">
+
+<h1 align="center">修改資料</h1>
+
+@form(action = CSRF(routes.Makerspace.update_op())){
+<!--<form action="/admin/update_op" method="post">-->
+<table style="width:80%" align="center">
+  <tr>
+@for( a <- 0 to (list.get(0).size-1)) {
+
+<tr><td>organization:</td><td><input type="text" style=width:100% name="organization" value="@list.get(0).get(a)"></td></tr>
+<tr><td>type:</td><td><input type="text" name="type" style=width:100% value="@list.get(1).get(a)"></td></tr>
+<tr><td>name:</td><td><input type="text" name="name" style=width:100% value="@list.get(2).get(a)"></td></tr>
+<tr><td>address:</td><td><input type="text" name="address" style=width:100% value="@list.get(3).get(a)"></td></tr>
+<tr><td>space:</td><td><input type="text" name="space" style=width:100% value="@list.get(4).get(a)"></td></tr>
+<tr><td>device:</td><td><input type="text" name="device" style= width:100% value="@list.get(5).get(a)"></td></tr>
+<tr><td>sevice:</td><td><input type="text" name="sevice" style=width:100% value="@list.get(6).get(a)"></td></tr>
+<tr><td>classification:</td><td><input type="text" name="classification" style=width:100% value="@list.get(7).get(a)"></td></tr>
+<tr><td>customer:</td><td><input type="text" name="customer" style=width:100% style=width:100%  value="@list.get(8).get(a)"></td></tr>
+<tr><td>open_time:</td><td><input type="text" name="open_time" style=width:100%  value="@list.get(9).get(a)"></td></tr>
+<tr><td>cooperation:</td><td><input type="text" name="cooperation" style=width:100% value="@list.get(10).get(a)"></td></tr>
+<tr><td>establish:</td><td><input type="text" name="establish" style=width:100% value="@list.get(11).get(a)"></td></tr>
+<tr><td>founder:</td><td><input type="text" name="founder" style=width:100% value="@list.get(12).get(a)"></td></tr>
+<tr><td>status:</td><td><input type="text" name="status" style=width:100% value="@list.get(13).get(a)"></td></tr>
+<tr><td>work_space:</td><td><input type="text" name="work_space" style=width:100% value="@list.get(14).get(a)"></td></tr>
+<tr><td>rent_price:</td><td><input type="text" name="rent_price" style=width:100% value="@list.get(15).get(a)"></td></tr>
+<tr><td>rent_rate:</td><td><input type="text" name="rent_rate" style=width:100% value="@list.get(16).get(a)"></td></tr>
+<tr><td>age:</td><td><input type="text" name="age" style=width:100% value="@list.get(17).get(a)"></td></tr>
+<tr><td>education:</td><td><input type="text" name="education" style=width:100% value="@list.get(18).get(a)"></td></tr>
+<tr><td>department:</td><td><input type="text" name="department" style=width:100% value="@list.get(19).get(a)"></td></tr>
+<tr><td>Venture:</td><td><input type="text" name="Venture" style=width:100% value="@list.get(20).get(a)"></td></tr>
+<tr><td>lng:</td><td><input type="text" name="lng" style=width:100% value="@list.get(21).get(a)"></td></tr>
+<tr><td>lat:</td><td><input type="text" name="lat" style=width:100% value="@list.get(22).get(a)"></td></tr>
+<tr><td>id:</td><td><input type="text" name="id" style=width:100% value="@list.get(23).get(a)"></td></tr>
+
+}
+<tr><td></td><td><input type="submit" name ="submit" value ="確定"> <input type="reset" value ="重置"></td>
+
+</tr>
+</table>
+}
+<!--</form>-->
+</div>
+</div>
+
+</body>
+</html>

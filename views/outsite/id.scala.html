@@ -1,0 +1,68 @@
+@(message: String)
+@header = {}
+@main("NameCard - Fast Lab")("")(header) {
+
+	<section>
+                <div class ="head">
+                 <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/outsite/tool3D.css")">
+                 <script src="@routes.Assets.versioned("javascripts/outsite/jquery-1.11.3.js")" type="text/javascript"></script>
+                 <script src="@routes.Assets.versioned("javascripts/outsite/jquery.placeholder.min.js")" type="text/javascript"></script>
+                 <script src="@routes.Assets.versioned("javascripts/outsite/active.js")" type="text/javascript"></script>
+                 <script src="@routes.Assets.versioned("javascripts/outsite/analytics.js")" type="text/javascript"></script>
+                 
+                </div>
+		<div class="container">
+
+			<p class="text-center breadcrumb">
+				<span>Tool Lab &gt;</span>
+				<span class="page-title">ID Card</span>
+			</p>
+		</div>
+		<div class="container">
+			<div class="float-left detail-image">
+                        <div id="progress" style="display:none">
+                         <img alt="progress" src="@routes.Assets.versioned("images/outsite/progress.gif")"/>
+                         </div>
+                        <div id="preview-6" style="display:blocked">
+                        <img  id="figure-6" alt="Template."  src="data:image/png;base64,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"/>
+                        </div><!-- end "preview-5"-->
+                        <div id="announce" style="display:none">
+                         <a href="http:///" ><span style="color: #0000FF; font-size: 24px;">識別證名條</span></a></br></br>
+                         <span style="color: #000000; font-size: 18px;">識別證名條客製化。</span></p>
+                         </div>
+                        <div id="preview" style="display:none">
+                         <img id = "show"  src=""/>
+                         <form action="download"  method="POST">
+                         <input type="submit" value="下載模型">
+                         </form>
+                         </div> <!-- end proview-->
+ 
+			</div> 
+			<div class="float-right detail-box" id="detail-box">
+				<div class="detail-row">
+<p class="float-left"> Email:</p><INPUT type="text" name="email" id="email"  autocomplete="off" onChange ="checkEmail(this)" size=30 maxlength=30 placeholder="輸入E-mail"><P>
+                                    <div class="clear"></div>
+				</div>
+
+                                <div class="detail-row">
+<div id="form-6" style="display:block">
+                                  <form id="name_form-6">
+<p class="float-left">姓名:</p> <input type="text" name="print_name" id="print_name_6"   autocomplete="off"  placeholder="建議五個中文字以內"><P>
+<p class="float-left">流水號:</p> <input type="text" name="title_6-1" id="title_6-1"   autocomplete="off" maxlength=32 size=32  placeholder="請填入流水號"><P>
+<p class="float-left"><font color="red">(參加3D列印金猴腦抽獎者,需填入流水號)</font></p>
+                                    <input type="button"  value="產生視圖" onClick="validator(6)"/>
+                                    <input type="hidden" name="figure" value="6">
+                                  </form>
+                                  </div> <!-- end form-6 -->
+                                  <div class="clear"></div>
+                                </div>
+                                <div class="detail-row">
+                                <input type="button"  value="下一個使用者" onClick="nextuser()"/>
+                                   <div class="clear"></div>
+                                </div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</section>
+
+}

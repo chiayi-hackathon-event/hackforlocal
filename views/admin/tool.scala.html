@@ -1,0 +1,146 @@
+@(list:List[Map[Integer,String]],size:Integer)
+@import scala.Predef;var pass="null";var admin="false";
+@(admin=controllers.Application.VerifyToken())
+@(pass=controllers.Application.getCookie("rec"))
+@if(admin=="true"){
+@if(pass=="4"){
+
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/style2.css")">
+<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/theme.blue.css")">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="@routes.Assets.versioned("javascripts/jquery.tablesorter.js")"></script>
+
+<script>
+/*function sum_fn()
+{
+var tb = document.getElementById('test')
+//var myWindow = window.open("", x, "width=1024, height=768");
+var sum= 0;
+for(var i=0; i <tb.rows.length;i++)
+{
+//if(x==i){
+for( var j=1;j< (tb.rows[i].cells.length);j++)
+{
+//if(j==1)
+//{
+//myWindow.document.write("<table  border='2px solid black'rules='all'><tr>");
+//}
+
+// var temp1=tb.rows[0].cells[j].innerHTML;
+ sum=sum+parseInt((tb.rows[i].cells[j].innerHTML));
+// var temp2=tb.rows[i+1].cells[j+2].innerHTML;
+
+//myWindow.document.write("<tr><td>"+temp1+"</td>");
+//myWindow.document.write("<td>"+temp2+"</td></tr>");
+}
+document.write("<td>"+sum+"</td></tr>");
+
+//myWindow.document.write("</tr></table>");
+}
+//}
+
+}
+*/
+
+$(function () {
+    // widgets: ['zebra'] 這個參數，能對表格的奇偶數列作分色處理
+    $("#test").tablesorter();
+});
+
+
+
+</script>
+<style>
+
+@@import url(http://fonts.googleapis.com/earlyaccess/cwtexhei.css);
+
+.btn-group{
+position: absolute;
+top: 5%;
+left: 45%;
+}
+`
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+}
+p{
+ font-size:18px;
+ font-family:'cwTeXHei', serif;
+}
+h1{
+ font-size:18px;
+ font-family:'cwTeXHei', serif;
+ letter-spacing: 2px;
+　}
+ul,li{margin:10;}
+
+.container-main{
+margin-top:50px;
+}
+
+</style>
+
+<body>
+
+<div  class="container-main">
+<div class="column-12">
+<h1 class="article-title guideline-title text-center"><img src="http://fastlab.tw/myUpload/images/logo.png">工具排行榜/ToolRank</h1>
+<h2><div id="includeMenu" style="text-align: center;"><!--<button type="button" onclick= 'sum_fn()'>總數</button>--></div>
+<div>
+
+
+<table width="50%" id="test" name="test" class="tablesorter-blue">
+<thead>
+            <tr>
+            <th>序號</th>
+            <!--<th>model_id</th>
+            <th>member_id</th>x-->
+            <th>名稱</th>
+            <!-- <th>平均/Average_score</th>-->
+            <!--<th>create_time</th>
+            <th>description</th>
+            <th>scenario</th>
+            <th>instruction</th>-->
+            <th>下載</th>
+            <th>瀏覽</th>
+            <!--<th>收集</th>
+            <th>喜愛</th>
+            <th>分類</th>
+            <th>活動碼</th>-->
+            </tr>
+</thead>
+<form>
+@for( a <- 0 to (list.get(0).size -1)) {
+
+
+
+@for( k <- 0 to (list.size-1)) {
+
+
+@if(k==0) {
+<td id=@a-k><p value="@list.get(k).get(a)"><a href="http://fastlab.cc/Fast-Lab-Tool-Lab">@(list.get(0).get(a))</a></p></td>
+} else {
+<td id=@a-@k><p value="@list.get(k).get(a)">@list.get(k).get(a)</p></td>
+}
+
+
+}
+</tr>}
+
+                     </table>
+</div></div>
+</form>
+</body>
+</html>
+}
+}

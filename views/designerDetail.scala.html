@@ -1,0 +1,102 @@
+@(message: String, designer: Member, iiimodels: List[IIIModel], campaign: List[Campaign])
+    @header = {
+        <script type="text/javascript">
+
+        </script>
+    }
+
+
+@main("Designer Detail - Fast Lab")("")(header) {
+    <div class="container container-designer">
+        <div class="column-8 block-center">
+            <h2 class="text-center designer-info">
+            @if(designer.bannerImageName != null) {
+                <img src="@routes.Application.imageAt("myProfile", designer.bannerImageName)" title="User's avatar" alt="User's avatar" style="width:140px;">
+                } else {
+                <img src="@routes.Application.imageAt("images", "ic_user_l.png")" title="User's avatar" alt="User's avatar" style="width:140px;">
+            }
+            </h2>
+            <h2 class="text-center designer-info designer-name">@designer.nickName</h2>
+            <!--<h2 class="text-center designer-info designer-email">
+                <a href="mailto:xxx">@designer.email</a>
+            </h2>-->
+            <div class="designer-desc">
+                @designer.description
+            </div>
+        </div>
+    </div>
+
+    <div class="container container-designer">
+        <div class="column-12 designer-design-title">
+            <div class="column-2 column-ms-3 block-center text-center">
+                Designs
+            </div>
+        </div>
+    </div>
+
+    <div class="container container-designer">
+		<div class="inner-container-gallery block-center">
+        @if(iiimodels != null) {
+            @for(i<-0 to iiimodels.size()-1) {
+                <div class="float-left gallery-item-box">
+                    <div class="column-12 gallery-item">
+                        <h2 class="column-12">@iiimodels.get(i).modelName</h2>
+                        <a href="@routes.Application.modelDetail(iiimodels.get(i).modelID)" tabindex="@(23+i)">
+                            <img src="@routes.Application.imageAt("thumbnail", iiimodels.get(i).modelThumbnails(0).thumbnailFilename)"  width="235" height="200" title="@iiimodels.get(i).modelName" alt="@iiimodels.get(i).modelName">
+                        </a>
+                        <div class="column-12 gallery-item-info">
+                                <!--TODO: The avatar URL of the user.  -->
+                            <img class="image-middle" src="@routes.Application.imageAt("myProfile", iiimodels.get(i).member.bannerImageName)" width="18" height="18" style="padding:0;margin-right:5px;" title="@iiimodels.get(i).modelName" alt="@iiimodels.get(i).modelName">@iiimodels.get(i).member.nickName
+                        </div>
+                    </div>
+                </div>
+
+            }
+        }
+			<div class="clear"></div>
+
+		</div>
+    </div>
+        @if(campaign != null) {
+       @for(i<-0 to campaign.size()-1) {  
+     <div class="container container-designer">
+        <div class="column-12 designer-design-title">
+            <div class="column-2 column-ms-3 block-center text-center">
+                @campaign.get(i).campaignTitle
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container container-designer">
+                <div class="inner-container-gallery block-center">
+         @for( cam <- campaign.get(i).entitiesB       ) {
+                <div class="float-left gallery-item-box">
+                    <div class="column-12 gallery-item">
+                        <h2 class="column-12">@cam.modelName</h2>
+                        <a href="@routes.Application.modelDetail(cam.modelID)" tabindex="@(23+i)">
+                            <img src="@routes.Application.imageAt("thumbnail", cam.modelThumbnails(i).thumbnailFilename)"  width="235" height="200" title="@cam.modelName" alt="@cam.modelName">
+                        </a>
+                        <div class="column-12 gallery-item-info">
+                                <!--TODO: The avatar URL of the user.  -->
+                            <img class="image-middle" src="@routes.Application.imageAt("myProfile", cam.member.bannerImageName)" width="18" height="18" style="padding:0;margin-right:5px;" title="@cam..modelName" alt="@cam.modelName">@cam.member.nickName
+                        </div>
+                    </div>
+                </div>
+
+            }
+
+
+
+
+           
+                        <div class="clear"></div>
+
+                </div>
+    </div>
+       }
+
+       }
+
+
+}

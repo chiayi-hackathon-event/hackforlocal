@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Fast Lab - OBJ loader</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				font-family: Monospace;
+				background-color: #f0f0f0;
+				color: #fff;
+				margin: 0px;
+				overflow: hidden;
+			}
+			#info {
+				color: #fff;
+				position: absolute;
+				top: 10px;
+				width: 100%;
+				text-align: center;
+				z-index: 100;
+				display:block;
+			}
+			#info a,#info p, .button { color: #f00; font-weight: bold; text-decoration: underline; cursor: pointer }
+		</style>
+	</head>
+
+	<body>
+
+		<script type="text/javascript" src="@routes.Assets.versioned("javascripts/components/obj.viewer/three.js")"></script>
+		<!--OBJ&MTL貼圖-->  
+		<script type="text/javascript" src="@routes.Assets.versioned("javascripts/components/obj.viewer/OBJLoader.js")"></script>
+		<script type="text/javascript" src="@routes.Assets.versioned("javascripts/components/obj.viewer/MTLLoader.js")"></script>
+		<script type="text/javascript" src="@routes.Assets.versioned("javascripts/components/obj.viewer/DDSLoader.js")"></script>		
+		<!--放選轉功能功能--> 
+		<script type="text/javascript" src="@routes.Assets.versioned("javascripts/components/stl.viewer/stats.min.js")"></script>
+		<script type="text/javascript" src="@routes.Assets.versioned("javascripts/components/obj.viewer/Detector.js")"></script> 
+		<script type="text/javascript" src="@routes.Assets.versioned("javascripts/components/obj.viewer/OrbitControls.js")"></script>
+		<!--未知-->
+		<script type="text/javascript" src="@routes.Assets.versioned("javascripts/components/stl.viewer/plane.js")"></script>	    
+		<!--放大功能--> 
+		<script type="text/javascript" src="@routes.Assets.versioned("javascripts/components/obj.viewer/TrackballControls.js")"></script>		
+		<script>
+
+			if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+
+			var container, stats, showStats = false;
+
+			var camera, scene, renderer, light ,controls, zoom
+			;
+
+			var mouseX = 0, mouseY = 0;
+
+			var windowHalfX = window.innerWidth / 2;
+			var windowHalfY = window.innerHeight / 2;
+		    //var url = getUrlParameter( "url" );
+		    var modelUrl, editable = false;
+		    //網格的設定
+		    var PLANE_CONFIG = {
+    		size: 500,
+    		step: 50,
+    		lineColor: 0x000000
+			};
+
+			var MODEL_CONFIG = {
+		    ambient: 0xFFFFFF,
+    		//color: 0xA52A2A,
+    		color: 0x00A99D,
+    		specular: 0x111111,
+    		shininess: 200
+			};			
+			//OPTIMIZE比例
+			var OPTIMIZE_CONFIG = {
+    		lengthLimit: 220
+			};
+
+			init();
+		    preInit();
+			animate();
+			initPlaneGeometry();
+
+
+			function init() {
+
+				container = document.createElement( 'div' );
+				document.body.appendChild( container ); //將渲染的結果掛在body下
+				//Camera-position
+				camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
+				//camera初始角度
+				camera.position.set( 100, 250, 300 );
+				  //camera.position.set( 0, 150, 300);
+				  //x,y,z 左手食指為y中指為x,大拇指為z
+				// scene
+
+				scene = new THREE.Scene();
+
+				//set light
+				//環狀光	
+				//var ambient = new THREE.AmbientLight( 0x101030 );
+				//scene.add( ambient );
+				//環狀光
+				//物體基礎亮度
+				light = new THREE.AmbientLight( 0x404040 );
+        		scene.add( light );
+        		//平行光
+        		//light = new THREE.DirectionalLight( 0xffffff, 1  );
+        		//light.position = camera.position;
+        		//scene.add( light );
+        		//基礎光源
+        		light = new THREE.DirectionalLight( 0xffffff, 1  );
+        		//light.position = camera.position;
+        		light.position.set( 0, 150, 100 )
+        		scene.add( light );
+        		//加強亮度
+        		light = new THREE.DirectionalLight( 0xffffff, 0.5  );
+        		light.position = camera.position;
+        		scene.add( light );        		
+				// texture
+
+				var manager = new THREE.LoadingManager();
+				manager.onProgress = function ( item, loaded, total ) {
+
+					console.log( item, loaded, total );
+
+				};
+
+				var texture = new THREE.Texture();
+
+				var onProgress = function ( xhr ) {
+					if ( xhr.lengthComputable ) {
+						var percentComplete = xhr.loaded / xhr.total * 100;
+						console.log( Math.round(percentComplete, 2) + '% downloaded' );
+					}
+				};
+
+				var onError = function ( xhr ) { };
+
+				//OBJ&MTL格式顯示，檔案在/home/fastlab/develop/public/javascripts/components/obj.viewer
+				/*
+				THREE.Loader.Handlers.add( /\.dds$/i, new THREE.DDSLoader() );
+
+				var mtlLoader = new THREE.MTLLoader();
+				mtlLoader.setPath( 'http://fastlab.cc/assets/javascripts/components/obj.viewer/male02/' );
+				mtlLoader.load( 'male02.mtl', function( materials ) {
+
+					materials.preload();
+
+					var objLoader = new THREE.OBJLoader();
+					objLoader.setMaterials( materials );
+					objLoader.setPath( 'http://fastlab.cc/assets/javascripts/components/obj.viewer/male02/' );
+					objLoader.load( 'male02.obj', function ( object ) {
+
+					object.position.x = 0;
+					object.position.y = 0;
+					object.position.z = 0;
+					scene.add( object );
+
+					}, onProgress, onError );
+				
+				});	
+
+				*/
+				//texture貼圖
+					var loader = new THREE.ImageLoader( manager );
+					loader.load( 'https://fastlab.cc/assets/javascripts/components/obj.viewer/green.jpg', function ( image ) {
+
+					texture.image = image;
+					texture.needsUpdate = true;
+
+				} );
+			  	
+			
+			
+				// model
+				var url = getUrlParameter( "url" );
+				if( !url ) return false;
+				if( url.toLowerCase().indexOf( ".obj" ) === -1 ) return false;
+				modelUrl = url;
+				//alert(modelUrl);
+
+			var loader = new THREE.OBJLoader( manager );
+				
+				loader.load(modelUrl, function ( object ) {	
+				//texture	
+				//	object.traverse( function ( child ) {
+
+				//		if ( child instanceof THREE.Mesh ) {
+
+				//			child.material.map = texture;
+
+				//		}
+
+				//	} );
+				//
+				//	object.position.x = 0;
+				//	object.position.y = 0;
+				//	object.position.z = 0;
+					//為了把model翻正90度
+					//object.rotation.x = -90 * Math.PI / 180;
+					
+					scene.add( object );
+
+					//test
+            		//var geometry = object.content;
+           			//var material = new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true});
+            		//var mesh = optimizeModel( geometry, material );           			
+            		
+            		//scene.add(mesh);
+
+            		
+            		scene.add(object);
+
+
+					var cubeGeometry = new THREE.CubeGeometry(40,40,40);
+           			var material = new THREE.MeshBasicMaterial(
+                             {color: 0xff0000, wireframe: true});
+					var cube = new THREE.Mesh(cubeGeometry, material);
+					var geometry = cubeGeometry;
+					var mesh = optimizeModel( geometry, material );
+           			//cube.position.x = 0;
+           			//cube.position.y = 0;
+           			//cube.position.z = 300;
+           			scene.add(mesh);
+
+				});
+
+
+				
+				//
+				//renderer = new THREE.CanvasRenderer();
+				renderer = new THREE.WebGLRenderer();
+				//背景色 background-color
+				//renderer.setClearColor( 0xF5F5DC, 1 );
+				renderer.setClearColor( 0x808080, 1 );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				//設置渲染器的大小、內容區的寬度
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				container.appendChild( renderer.domElement );
+
+				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+				window.addEventListener( 'resize', onWindowResize, false );
+
+				//controls
+				controls = new THREE.OrbitControls( camera, renderer.domElement );
+				//controls.enableDamping = true;
+				//controls.dampingFactor = 0.25;
+				//controls.enableZoom = false;	
+
+				//zoom im, zoom out
+
+				//zoom = new THREE.TrackballControls( camera );
+
+				controls.rotateSpeed = 1.0;
+				controls.zoomSpeed = 1.2;
+				controls.panSpeed = 0.8;
+
+				controls.noZoom = false;
+				controls.noPan = false;
+
+				controls.staticMoving = true;
+				controls.dynamicDampingFactor = 0.3;
+
+				controls.keys = [ 65, 83, 68 ];
+
+				controls.addEventListener( 'change', render );				
+
+
+			}
+
+			function onWindowResize() {
+
+				//windowHalfX = window.innerWidth / 2;
+				//windowHalfY = window.innerHeight / 2;
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				//controls.handleResize();
+				//zoom.handleResize();
+				render();
+			}
+
+			function onDocumentMouseMove( event ) {
+
+			//	mouseX = ( event.clientX - windowHalfX ) / 2;
+			//	mouseY = ( event.clientY - windowHalfY ) / 2;
+
+			}
+
+			//
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+				controls.update();
+				//zoom.update();
+				render();
+
+			}
+
+			function render() {
+
+			//	camera.position.x += ( mouseX - camera.position.x ) * .05;
+			//	camera.position.y += ( - mouseY - camera.position.y ) * .05;
+
+			//	camera.lookAt( scene.position );
+
+				renderer.render( scene, camera );
+
+			}
+
+
+			function preInit() {
+
+        	editable = !!getUrlParameter( "edit" );
+
+    		}
+
+
+    		function getUrlParameter( name ) {
+
+  		      var pair = location.search.split( '&' + name + '=' )[ 1 ];
+  		      if ( !pair ) pair = location.search.split( '?' + name + '=' )[ 1 ];
+    		  return pair? decodeURIComponent( pair.split( '&' )[ 0 ] ) : null;
+
+		    }
+
+
+		    //幾何圖型置入
+    		function initPlaneGeometry() {
+
+ 	       var geometry = new THREE.Geometry();
+/*
+ 	       
+ 	       for ( var i = - PLANE_CONFIG.size; i <= PLANE_CONFIG.size; i += PLANE_CONFIG.step ) {
+ 	       	//網格繪圖
+            	geometry.vertices.push( new THREE.Vector3( - PLANE_CONFIG.size, 1, i ) );
+            	geometry.vertices.push( new THREE.Vector3(   PLANE_CONFIG.size, 1, i ) );
+
+            	geometry.vertices.push( new THREE.Vector3( i, 1, - PLANE_CONFIG.size ) );
+            	geometry.vertices.push( new THREE.Vector3( i, 1,   PLANE_CONFIG.size ) );
+
+        		}
+
+        		var material = new THREE.LineBasicMaterial( { color: PLANE_CONFIG.lineColor, opacity: 0.5 } );
+        		//定義一條直線	
+        		var line = new THREE.Line( geometry, material );
+        		line.type = THREE.LinePieces;
+        		scene.add( line );
+*/
+
+        	geometry.vertices.push( new THREE.Vector3( - 500, 0, 0 ) );
+            geometry.vertices.push( new THREE.Vector3( 500, 0, 0 ) );
+
+             for ( var i = 0; i <= 20; i ++ ) {
+             		var line = new THREE.Line( geometry, new THREE.LineBasicMaterial( { color: 0x000000, opacity: 0.2 } ) );
+                    line.position.z = ( i * 50 ) - 500;
+                    scene.add( line );
+                    var line = new THREE.Line( geometry, new THREE.LineBasicMaterial( { color: 0x000000, opacity: 0.2 } ) );
+                    line.position.x = ( i * 50 ) - 500;
+                    line.rotation.y = 90 * Math.PI / 180;  //旋轉90度
+                    scene.add( line );
+
+                    }
+			}
+
+
+		function optimizeModel( geometry, material ) {
+
+        var mesh = new THREE.Mesh( geometry, material );
+
+        var xLength = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
+        alert(xLength);
+        var yLength = geometry.boundingBox.max.y - geometry.boundingBox.min.y;
+        var zLength = geometry.boundingBox.max.z - geometry.boundingBox.min.z;
+        var maxLength = max( xLength, yLength, zLength );
+        var ratio = OPTIMIZE_CONFIG.lengthLimit / maxLength;
+        var centroid = calculateCentroid(mesh);
+
+        mesh.name = "OBJ";
+        mesh.scale.set( ratio, ratio, ratio );
+        mesh.rotation.set( -Math.PI / 2, 0, 0 );
+
+        mesh.position.set(
+            ( -geometry.boundingBox.min.x - xLength / 2 ) * ratio ,
+            ( zLength / 2 - centroid.z ) * ratio ,
+            centroid.y * ratio
+        );
+
+        return mesh;
+
+	    }
+
+    	function max( x, y, z ) {
+
+        var max;
+
+        if ( x > y ) max = x;
+        else max = y;
+
+        if ( z > max ) max = z;
+
+        return max;
+
+    	}	    
+
+
+		function calculateCentroid( mesh ) {
+
+        var centroid = new THREE.Vector3();
+        centroid.subVectors( mesh.geometry.boundingBox.max, mesh.geometry.boundingBox.min );
+        centroid.multiplyScalar( 0.5 );
+        centroid.add( mesh.geometry.boundingBox.min );
+
+        centroid.applyMatrix4( mesh.matrixWorld );
+
+        return centroid;
+
+    	}
+
+		</script>
+
+	</body>
+</html>
+

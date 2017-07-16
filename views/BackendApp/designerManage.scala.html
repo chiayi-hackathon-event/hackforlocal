@@ -1,0 +1,94 @@
+@(message: String, designers: List[Member])
+@import scala.Predef;var pass="null";var admin="false";
+@(admin=controllers.Application.VerifyToken())
+@(pass=controllers.Application.getCookie("rec"))
+
+@if(admin=="true"){
+@if(pass=="4"){
+
+  <style>
+  table{
+  border:1px solid;
+  }
+
+  table td{
+  border:1px solid;
+  min-width :250px;
+  }
+  </style>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+  <script type="text/javascript">
+
+    $(document).ready(function() {
+      $('#myTable').on('click', '.removeDesigner', function() {
+        var parameter = {'email':$(this).attr("name")};
+        $(this).closest('tr').remove();
+        $.ajax({
+          type : 'PUT',
+          url : '@routes.Application.removeDesigner()',
+          dataType : 'text',
+          data : JSON.stringify(parameter),
+          contentType: "application/json; charset=utf-8"
+        }).done(function() {
+
+
+          $("#designeremail").val("");
+        }).fail(function() {
+          $("#designeremail").val("");
+          alert('remove designer fail');
+        });
+
+      });
+
+
+      $("#newdesigner").click(function(){
+
+        var parameter = {'email':$("#designeremail").val()};
+        $.ajax({
+          type : 'POST',
+          url : '@routes.Application.newDesigner()',
+          dataType : 'text',
+          data : JSON.stringify(parameter),
+          contentType: "application/json; charset=utf-8"
+        }).done(function() {
+
+          $('#myTable').append('<tr><td>'+$("#designeremail").val()+'</td><td><input type="button" value="Del" class="removeDesigner" name="'+$("#designeremail").val()+'" /></td></tr>');
+          $("#designeremail").val("");
+        }).fail(function() {
+          $("#designeremail").val("");
+          alert('new designer fail');
+        });
+      });
+
+
+    });
+  </script>
+
+
+
+
+
+    <div class="container container-gallery">
+      <input id="designeremail" type="text" placeholder="designer's email"><input type="button" id="newdesigner" name="newdesigner" value="Add">
+      <br/><br/><br/>
+      <p>Designers list</p>
+      <table id="myTable">
+        <tbody>
+        <tr>
+          <td>email</td><td>Del</td>
+        </tr>
+        @for(member <- designers) {
+          <tr>
+            <td>@member.email</td>
+            <td><input type="button" value="Del" class="removeDesigner" name="@member.email" /></td>
+          </tr>
+        }
+        </tbody>
+      </table>
+      <div class="clear"></div>
+    </div>
+
+}
+}

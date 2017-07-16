@@ -1,0 +1,47 @@
+@(message: String)(toolName: String)
+@header = {
+	
+}
+@main("Tool Lab - Fast Lab")(message)(header) {
+
+	<section>
+                <div class ="head">
+                <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/outsite/outSearch.css")">
+                <script src="@routes.Assets.versioned("javascripts/outsite/jquery-1.11.3.js")" type="text/javascript"></script>
+                <script src="@routes.Assets.versioned("javascripts/outsite/translate.js")" type="text/javascript"></script>
+                <script src="@routes.Assets.versioned("javascripts/outsite/analytics.js")" type="text/javascript"></script>
+
+                </div>
+		<div class="container">
+			<p class="text-center breadcrumb">
+				<span>Tool Lab &gt;</span>
+				<span class="page-title">@toolName</span>
+
+			</p>
+<div class="column-12">
+                <p class="article-title guideline-title text-center">Yobi介紹</p>
+                <p class="article-content">
+Yobi3D 是類Google 的免費3D模型搜尋引擎，庫存超過一百萬個3D模型， 透過關鍵字搜尋，即時線上
+預覽功能， 幫助你快速找到需要的3D模型以作建模或列印。搜尋服務包含以下三大特色：
+                <p class="article-content">1. 進階模型搜尋</p>
+                <p class="article-content">除了關鍵字，你還可以透過檔案格式﹑角和面的數量﹑可列印程度﹑使用權限等資訊縮小搜尋範圍，找到最適合你的模型。</p>
+                <p class="article-content">2. 可列印程度分析</p>
+                <p class="article-content">我們了解每一個模型的列印難易度都是不一樣的，所以Yobi3D也為你做好了分析，幫助你節省尋找列印模型的時間。不需加工即可列印的模型會被標記成：容易 (Easy)，含有薄
+片等細部而比較難列印的部分則會以橘色標記 </p>
+                <p class="article-content">3. 相關模型推薦</p>
+                <p class="article-content">你可以在模型預覽的頁面找到其他相關的模型，讓你發掘更多可能感興趣的模型。 </p>
+
+
+
+            </div>
+<div class="yobi3d"><iframe title="yobi search" src="https://www.yobi3d.com/#!/?st=d86317cb5f4843967bbef0647dbb9aebd25d8bd6" allowfullscreen="true" style="border: 0px none; display: block; width: 1024px; height: 800px;" id="ybcse:searchresult"></iframe></div>
+		</div>
+
+                       <!--
+				<div class="search-result-item float-left column-4">
+                       <input class="menu-button" type="button" value="Yeggi網站" id="yeggi_button" onClick="">
+				</div>
+                        -->
+	</section>
+
+}

@@ -1,0 +1,256 @@
+@(title: String)(description: String)(header: Html = new Html(""))(content: Html)
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>@title</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="description" content="@description">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Application.imageAt("images", "favicon.png")">
+        <script src="@routes.Assets.versioned("javascripts/components/jquery/dist/jquery.min.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.versioned("javascripts/main.js")" type="text/javascript"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-69953902-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+		@header
+    </head>
+    <body>
+    	<div class="social-nav m-hide s-hide">
+    		<div class="social-nav-item">
+    			<a href="#facebook">
+	    			<img class="item-not-hover" src="@routes.Application.imageAt("images", "ic_facebook.png")" alt="Fast Lab Facebook">
+	    			<img class="item-hover" src="@routes.Application.imageAt("images", "ic_facebook_hover.png")" alt="Fast Lab Facebook">
+    			</a>
+    		</div>
+    		<div class="social-nav-item">
+    			<a href="#pinterest">
+					<img class="item-not-hover" src="@routes.Application.imageAt("images", "ic_pinterest.png")" alt="Fast Lab Pinterest">
+					<img class="item-hover" src="@routes.Application.imageAt("images", "ic_pinterest_hover.png")" alt="Fast Lab Pinterest">
+				</a>
+    		</div>
+    		<div class="social-nav-item">
+    			<a href="#instagram">
+					<img class="item-not-hover" src="@routes.Application.imageAt("images", "ic_instagram.png")" alt="Fast Lab Instagram">
+					<img class="item-hover" src="@routes.Application.imageAt("images", "ic_instagram_hover.png")" alt="Fast Lab Instagram">
+				</a>
+    		</div>
+    	</div>
+    	<header>
+    		<div class="pre-header">
+                <div class="container">
+        			<img src="@routes.Application.imageAt("images", "logo_header.png")" alt="經濟部工業局">
+                </div>
+    		</div>
+    		<div class="container m-hide s-hide" style="position:relative;">
+                <a class="" href="#" accesskey="U" title="上方內容區塊" style="position:absolute;">:::</a>
+	    		<div class="float-left header-logo">
+	    			<a href="/" tabindex="1"><img src="@routes.Application.imageAt("images", "logo.png")" alt="Fast Lab"></a>
+	    		</div>
+	    		<div class="float-right header-nav header-container user-menu-container">
+	    			<div class="float-left header-nav-item">
+	    				<a href="@routes.Application.listModel("0","1","0")" tabindex="2"><span>@Messages("main.3d")</span></a>
+	    			</div>
+	    			<div class="float-left">
+	    				<img class="separator" src="@routes.Application.imageAt("images", "nav_separator.png")" alt="|">
+	    			</div>
+	    			<!--div class="float-left header-nav-item">
+	    				<a href="@routes.Application.explore(1)" tabindex="3"><span>EXPLORE</span></a>
+	    			</div-->
+	    			<!-- <div class="float-left">
+	    				<img class="separator" src="@routes.Application.imageAt("images", "nav_separator.png")" alt="|">
+	    			</div> -->
+	    			<div class="float-left header-nav-item">
+	    				<a href="@routes.Application.uploadModel" tabindex="4"><span>@Messages("main.upload")</span></a>
+	    			</div>
+	    			<div class="float-left">
+	    				<img class="separator" src="@routes.Application.imageAt("images", "nav_separator.png")" alt="|">
+	    			</div>
+	    			<div class="float-left header-nav-item">
+						<script type="text/javascript">
+							function searchClick(){
+								key = document.getElementById('searchKey').value;
+								if(key.length > 0)
+										location.href = "https://www.yobi3d.com/#!/search?q=" + key +"&boost=fastlab.tw"
+							}
+
+							function searchEnter(e){
+								if(event.keyCode == 13 && e.value.length > 0)
+									location.href = "https://www.yobi3d.com/#!/search?q=" + e.value
+							}
+						</script>
+						<input class=="nav-search-image" type="image" src="@routes.Application.imageAt("images", "ic_search.png")" alt="Search" align="top" tabindex="5" onclick="searchClick()">
+						<input class="nav-search" type="text" placeholder="Exact Search..." align="top" tabindex="5" id="searchKey" onkeydown="searchEnter(this)">
+	    			</div>
+	    			<div class="float-left">
+	    				<img class="separator" src="@routes.Application.imageAt("images", "nav_separator.png")" alt="|">
+	    			</div>
+	    			<div class="float-left header-nav-item">
+                    @if(controllers.Application.getCookie("memberToken").equals("")) {
+                        <!--Not sign in yet.-->
+                        <a href="@routes.Application.signIn" tabindex="6"><span>@Messages("main.sign")</span></a>
+                    }else{
+                        <!--Already sign in.-->
+                        <a class="user-menu" href="#" tabindex="6">
+                            <img class="image-middle" src="@routes.Application.imageAt("images", "ic_user_l.png")" alt="User Icon"/>
+                            You
+                        </a>
+                    }
+	    			</div>
+		    		<div class="menu hide">
+		    			<div class="float-right text-center menu-container">
+		    				<div>
+		    					<a href="@routes.Application.myProfile">My Profile</a>
+		    				</div>
+		    				<div>
+		    					<a href="@routes.Application.logout">Sign Out</a>
+		    				</div>
+		    			</div>
+		    		</div>
+	    			<div class="clear"></div>
+	    		</div>
+	    		<div class="clear"></div>
+    		</div>
+    		<div class="column-ms-12 l-hide text-center" style="padding:15px;">
+    			<div class="header-container user-menu-container">
+		    		<div class="menu hide">
+		    			<div class="float-right text-center menu-container">
+                    	@if(controllers.Application.getCookie("memberToken").equals("")) {
+		    				<div>
+		    					<a href="@routes.Application.signIn" tabindex="4">SIGN IN</a>
+		    				</div>
+		    				<div>
+		    					<a href="@routes.Application.signUp" tabindex="5">JOIN</a>
+		    				</div>
+                        }
+		    				<div>
+		    					<a href="@routes.Application.listModel("0","1","0")" tabindex="6">@Messages("main.3d")</a>
+		    				</div>
+		    				<div>
+		    					<a href="@routes.Application.explore(1)" tabindex="7">EXPLORE</a>
+		    				</div>
+		    				<div>
+		    					<a href="@routes.Application.uploadModel" tabindex="8">UPLOAD</a>
+		    				</div>
+                    	@if(!controllers.Application.getCookie("memberToken").equals("")) {
+		    				<div>
+		    					<a href="@routes.Application.myProfile" tabindex="9">My Profile</a>
+		    				</div>
+		    				<div>
+		    					<a href="@routes.Application.logout" tabindex="10">Sign Out</a>
+		    				</div>
+                        }
+		    				<div class="user-menu-close-button">
+		    					<a href="#" tabindex="11">X</a>
+		    				</div>
+		    			</div>
+		    		</div>
+    			</div>
+    			<div class="float-left">
+    				<a class="user-menu" href="#" tabindex="1">
+    					<img src="@routes.Application.imageAt("images", "ic_list4.png")" alt="Fast Lab Menu" style="height:25px;margin-top:-3px;">
+    				</a>
+    			</div>
+    			<div class="float-right">
+	    			<div class="header-container user-search-container">
+	    				<div class="search-menu-box">
+		    				<a class="search-menu" href="#" tabindex="3">
+		    					<img src="@routes.Application.imageAt("images", "ic_search2.png")" alt="Fast Lab Search" style="height:25px;margin-top:-3px;">
+		    				</a>
+	    				</div>
+	    				<div class="menu hide">
+	    					<input class="nav-search" type="text" placeholder="Exact Search..." onkeydown="searchEnter(this)" tabindex="5" style="width:0px;height:30px;margin-top:-5px;">
+	    				</div>
+	    			</div>
+    			</div>
+    			<a href="/" tabindex="2">
+    				<img src="@routes.Application.imageAt("images", "logo.png")" alt="Fast Lab Logo" style="max-height:18px;">
+    			</a>
+    		</div>
+    	</header>
+        <div class="container">
+            <a class="" href="#" accesskey="M" title="中間內容區塊" style="position:absolute;">:::</a>
+        </div>
+        @content
+        <footer>
+        	<div class="container text-center">
+                <a class="" href="#" accesskey="B" title="下方內容區塊" style="position:absolute;">:::</a>
+	    		<div class="float-left column-ms-12">
+	    			<a href="#" tabindex="80"><img src="@routes.Application.imageAt("images", "logo_footer.png")" alt="Fast Lab"></a>
+	    		</div>
+	    		<div class="float-left column-ms-12 social-nav-footer l-hide">
+	    			<div class="block-center" style="width: 300px;">
+	    				<div class="float-left column-4 social-nav-footer-item">
+    						<a href="#Facebook" tabindex="90">
+    							<img src="@routes.Application.imageAt("images", "ic_facebook3.png")" style="max-width: 100%;">
+    						</a>
+	    				</div>
+	    				<div class="float-left column-4 social-nav-footer-item">
+	    					<a href="#Pinterest" tabindex="91">
+    							<img src="@routes.Application.imageAt("images", "ic_pinterest3.png")" style="max-width: 100%;">
+	    					</a>
+	    				</div>
+	    				<div class="float-left column-4 social-nav-footer-item">
+	    					<a href="#Instagram" tabindex="92">
+    							<img src="@routes.Application.imageAt("images", "ic_instagram3.png")" style="max-width: 100%;">
+	    					</a>
+	    				</div>
+	    				<div class="clear"></div>
+	    			</div>
+	    		</div>
+	    		<div class="float-right footer-nav column-ms-12">
+	    			<div class="float-left footer-nav-item column-ms-12"><a href="@routes.Application.aboutUs" tabindex="101"><span>@Messages("main.aboutus")</span></a></div>
+	    			<div class="float-left footer-nav-item column-ms-12"><a href="@routes.Application.privacyPolicy" tabindex="102"><span>@Messages("main.privacy")</span></a></div>
+	    			<div class="float-left footer-nav-item column-ms-12"><a href="@routes.Application.termofUse" tabindex="103"><span>@Messages("main.termofuse")</span></a></div>
+	    			<div class="float-left footer-nav-item column-ms-12"><a href="#" tabindex="104"><span>@Messages("main.contactus")</span></a></div>
+	    			<div class="float-left footer-nav-item column-ms-12">
+	    				<a href="#" tabindex="105">
+		    				<img class="lang" src="@routes.Application.imageAt("images", "ic_tw.png")" alt="Switch Language">
+		    				<span>English</span>
+	    				</a>
+	    			</div>
+	    			<div class="clear"></div>
+	    		</div>
+	    		<div class="clear"></div>
+        	</div>
+        	<div class="other-info text-center">
+        		<div class="container">
+	        		<p class="float-left column-ms-12 ms-margin-reset">
+       <img src="@routes.Application.imageAt("banners", "IDB_QR.jpg")" width="75px" height="75px">
+       <a href="https://zh-tw.facebook.com/moeaidb"</a><img src="@routes.Application.imageAt("banners", "IDB_FB_S.png")" >
+	        			<span class="website-agent">經濟部工業局&nbsp;3D列印產業發展推動計畫&nbsp;專案委辦</span>
+	        		</p>
+	        		<p class="float-left ms-hide">
+	        		</p>
+	        		<p class="float-left column-ms-12 ms-margin-reset">
+	        			<span class="copyright">© 2016, Fast Lab Corp. All rights reserved.</span>
+	        		</p>
+	        		<!--p class="float-left">
+	        			<span class="privacy-policy">隱私權聲明</span>
+	        		</p-->
+	        		<p class="float-right">
+	        			<!--img class="accessibility" src="@routes.Application.imageAt("images", "ic_a.jpg")" alt="Accessibility is level A."></img-->
+	        		</p>
+	        		<div class="clear"></div>
+        		</div>
+        	</div>
+			<div style="text-align:center;">
+					<!-- hitwebcounter Code START -->
+				<a href="http://www.hitwebcounter.com" target="_blank">
+					<img src="http://hitwebcounter.com/counter/counter.php?page=6284251&style=0030&nbdigits=7&type=page&initCount=5000" title="Home Remedies For Wrinkles" Alt="Home Remedies For Wrinkles"   border="0" >
+				</a>                                        <br/>
+					<!-- hitwebcounter.com --><a href="http://www.hitwebcounter.com" title="Count Stats Visits"
+			target="_blank" style="font-family: Arial, Helvetica, sans-serif;
+			font-size: 10px; color: #6E6A68; text-decoration: none ;"><em>Count Stats Visits                                        </em>
+			</a>
+
+		</footer>
+    </body>
+</html>

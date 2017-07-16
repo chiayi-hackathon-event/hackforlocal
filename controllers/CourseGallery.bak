@@ -1,0 +1,12 @@
+public class CourseGallery extends Controller {
+
+    // webservice parameter
+    @Inject
+    WSClient ws;
+    static final String webServiceUrl = "http://127.0.0.1:6666";
+
+public Result designerDetail(Long memberId,) {
+}
+
+
+}

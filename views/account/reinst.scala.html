@@ -1,0 +1,13 @@
+@(message: String)
+@import helper._
+
+@form(action = routes.Application.sendResetPassword(), 'enctype -> "multipart/form-data") {
+    <p class="title">email address</p>
+    <input type="text" name="email" tabindex="23">
+    @CSRF.formField
+    <p>
+        <input type="submit" tabindex="24">
+    </p>
+}
+
+</div>

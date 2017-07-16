@@ -1,0 +1,105 @@
+body {
+	background: #f1f1f1;
+    font-family: "Microsoft JhengHei", Helvetica, Arial, sans-serif;
+}
+ul {
+	margin: 0;
+	padding: 0;
+}
+a {
+	text-decoration: none;
+}
+h2.result-title {
+    text-align: center;
+    padding-bottom: 20px;
+    padding-top: 10px;
+}
+.ui-tabs.ui-tabs-vertical {
+    padding: 0;
+    width: 930px;
+    margin: auto;
+}
+.ui-tabs.ui-tabs-vertical .ui-widget-header {
+    border: none;
+}
+.ui-tabs.ui-tabs-vertical .ui-tabs-nav {
+    float: right;
+    width: 11.5em;
+}
+.ui-tabs.ui-tabs-vertical .ui-tabs-nav li {
+    clear: left;
+    width: 100%;
+    border-bottom: 1px solid gray;
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+    background: #e6e6e6;
+}
+.ui-tabs.ui-tabs-vertical .ui-tabs-nav li a {
+    display: block;
+    width: 100%;
+    padding: 1.045em 1em;
+    color: #333;
+    font-size: 20px;
+}
+.ui-tabs.ui-tabs-vertical .ui-tabs-nav li a:hover {
+    cursor: pointer;
+}
+.ui-tabs.ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active {
+    padding-bottom: 0;
+    background: #333;
+}
+.ui-tabs.ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active a {
+    color: #ff0;
+}
+.ui-tabs.ui-tabs-vertical .ui-tabs-nav li:last-child {
+    margin-bottom: 10px;
+}
+.ui-tabs.ui-tabs-vertical .ui-tabs-panel {
+    float: left;
+    border-radius: 0;
+    position: relative;
+    left: -1px;
+}
+/*-----------------------------------------------------*/
+.link_a {
+    position: relative;
+}
+.link_des {
+    position: absolute;
+    color: #fff;
+    top: 110px;
+    left: 35px;
+    padding-right: 35px;
+}
+.link_des h2 {
+    padding: 5px 10px 8px 10px;
+    width: 170px;
+    text-align: center;
+    border-radius: 35px;
+    font-size: 22px;
+    margin: 0;
+}
+.link_des h3 {
+    margin: 0;
+    font-size: 22px;
+}
+.link_des p {
+    margin: 2px 0;
+    font-size: 17px;
+}
+.color-1 h2 {
+    background: #ff2248;
+}
+.color-2 h2 {
+    background: #0090FF;
+}
+.color-3 h2 {
+    background: #9349FF;
+}
+.color-4 h2 {
+    background: #00BF85;
+}
+.color-5 h2 {
+    background: #909090;
+}

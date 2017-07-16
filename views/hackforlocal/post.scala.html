@@ -1,0 +1,251 @@
+@(message: String,list:List[ResetData])
+
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Clean Blog - Sample Post</title>
+
+   <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("clean-blog-gh-pages/vendor/bootstrap/css/bootstrap.min.css")">
+
+    <!-- Theme CSS -->
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("clean-blog-gh-pages/css/clean-blog.min.css")">
+
+    <!-- Custom Fonts -->
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("clean-blog-gh-pages/vendor/font-awesome/css/font-awesome.min.css")">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/theme.blue.css")">
+    <script src="@routes.Assets.versioned("javascripts/jquery.tablesorter.js")"></script>
+    <!-- jQuery -->
+   <script src="@routes.Assets.versioned("clean-blog-gh-pages/vendor/jquery/jquery.min.js")" type="text/javascript"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="@routes.Assets.versioned("clean-blog-gh-pages/vendor/bootstrap/js/bootstrap.min.js")" type="text/javascript"></script>
+
+    <!-- Contact Form JavaScript -->
+    <script src="@routes.Assets.versioned("clean-blog-gh-pages/js/jqBootstrapValidation.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("clean-blog-gh-pages/js/contact_me.js")" type="text/javascript"></script>
+
+    <!-- Theme JavaScript -->
+    <script src="@routes.Assets.versioned("clean-blog-gh-pages/js/clean-blog.min.js")" type="text/javascript"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.mDecjs"></script>
+    <![endif]-->
+    <script type="text/javascript">
+    $(function () {
+    // widgets: ['zebra'] 這個參數，能對表格的奇偶數列作分色處理
+    $("#test").tablesorter();
+});
+
+
+            $(document).ready(function() {
+
+
+            $('.info-block').hide();
+            [].forEach.call($('.switch-button'), function(e, i) {
+                if(i == 0) $('.info-block:eq(0)').show();
+                $(e).click(function() {
+                    $('.switch-button').removeClass('switch-button-selected');
+                    $(this).addClass('switch-button-selected');
+                    $('.info-block').hide();
+                    $('.info-block:eq(' + i + ')').show();
+                });
+            });
+            }
+
+
+    </script>
+</head>
+
+<section>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    Menu <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand" href="/hackforlocal/index">Ruru.284.284.2k7</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/hackforlocal/index">Home</a>
+                    </li>
+                    <li>
+                        <a href="/hackforlocal/about">About</a>
+                    </li>
+                    <li>
+                        <a href="/hackforlocal/post">Solution</a>
+                    </li>
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-image: url('@routes.Application.imageAt("img", "post-bg.jpg")')">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>Man must explore, and this is exploration at its greatest</h1>
+                        <h2 class="subheading">Problems look mighty small from 150 miles up</h2>
+                        <span class="meta">Posted by <a href="#">Start Bootstrap</a> on August 24, 2014</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Post Content -->
+    <article>
+        <div class="container">
+            <div class="row">
+
+
+
+
+
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                     <h2 class="section-heading">旅行銷售員問題(Travelling salesman problem, TSP)</h2>
+
+                    <img class="img-responsive" src="@routes.Application.imageAt("img", "tmp.gif")" alt="">
+                    
+                    <p>在運輸網路中，由使用者自訂預期走訪景點，依本團隊所設計網頁平台，供使用者參考如何由一特定起點可在最低旅運成本條件下，規劃一最佳化旅運路徑，可依序安排預期走訪景點。所規劃最短路徑，需滿足使用者所需走訪景點，故本平台藉由旅行銷售員問題(Travelling salesman problem, TSP)進行路徑最佳化規劃。在一運輸網路中，TSP主要求解如何由起出點出發，行經各預設點一次，並回到原始點的最短路徑，其最短路徑能處理各節點之間存在訪問次序。因旅運安排未必會再回到原始起點，故本團隊所演算的最短路徑方案，可彈性提供使用者自訂是否需回到原點安排。目前本團隊主要使用鄰近插入法(neighbor insertion method)來求解TSP最短路徑。</p>
+
+
+                    <h2 class="section-heading">鄰近插入法</h2>
+
+                    <p>主要概念為概定迴圈中，逐次插入與該迴圈相連結之最短成本的節點。現有的鄰近插入法可提供回到起點之最佳化路徑安排，而本團隊將改良現有鄰近插入法，在起點前加入一虛擬節點，以針對使用者無需回到原始點之需求。</p>
+
+                    <p>鄰近插入法主要步驟如下:</p>
+
+                    <blockquote>步驟1: 由一特定起點 i，選定與其相鄰最短成本之節點 j，構成一最短路徑 i-j與迴圈i-j-i
+                    步驟2: 從已最短路徑與迴圈，在相鄰節點集合中，選取一相鄰節點 k，其判斷成本準則 [成本(i-k)+成本(k-j)-成本(i-j)]為最小，並將其節點加入已存在最短路徑。
+                    步驟3: 重複步驟2，找尋其他未被選取相鄰節點，並更新至最短路徑與迴圈，直至所有預設點已被選取完畢。</blockquote>
+
+
+
+                    <h2 class="section-heading">多點路徑規劃</h2>
+
+                    <p>As we got further and further away, it [the Earth] diminished in size. Finally it shrank to the size of a marble, the most beautiful you can imagine. That beautiful, warm, living object looked so fragile, so delicate, that if you touched it with a finger it would crumble and fall apart. Seeing this has to change a man.</p>
+
+                    
+                        <img class="img-responsive" src="@routes.Application.imageAt("img", "post-sample-image.jpg")" alt="">
+                    
+                    <h2 class="section-heading">DEMO</h2>
+                    
+<div id="includeMenu" style="text-align: center;"></div>
+<table width="auto" id="test" name="test" class="tablesorter-blue">
+<thead>
+            <tr>
+
+        <th><!--<input type="submit" value="確定"</button>-->
+</th>
+
+            <th>起點</th>
+            <th>終點</th>
+            <th>最佳路徑</th>
+            <th>Gooogle參考地圖</th>
+            <th>參考資料</th>
+        
+
+
+            </tr>
+</thead>
+<form>
+@for( a <- 0 to (list.size)-1) {
+<!--<td><input type="checkbox" id="@@a" class="regular-checkbox"  name="checkboxid" value="@@list(a).Name)" ><label for="@@a"></label></td>
+-->
+<td>@list(a).ID</td>
+<td>@list(a).Start</td>
+<td>@list(a).End</td>
+<td><a href="@list(a).Url">@list(a).Route</a></td>
+<td>@list(a).Route</td>
+
+
+<!--<iframe width='100%' height='200' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='@@list(a).Url'></iframe>
+-->
+
+
+<td>@list(a)Dec</td>
+
+
+
+</tr>}
+</table>
+
+</form>
+
+
+</div>                    
+
+
+
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-muted">Copyright &copy; Your Website 2016</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+</section>

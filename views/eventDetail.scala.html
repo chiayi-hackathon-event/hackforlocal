@@ -1,0 +1,65 @@
+@(event: Events)
+	@header = {
+	}
+@main("Event - Fast Lab")("")(header) {
+
+	<section>
+		<div class="container">
+			<p class="text-center breadcrumb">
+				<span>@Messages("index.event") &gt;</span>
+				<span class="page-title">@event.title</span>
+			</p>
+		</div>
+		<div class="container">
+			<div class="float-left column-l-8 detail-image">
+				<img src="/myUpload/@event.images" alt="@event.title" width="600" title="@event.title @event.description" alt="@event.title @event.description">
+			</div>
+			<div class="float-right column-l-5 detail-box event-detail-box">
+				<div class="detail-row">
+					<p class="float-left detail-title">活動名稱</p>
+					<p class="float-left detail-title-desc">@event.title</p>
+					<div class="clear"></div>
+				</div>
+				<div class="detail-row">
+					<p class="float-left detail-title">主辦單位</p>
+					<p class="float-left detail-title-desc">@event.organizer</p>
+					<div class="clear"></div>
+				</div>
+				<div class="detail-row">
+					<p class="float-left detail-title">協辦單位</p>
+					<p class="float-left detail-title-desc">@event.coOrganizer</p>
+					<div class="clear"></div>
+				</div>
+				<div class="detail-row">
+					<p class="float-left detail-title">展演館別</p>
+					<p class="float-left detail-title-desc">@event.location</p>
+					<div class="clear"></div>
+				</div>
+				<div class="detail-row">
+					<p class="float-left detail-title">展演日期</p>
+					<p class="float-left detail-title-desc">@event.showStartDate.format("yyyy-MM-dd") ~ @event.showEndDate.format("yyyy-MM-dd") </p>
+					<div class="clear"></div>
+				</div>
+				<div class="detail-row">
+					<p class="float-left detail-title">展演時間</p>
+					<p class="float-left detail-title-desc">@event.showTime</p>
+					<div class="clear"></div>
+				</div>
+				<div class="detail-row">
+					<p class="float-left detail-title"><a href="@event.externalUrls" tabindex="23">請點我</a></p>
+					<div class="clear"></div>
+				</div>
+				<div class="detail-row">
+					<p class=" detail-title">展演簡介</p>
+					<p class="JQellipsis detail-desc-desc">@event.description</p>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</section>
+	<div class="on-footer">
+		<div class="section-bottom">
+			<img src="@routes.Application.imageAt("images" ,"section_bottom.png")" title="buttonimage" alt="buttonimage">
+		</div>
+	</div>
+}

@@ -1,0 +1,17 @@
+@(message: String)
+@header = {
+}
+@main("Resource - Fast Lab")(message)(header) {
+
+  <section>
+    <div class="container">
+      <img alt="banner" src="@routes.Application.imageAt("banners", "04-ResouceLab-Fastlab-Full.jpg")" style="max-width:100%;">
+    </div>
+  </section>
+  <div class="on-footer">
+    <div class="section-bottom">
+      <img alt="section bottom" src="@routes.Application.imageAt("images", "section_bottom.png")">
+    </div>
+  </div>
+
+}

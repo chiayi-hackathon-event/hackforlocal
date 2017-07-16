@@ -1,0 +1,677 @@
+@(message: String, iiimodelcategories: List[IIIModelCategory], iiimodellicense: List[IIIModelLicense], campaigns: List[Campaign],iiimodel:IIIModel,modelID:Long)
+@import helper._;
+@header = {
+    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+    <script>tinymce.init({ selector:'textarea' });</script>  
+
+<!--TinyMCEedit -->
+  <script>
+  tinymce.init({
+  selector: 'textarea','#absurls',
+  height: 500,
+  plugins: [
+    'advlist autolink lists link image charmap print preview anchor',
+    'searchreplace visualblocks code fullscreen',
+    'insertdatetime media table contextmenu paste code'
+    'link image code',
+  ],
+  toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+  content_css: [
+    '//fast.fonts.net/cssapi/e6dc9b99-64fe-4292-ad98-6974f93cd2a2.css',
+    '//www.tinymce.com/css/codepen.min.css'
+  ]
+}); 
+  </script>
+
+    <script>(function(e,t,n){var r=e.querySelectorAll("html")[0];r.className=r.className.replace(/(^|\s)no-js(\s|$)/,"$1js$2")})(document,window,0);</script>
+    <script type="text/javascript">
+        function isAbleToDragAndDrop() {
+            var div = document.createElement('div');
+            return ('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)
+        }
+        function hasFormData() {
+            return 'FormData' in window;
+        }
+        function hasFileReader() {
+            return 'FileReader' in window;
+        }
+        var isAdvancedUpload = function() {
+            return isAbleToDragAndDrop() && hasFormData() && hasFileReader();
+        }();
+       
+	   function submitnewmodelcheck() {
+            // check necessary column
+            if(!$("#stlStr").val()) {
+                alert("請至少選一個STL檔/Please include at least 1 STL");
+                return false;
+            }
+                //上傳圖片驗證
+            else if(!$("#imageStr").val()) {
+                alert("請至少選一個圖片/Please include at least 1 Image");
+                return false;
+            }
+
+            else if(!$("#modelName").val()) {
+                alert("請輸入模型名稱/Please key in model name");
+                $("#modelName").focus();
+                return false;
+            }
+
+            else if(!$('#modelTags').val() && $('#modelTags').val() != 0) {
+                alert("please select a tag");
+                $("#modelTags").focus();
+                return false;
+            }
+            else{
+                updatemodel.submit()
+            }
+            
+/*      
+           var parameter = {'stl':$("#stlStr").val(),'image':$("#imageStr").val(),'modelName':$("#modelName").val(),'modelTags':$("#modelTags").val(),'description':$("#description").val(),'scenario':$("#scenario").val(),'instruction':$("#instruction").val(),'category':$("#category").val(),'license':$("#license").val()};
+            document.getElementById('newmodel').disabled=true;
+                        $.ajax({
+                        type : 'POST',
+                        url : '@routes.Application.submitUpdateModel()',
+                        dataType : 'text',
+                        data : JSON.stringify(parameter),
+                        contentType: "application/json; charset=utf-8"
+                                }).done(function(data) {
+                        alert("new model success");
+                        window.location.href = "/Fast-Lab-3D-Member-Gallery/0";
+                                }).fail(function(xhr, ajaxOptions, thrownError) {
+			                        console.log("clickrating fail:"+xhr.status);
+                                    //上傳失敗重新導向頁面
+                        alert("Upload model fail,  Please re-upload this file from your.");
+                        location.href="/Fast-Lab-3D-Member-Gallery/0";
+
+                                });
+*/        }
+
+ 
+        $(document).ready(function() {   
+            function fileUploader($form, done) {
+                // var $form = $('.upload-box');
+                var $input = $form.find('input[type="file"]'),
+                    $label = $form.find('label'),
+                    showFiles = function() {
+                        
+                        // $label.text(files.length > 1 ? ($input.attr('data-multiple-caption') || '').replace( '{count}', files.length ) : files[ 0 ].name);
+                    };
+                var droppedFiles = false;
+
+                $form.on('submit', function(e) {
+                    if ($form.hasClass('is-uploading')) return false;
+
+                    $form.addClass('is-uploading').removeClass('is-error');
+
+                    if (isAdvancedUpload) {
+                         e.preventDefault();
+
+                        var ajaxData = new FormData($form.get(0));
+
+                        if (droppedFiles) {
+                            $.each( droppedFiles, function(i, file) {
+                                ajaxData.append( $input.attr('name'), file );
+                            });
+                        }
+
+                        $.ajax({
+                            xhr: function() {
+                                var xhr = new window.XMLHttpRequest();
+
+                                xhr.upload.addEventListener("progress", function(evt) {
+                                    if (evt.lengthComputable) {
+                                        var percentComplete = evt.loaded / evt.total;
+                                        percentComplete = parseInt(percentComplete * 100);
+                                        console.log(percentComplete); //TODO: Show progress bar.
+                                    }
+                                }, false);
+
+                                return xhr;
+                            },
+                            url: $form.attr('action'),
+                            type: $form.attr('method'),
+                            data: ajaxData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            complete: function() {
+                                $form.removeClass('is-uploading');
+                            },
+                            success: function(data) {
+                                $form.addClass( data.success == true ? 'is-success' : 'is-error' );
+                                try {
+                                    var resultJSON = JSON.parse(data);
+                                    if(resultJSON.retCode == "0") done(resultJSON.files);
+                                    else alert(resultJSON.retMessage);
+                                } catch (e) {
+                                    console.log(e)
+                                    alert('上傳失敗，請再上傳一次。');
+                                }
+                            },
+                            error: function(e) {
+                                console.log(e)
+                                 alert('上傳失敗，請再上傳一次。');
+                                // Log the error, show an alert, whatever works for you
+                            }
+                        });
+                    } else {
+                        var iframeName  = 'uploadiframe' + new Date().getTime();
+                        $iframe   = $('<iframe name="' + iframeName + '" style="display: none;"></iframe>');
+
+                        $('body').append($iframe);
+                        $form.attr('target', iframeName);
+
+                        $iframe.one('load', function() {
+                            var data = JSON.parse($iframe.contents().find('body' ).text());
+                            $form
+                                .removeClass('is-uploading')
+                                .addClass(data.success == true ? 'is-success' : 'is-error')
+                                .removeAttr('target');
+                            $form.removeAttr('target');
+                            $iframe.remove();
+                            try {
+                                var resultJSON = JSON.parse(data);
+                                if(resultJSON.retCode == "0") done(resultJSON.files);
+                                else alert(resultJSON.retMessage);
+                            } catch (e) {
+                                alert('上傳失敗，請再上傳一次。');
+                            }
+                        });
+
+                    }
+                });
+
+                if (isAdvancedUpload) {
+                    $form.addClass('has-advanced-upload');
+
+                    $form.on('drag dragstart dragend dragover dragenter dragleave drop', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    })
+                    .on('dragover dragenter', function() {
+                        $form.addClass('is-dragover');
+                    })
+                    .on('dragleave dragend drop', function() {
+                        $form.removeClass('is-dragover');
+                    })
+                    .on('drop', function(e) {
+                        droppedFiles = e.originalEvent.dataTransfer.files;
+                        if(fileExtValid(droppedFiles, $form.attr('data-allowed-type')))
+                            $form.trigger('submit');
+                    });
+                } else {
+                    $input.on('change', function(e) { // when drag & drop is NOT supported
+                        $form.trigger('submit');
+                    });
+                }
+
+                $input.on('change', function(e) {
+                    $form.trigger('submit');
+                });
+            }
+
+            $('.chooseArea').click(function(event) {
+                event.preventDefault();
+                $(this).parents('label').trigger('click');
+            }).keypress(function(event) {
+                if(event.keyCode == 13) {
+                    event.preventDefault();
+                    $(this).parents('label').trigger('click');
+                }
+            });
+
+            function gerReg(fileTypesString) {
+                // Format likes: jpg,jpeg,png
+                var pattern = fileTypesString.replace(/,/g, "|");
+                return new RegExp(".+\.{1}(" + pattern + ")$", "g");
+            }
+
+            function fileExtValid(files, allowedFileTypes) {
+                var testPattern = gerReg(allowedFileTypes);
+                alert(testPattern);
+		var notAllowedFiles = [];
+                files = [].slice.call(files);
+                files.forEach(function(e) {
+                    if(!testPattern.test(e.name)) notAllowedFiles.push(e.name);
+                });
+                if(notAllowedFiles.length == 0) { return true; }
+                else {
+                    console.log(notAllowedFiles)
+                    alert('下列檔案不符合格式： ' + notAllowedFiles.join(', ') + '\n目前可接受的格式： ' + allowedFileTypes);
+                    return false;
+                }
+            }
+
+            function getFileArrayString(files) {
+                try {
+                    return files.reduce(function(p, c, idx, arr) {
+                        if(idx == (arr.length - 1)) return p + c.fileName;
+                        else return p + c.fileName + ";";
+                    }, "");
+                } catch (e) {
+                    return "";
+                }
+            }
+
+            function bindRemoveClicks() {
+                $('.removeStlFile').click(function() {
+                    var val = $('#stlStr').val();
+                    var listItem = $(this).parent();
+                    var removeVal = listItem.attr('data-value');
+                    var pattern = new RegExp(removeVal + ";?", "g");
+                    val = val.replace(pattern, function(match) {
+                        listItem.remove();
+                        return '';
+                    });
+                    $('#stlStr').val(val);
+                });
+
+                $('.removeImageFile').click(function() {
+                    var val = $('#imageStr').val();
+                    var listItem = $(this).parent();
+                    var removeVal = listItem.attr('data-value');
+                    var pattern = new RegExp(removeVal + ";?", "g");
+                    val = val.replace(pattern, function(match) {
+                        listItem.remove();
+                        return '';
+                    });
+                    $('#imageStr').val(val)
+                });
+            }
+
+
+            fileUploader(
+                $('#upload-box-input-stl-file'),
+                function(stlArr) {
+                    var fileListBox = $('#upload-box-input-stl-file').find('.file-list');   
+                    $.each(stlArr, function(i, e) {//此處有修改
+                        var listItem = $('<li data-value=' + '"' + e.fileName + '"><span class="removeStlFile">'+e.fileShowname+'<img src="@routes.Application.imageAt("admin_images", "delete.png")" title="icon image" alt="icon image" height="30" width="30"></span></li>');
+                        fileListBox.append(listItem);
+                    });
+                    bindRemoveClicks();
+                    var newStlStr = $('#stlStr').val();
+//                    if(newStlStr != '') newStlStr += ";";
+                    newStlStr += getFileArrayString(stlArr);
+                    $('#stlStr').val(newStlStr + ';');
+                }
+            );
+
+            fileUploader(
+                $('#upload-box-input-image-file'),
+                function(imageArr) {
+                    var fileListBox = $('#upload-box-input-image-file').find('.file-list');
+                    $.each(imageArr, function(i, e) {
+                        var listItem = $('<li data-value=' + '"' + e.fileName + '"><span class="removeImageFile">' + e.fileShowname + '<img src="@routes.Application.imageAt("admin_images", "delete.png")" title="icon image" alt="icon image" height="30" width="30"></span></li>');
+                        fileListBox.append(listItem);
+                    });
+                    bindRemoveClicks();
+                    var newImageStr = $('#imageStr').val();
+//                    if(newImageStr != '') newImageStr += ";";
+                    newImageStr += getFileArrayString(imageArr);
+                    $('#imageStr').val(newImageStr + ';');
+                }
+            );
+
+            @for(attachment <- iiimodel.modelAttachments) {
+                $('#stlStr').val('@attachment.fileName;' + $('#stlStr').val())
+            }
+
+            @for(thumbnail <- iiimodel.modelThumbnails) {
+                $('#imageStr').val('@thumbnail.thumbnailFilename;' + $('#imageStr').val())
+            }
+
+
+
+            // Initial.
+            bindRemoveClicks();
+
+        });
+
+    </script>
+<!--新的刪除列表滑動式窗-->
+<script>
+$(document).ready(function(){
+  $('p.file').click(function(){
+    $('span.removeStlFile').slideToggle();
+  }).siblings('span.removeStlFile').hide();
+
+
+});
+
+
+$(document).ready(function(){
+  $('p.image').click(function(){
+    $('span.removeImageFile').slideToggle();
+  }).siblings('span.removeImageFile').hide();
+
+
+});
+</script>
+
+ 
+}
+
+@main("Update Model - Fast Lab")(message)(header) {
+    <section>
+        <div class="container">
+            <div class="column-12">
+                @helper.form(
+                    action = routes.Application.uploadFileByForm(),
+                    'method -> "method='post'",
+                    'enctype -> "multipart/form-data",
+                    'class -> "upload-box",
+                    'id -> "upload-box-input-stl-file",
+                    Symbol("data-allowed-type") -> "stl,STL"
+                ) {
+                    <div class="text-center">
+			 <span class="article-title guideline-title text-center">1. 上傳您的3D模型</span>	
+                        <!--<img src="@routes.Application.imageAt("images", "iic_upload.png")" title="icon image" alt="icon image">-->
+                    </div>
+                <!--<div class="text-center">@Messages("upload.drag")</div>-->
+                    <div class="column-12">
+                        <label class="text-center" for="stl">
+                            <p class="column-5 column-ms-8 block-center menu-button">
+                                <a class="chooseArea" href="#" tabindex="20">@Messages("upload.selectFile")</a>
+                            </p>
+                        </label>
+                        <button class="upload-box-button" type="submit">Upload</button>
+                    </div>
+                    <input id="stl" type="file" name="files[]" multiple hidden/></p>
+
+                    <div class="upload-box-tip text-center"><span>**在穩定的網路
+環境上傳**</br>支援的檔案類型:STL,stl,OBJ,obj,stp,step,sat,wml,pdf,(檔案大小 < 30M)
+</span></div>
+
+                   <!-- <ul class="file-list text-right">
+                        @@for(attachment <- iiimodel.modelAttachments) {
+                            <li data-value="@@attachment.fileName">@@attachment.fileShowname
+                            <span class="removeStlFile">Ｘ</span>
+                            </li>
+                        }
+                    </ul>-->
+
+<!--新的程式碼-->
+		<div class="column-12">
+        <div class="text-center upload-box has-advanced-upload">
+        <ul>
+
+<p class="gallery-detail-title file">Thing Files Delete <img src="@routes.Application.imageAt("admin_images", "expand-button.png")" title="icon image" alt="icon image" height="30" width="40"></p><span class="glyphicon glyphicon-chevron-down" aria-hidden="ture"></span>
+                        @for(attachment <- iiimodel.modelAttachments) {
+                            <li data-value="@attachment.fileName">
+
+
+
+                            <span class="removeStlFile">@attachment.fileShowname<img src="@routes.Application.imageAt("admin_images", "delete.png")" title="icon image" alt="icon image" height="30" width="30"></span>
+
+                            </li> 
+                }
+                    <ul class="file-list">
+                    </ul>
+			</ul>
+                }
+
+            </div>                
+  
+            </div>
+	    </div>
+
+
+<!--
+	<div class="column-12">
+	<div class="text-center upload-box has-advanced-upload">
+
+
+
+<ul>
+                   
+<p class="gallery-detail-title file">Thing Files Delete</p>
+			@for(attachment <- iiimodel.modelAttachments) {
+                            <li data-value="@attachment.fileName">
+                            
+
+			          
+                            <span class="removeStlFile">@attachment.fileShowname <img src="https://64c25bcee3e74d12e789abb116163ed87a855f54.googledrive.com/host/0B27nlsVVtYCtMFRXUl9aWWc2TnM/delete.svg" title="icon image" alt="icon image" height="30" width="30"></span>
+			    
+			    </li>
+                        
+                    </ul>
+		}
+	
+	</div>	
+	</div>
+-->                
+            <div class="column-12">
+                @helper.form(
+                    action = routes.Application.uploadFileByForm(),
+                    'method -> "method='post'",
+                    'enctype -> "multipart/form-data",
+                    'class -> "upload-box",
+                    'id -> "upload-box-input-image-file",
+                    Symbol("data-allowed-type") -> "jpg,jpeg,png,svg,gif"
+                ) {
+                    <div class="text-center">
+			<span class="article-title guideline-title text-center">2. 上傳您的圖片</span>
+                       <!-- <img src="@routes.Application.imageAt("images", "ic_upload.png")" title="icon image" alt="icon image">-->
+                    </div>
+                    <!--<div class="text-center">@Messages("upload.drag")</div>-->
+                    <div class="column-12">
+                        <label class="text-center" for="image">
+                            <p class="column-5 column-ms-8 block-center menu-button">
+                                <a class="chooseArea" href="#" tabindex="21">@Messages("upload.selectFile")</a>
+                            </p>
+                        </label>
+                        <button class="upload-box-button" type="submit">Upload</button>
+                    </div>
+                    <input id="image" type="file" name="files[]" multiple hidden/></p>
+
+                    <div class="upload-box-tip text-center"><span>支援的檔案類型
+:JPG, PNG</br>建議的圖片比例:500x400  (檔案大小 < 5M)
+</span></div>
+
+                    <!--<ul class="file-list text-right">
+                        @@for(thumbnail <- iiimodel.modelThumbnails) {
+                            <li data-value="@@thumbnail.thumbnailFilename">@@thumbnail.thumbnailShowname
+                                <span class="removeImageFile">Ｘ</span>
+                            </li>
+                        }
+                    </ul>-->
+                
+<!--新的程式碼-->
+                <div class="column-12">
+        <div class="text-center upload-box has-advanced-upload">
+
+<ul>
+
+<p class="gallery-detail-title image">Thing Images Delete <img src="@routes.Application.imageAt("admin_images", "expand-button.png")" title="icon image" alt="icon image" height="30" width="40"></p>
+                        @for(attachment <- iiimodel.modelThumbnails) {
+                            <li data-value="@attachment.thumbnailFilename">
+
+
+
+                            <span class="removeImageFile">@attachment.thumbnailShowname<img src="@routes.Application.imageAt("admin_images", "delete.png")" title="icon image" alt="icon image" height="30" width="30"></span>
+
+                            </li>
+                }
+                    <ul class="file-list">
+                    </ul>
+                        </ul>
+                }
+
+            </div>
+
+            </div>
+            </div>
+
+
+           
+<!--
+        <div class="column-12">
+        <div class="text-center upload-box has-advanced-upload">
+<ul>
+
+<p class="gallery-detail-title image">Thing Images Delete</p>
+                        @for(attachment <- iiimodel.modelThumbnails) {           
+                 <li data-value="@attachment.thumbnailFilename">
+
+
+
+                            <span class="removeImageFile">@attachment.thumbnailShowname <img src="@routes.Application.imageAt("admin_images", "delete.svg")" title="icon image" alt="icon image" height="30" width="30"></span></span>
+                        }
+                            </li>
+<ul class="accordionPart">
+                    </ul>
+
+
+        </div>
+        </div>
+-->
+
+
+
+
+
+            <div class="column-12">
+                @helper.form(
+                    action = routes.Application.submitUpdateModel(),
+                    'method -> "method='post'",
+                    'enctype -> "multipart/form-data",
+                    'class -> "upload-box",
+                    'id -> "upload-box-model-detail",  
+                    'name -> "updatemodel"
+                ) {
+                    <div class="text-center upload-box has-advanced-upload">
+                        <input id="stlStr" type="text" name="stl" hidden>
+                        <input id="imageStr" type="text" name="image" hidden>
+                        <input id="modelID" name="modelID" value="@modelID" hidden>
+                        @CSRF.formField
+
+                        <div class="column-12 upload-model-item">
+	<div class="article-title guideline-title text-center" style="margin:-20px">3. 基本資訊</div></br>
+                            <label class="float-left column-6 text-right" for="modelName">Model Name</label>
+                            <div class="float-left column-6 text-left">
+                                <input id="modelName" tabindex="22" type="text" name="modelName" value="@iiimodel.modelName">
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+			
+
+                        <div class="column-12 upload-model-item">
+                            <label class="float-left column-6 text-right" for="description">Model Description</label>
+                            <div class="float-left column-6 text-left">
+                                    <!-- <input id="description" type="text" name="description"> -->				
+
+
+
+
+
+                                <textarea tabindex="23" type="text" name="description" id="description" name="description" class="column-12" style="height:200px;">@iiimodel.description</textarea>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+
+                        <div class="column-12 upload-model-item">
+                            <label class="float-left column-6 text-right" for="scenario">Model Scenario</label>
+                            <div class="float-left column-6 text-left">
+                                <input tabindex="24" type="text" name="scenario" value="@iiimodel.scenario">
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+
+                        <div class="column-12 upload-model-item">
+                            <label class="float-left column-6 text-right" for="instruction">Model Instruction</label>
+                            <div class="float-left column-6 text-left">
+                                <input tabindex="25" type="text" name="instruction" value="@iiimodel.instruction">
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+
+                        <div class="column-12 upload-model-item">
+                            <label class="float-left column-6 text-right" for="category">Model Category</label>
+                            <div class="float-left column-6 text-left">
+                                <select id="category" name="category" tabindex="26">
+                                        <!-- You have to dynamic rendering by Scala. -->
+                                    @for(category <- iiimodelcategories){
+                                        @if(category.categoryID.equals(iiimodel.modelcategory.categoryID)){
+                                            <option value="@category.categoryID" selected="selected">@category.categoryName</option>
+                                        }else {
+                                            <option value="@category.categoryID">@category.categoryName</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+
+                        <div class="column-12 upload-model-item">
+                            <label class="float-left column-6 text-right" for="license">Model License</label>
+                            <div class="float-left column-6 text-left">
+                                <select id="license" name="license" tabindex="27">
+                                        <!-- You have to dynamic rendering by Scala. -->
+                                    @for(license <- iiimodellicense){
+                                        @if(license.licenseID.equals(iiimodel.modellicense.licenseID)){
+                                            <option value="@license.licenseID" selected="selected">@license.licenseName</option>
+                                        }else {
+                                            <option value="@license.licenseID">@license.licenseName</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+
+
+                        <div class="column-12 upload-model-item">
+                            <label class="float-left column-6 text-right" for="modelTags">活動資訊</label>
+                            <div class="float-left column-6 text-left">
+                                <select id="modelTags" name="modelTags" tabindex="28">
+                                        <!-- You have to dynamic rendering by Scala. -->
+                                    @if(campaigns != null) {
+                                        @for(campaign <- campaigns){
+                                            @if(!iiimodel.entitiesA.isEmpty && campaign.campaignID.equals(iiimodel.entitiesA.get(0).campaignID)){
+                                                <option value="@campaign.campaignID" selected="selected">@campaign.campaignTitle</option>
+                                            }else{
+                                                <option value="@campaign.campaignID">@campaign.campaignTitle</option>
+                                            }
+                                        }
+                                    }
+                                    @if(iiimodel.entitiesA.isEmpty){
+                                        <option value=0 selected="selected">無參加活動</option>
+                                    }else{
+                                        <option value=0>無參加活動</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+
+                       <!-- <p style="margin-top:20px">
+                            <input tabindex="29" type="submit" value="update model" style="width:100px;">
+                        </p>-->
+                 <p class="column-6 column-ms-8 block-center">       
+				    <input class="column-12 menu-button" type="button" id="newmodel" value="update Model" onclick="submitnewmodelcheck()" tabindex="29">
+                 </p>          
+                        
+                        
+                    </div>
+
+                }
+            </div>
+        </div>
+<!--
+        <div class="cloumn-12">
+            <div class="column-12 text-center">
+                <p class="article-title guideline-title">@Messages("upload.inst")</p>
+                <p>1.@Messages("upload.file")</p>
+                <p>2.@Messages("upload.preview")</p>
+                <p>3.@Messages("upload.edit")</p>
+                <p>4.@Messages("upload.deploy")</p>
+            </div>
+            <div class="column-12 text-center">
+                <p class="article-title guideline-title">@Messages("upload.support")</p>
+                <p>stl,&nbsp;wml,&nbsp;obj&nbsp;(size&nbsp;<&nbsp;5M)</p>
+            </div>
+        </div>
+-->
+    </section>
+}

@@ -1,0 +1,303 @@
+@(message: String,list:List[Admin_permit])
+@import scala.Predef;var pass="null";var admin="false";var grade4="4";var grade3="3";var grade2="2";var grade1="1";
+@(admin=controllers.Application.VerifyToken())
+@(pass=controllers.Application.getCookie("rec"))
+
+@header = {	}
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>管理者介面</title>
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.pack.js"></script>
+<script type="text/javascript" src="//ds.minwt.com/download/code/jquery/plugin/jquery.autoheight.js"></script>
+
+
+<style>
+h1{
+ font-size:18px;
+ font-family:'cwTeXHei', serif;
+ letter-spacing: 2px;
+　}
+ul,li{margin:10;}
+h3{
+color: #000000;
+}
+.container-main{
+margin-top:120px;
+text-align: center;
+}
+.element.style {
+	display: block;
+}
+
+
+#bs-example-navbar-collapse-1
+{
+margin-left:200px;
+}
+
+iframe {
+  position:relative;
+  width: 100%;
+  top: 0px;
+  left: 0%;
+  height: calc(100vh - 50px);	
+}
+
+
+
+
+
+
+</style>
+
+</head>
+
+@main("Admin Center - Fast Lab")("")(header) {
+
+<section>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.6";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+@if(admin=="true"){
+<div class="container">
+
+<h1 class="text-center page-title">@list(0).memberID 管理權限:@pass 介面<div class="fb-like" data-href="http://fastlab.cc/" data-width="200" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div></h1>
+
+<div class="row">
+@if(pass==grade4){
+  <div class="col-xs-6 col-md-3">
+    <div class="thumbnail"><a href="https://fastlab.cc/admin/ranklist" target="iframe"><img src="@routes.Application.imageAt("admin_images", "ranklist.png")" alt="圖庫排行榜"  width="50" height="50"</a>
+<h1 class="text-center">圖庫排行榜</h1>
+  </div>
+  </div>
+}
+@if(pass==grade4){
+  <div class="col-xs-6 col-md-3">
+    <div class="thumbnail"><a href="https://fastlab.cc/admin/spaceList" target="iframe"><img src="@routes.Application.imageAt("admin_images", "database.png")" alt="創客資料庫"  width="50" height="50"</a>
+<h1 class="text-center">創客資料庫</h1>
+  </div>
+  </div>
+}
+@if(pass==grade4){
+    <div class="col-xs-6 col-md-3">
+    <div class="thumbnail"><a href="https://fastlab.cc/admin/designer" target="iframe"><img src="@routes.Application.imageAt("admin_images", "designer.png")" alt="設計師專區"  width="50" height="50"</a>
+<h1 class="text-center">設計師專區</h1>
+  </div>
+  </div>
+}
+@if(pass==grade4){
+    <div class="col-xs-6 col-md-3">
+    <div class="thumbnail"><a href="https://fastlab.cc/admin/tool" target="iframe"><img src="@routes.Application.imageAt("admin_images", "tools.png")" alt="工具排行榜"  width="50" height="50"</a>
+<h1 class="text-center">工具排行榜</h1>
+  </div>
+  </div> 
+}
+
+@if(pass==grade4){
+<div class="col-xs-6 col-md-3">
+    <div class="thumbnail"><a href="https://fastlab.cc/designerManage" target="iframe"><img src="@routes.Application.imageAt("admin_images", "design-symbol.png")" alt="設計師管理"  width="50" height="50"</a>
+<h1 class="text-center">設計師管理</h1>
+  </div>
+  </div>
+}
+@if(pass==grade4){
+      <div class="col-xs-6 col-md-3">
+    <div class="thumbnail"><a href="https://fastlab.cc/categoryManage" target="iframe"><img src="@routes.Application.imageAt("admin_images", "edit-category.png")" alt="類別管理"  width="50" height="50"</a>
+<h1 class="text-center">類別管理</h1>
+  </div>
+  </div>
+}
+
+@if(pass==grade4||pass==grade1){
+      <div class="col-xs-6 col-md-3">
+    <div class="thumbnail"><a href="https://fastlab.cc/admin/sort_list" target="iframe"><img src="@routes.Application.imageAt("admin_images", "poster.png")" alt="活動管理"  width="50" height="50"</a>
+<h1 class="text-center">活動管理</h1>
+  </div>
+  </div>
+}
+
+
+@if(pass>=grade2){
+    <div class="col-xs-6 col-md-3">
+    <div class="thumbnail"><a href="https://fastlab.cc/Upload-Banner" target="iframe"><img src="@routes.Application.imageAt("admin_images", "new-banner.png")" alt="新增Banner"  width="50" height="50"</a>
+<h1 class="text-center">新增Banner</h1>
+  </div>
+  </div>
+}
+
+@if(pass>=grade3){
+    <div class="col-xs-6 col-md-3">
+    <div class="thumbnail"><a href="https://fastlab.cc/Remove-Banner" target="iframe"><img src="@routes.Application.imageAt("admin_images", "rem-banner.png")" alt="移除Banner"  width="50" height="50"</a>
+<h1 class="text-center">移除Banner</h1>
+  </div>
+  </div>
+}
+@if(pass>=grade2){
+    <div class="col-xs-6 col-md-3">
+    <div class="thumbnail"><a href="https://fastlab.cc/Upload-Event" target="iframe"><img src="@routes.Application.imageAt("admin_images", "add-events.png")" alt="新增Event"  width="50" height="50"</a>
+<h1 class="text-center">新增Event</h1>
+  </div>
+  </div>
+}
+
+
+@if(pass>=grade3){
+    <div class="col-xs-6 col-md-3">
+    <div class="thumbnail"><a href="https://fastlab.cc/Remove-Event" target="iframe"><img src="@routes.Application.imageAt("admin_images", "cancel-events.png")" alt="移除Event"  width="50" height="50"</a>
+<h1 class="text-center">移除Event</h1>
+  </div>
+  </div>
+}
+@if(pass==grade4){
+      <div class="col-xs-6 col-md-3">
+    <div class="thumbnail"><a href="https://fastlab.cc/Remove-Model" target="iframe"><img src="@routes.Application.imageAt("admin_images", "del.png")" alt="移除Model"  width="50" height="50"</a>
+<h1 class="text-center">移除Model</h1>
+  </div>
+  </div>
+}
+@if(pass>="0"){
+<a href="#"></a>
+}
+</div>
+}else{
+<script>
+location.href="/";
+</script>
+}
+
+
+<!--
+<div class="row">
+<div class="col-xs-12 col-md-12 col-lg-12">
+
+<div class="float-left">
+<div class="admin-banner-secondary-title">
+
+<a href="http://fastlab-tw.com:6666/admin/ranklist" target="iframe"><img src="https://64c25bcee3e74d12e789abb116163ed87a855f54.googledrive.com/host/0B27nlsVVtYCtMFRXUl9aWWc2TnM/ranklist.svg" alt="圖庫排行榜"  width="100" height="100"</a>
+<h1 class="text-center">圖庫排行榜</h1>
+</div>
+</div>
+
+
+
+<div class="float-left">
+<div class="admin-banner-secondary-title">
+
+<a href="http://fastlab-tw.com:6666/admin/spaceList" target="iframe"><img src="https://64c25bcee3e74d12e789abb116163ed87a855f54.googledrive.com/host/0B27nlsVVtYCtMFRXUl9aWWc2TnM/database.svg" alt="創客資料庫"  width="100" height="100"</a>
+<h1 class="text-center">創客資料庫</h1>
+</div>
+</div>
+
+
+<div class="float-left">
+<div class="admin-banner-secondary-title">
+
+<a href="http://fastlab-tw.com:6666/admin/designer" target="iframe"><img src="https://64c25bcee3e74d12e789abb116163ed87a855f54.googledrive.com/host/0B27nlsVVtYCtMFRXUl9aWWc2TnM/designer.svg" alt="設計師專區"  width="100" height="100"</a>
+<h1 class="text-center">設計師專區</h1>
+</div>
+</div>
+
+
+<div class="float-left">
+<div class="admin-banner-secondary-title">
+
+<a href="http://fastlab.tw/Upload-Banner" target="iframe"><img src="https://8b20b04f4c4c33f4c027a99ea57e6f44c1ec68bf.googledrive.com/host/0B27nlsVVtYCtN1ZRWnVCalB4bmc/new.svg" alt="新增Banner"  width="100" height="100"</a>
+<h1 class="text-center">新增Banner</h1>
+</div>
+</div>
+
+
+<div class="float-left">
+<div class="admin-banner-secondary-title">
+
+<a href="http://fastlab.tw/Remove-Banner" target="iframe"><img src="https://8b20b04f4c4c33f4c027a99ea57e6f44c1ec68bf.googledrive.com/host/0B27nlsVVtYCtN1ZRWnVCalB4bmc/cancel.svg" alt="移除Banner"  width="100" height="100"</a>
+<h1 class="text-center">移除Banner</h1>
+</div>
+</div>
+
+<div class="float-left">
+<div class="admin-banner-secondary-title">
+
+<a href="http://fastlab.tw/Upload-Event" target="iframe"><img src="https://8b20b04f4c4c33f4c027a99ea57e6f44c1ec68bf.googledrive.com/host/0B27nlsVVtYCtN1ZRWnVCalB4bmc/add-events.svg" alt="新增Event"  width="100" height="100"</a>
+<h1 class="text-center">新增Event</h1>
+</div>
+</div>
+
+
+
+<div class="float-left">
+<div class="admin-banner-secondary-title">
+
+<a href="http://fastlab.tw/Remove-Event" target="iframe"><img src="https://8b20b04f4c4c33f4c027a99ea57e6f44c1ec68bf.googledrive.com/host/0B27nlsVVtYCtN1ZRWnVCalB4bmc/add-events.svg" alt="移除Event"  width="100" height="100"</a>
+<h1 class="text-center">移除Event</h1>
+</div>
+</div>
+
+<div class="float-left">
+<div class="admin-banner-secondary-title">
+
+<a href="http://fastlab.tw/Remove-Model" target="iframe"><img src="https://8b20b04f4c4c33f4c027a99ea57e6f44c1ec68bf.googledrive.com/host/0B27nlsVVtYCtN1ZRWnVCalB4bmc/eraser.svg"  alt="移除Model" width="100" height="100"</a>
+<h1 class="text-center">移除Model</h1>
+</div>
+</div>
+
+
+<div class="float-left">
+<div class="admin-banner-secondary-title">
+
+<a href="http://fastlab.tw/designerManage" target="iframe"><img src="https://8b20b04f4c4c33f4c027a99ea57e6f44c1ec68bf.googledrive.com/host/0B27nlsVVtYCtN1ZRWnVCalB4bmc/design-symbol.svg" alt="設計師管理"  width="100" height="100"</a>
+<h1 class="text-center">設計師管理</h1>
+</div>
+</div>
+
+
+<div class="float-left">
+<div class="admin-banner-secondary-title">
+
+<a href="http://fastlab.tw/categoryManage" target="iframe"><img src="https://8b20b04f4c4c33f4c027a99ea57e6f44c1ec68bf.googledrive.com/host/0B27nlsVVtYCtN1ZRWnVCalB4bmc/edit-category.svg" alt="類別管理"  width="100" height="100"</a>
+<h1 class="text-center">類別管理</h1>
+</div>
+</div>
+
+
+<div class="float-left">
+<div class="admin-banner-secondary-title">
+
+<a href="http://fastlab.tw/" target="iframe"><img src="" alt=""  width="100" height="100"</a>
+<h1 class="text-center"></h1>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+-->
+
+<div class="col-lg-12">
+<iframe src="" name="iframe"></iframe>
+</div>
+</div>
+
+
+</section>
+
+
+}

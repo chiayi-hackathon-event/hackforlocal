@@ -1,0 +1,30 @@
+@(message: String, iiiBanners: List[IIIBanner])
+@import scala.Predef;var pass="null";var admin="false";
+@(admin=controllers.Application.VerifyToken())
+@(pass=controllers.Application.getCookie("rec"))
+
+@header = {
+}
+@if(admin=="true"){
+@if(pass>="3"){
+
+    <div class="container container-gallery">
+      @for(i<-0 to iiiBanners.size()-1) {
+        <div class="float-left text-center gallery-item-box banner-secondary">
+          <div class="column-12 gallery-item">
+            <img src="/myUpload/@iiiBanners.get(i).bannerImage"  width="310" height="200">
+            <div class="column-12 gallery-item-info">
+              <div class="float-left column-4 gallery-item-info-box">
+                <a href="@routes.BackendApp.deleteBanners(iiiBanners.get(i).id)">Remove</a>
+              </div>
+              <div class="clear"></div>
+            </div>
+          </div>
+        </div>
+      }
+
+      <div class="clear"></div>
+    </div>
+  </div>
+}
+}

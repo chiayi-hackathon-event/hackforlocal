@@ -1,0 +1,117 @@
+<html>
+@import helper._ 
+@import scala.Predef;var pass="null";var admin="false";
+@(admin=controllers.Application.VerifyToken())
+@(pass=controllers.Application.getCookie("rec"))
+@if(admin=="true"){
+@if(pass=="4"){
+<title>創客資料庫-新增</title>
+<head>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" media="screen" href="https://955f94d0bbdc9e74bb31fada63cefbf20b476b6c.googledrive.com/host/0B27nlsVVtYCtU2hhXzd6amJodFU">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script>
+//表單填寫檢查
+function check()
+{
+
+if(register.organization.value==""||register.type.value==""&&register.name.value==""||register.address.value==""||register.space.value==""||register.device.value==""||register.sevice.value==""||register.classification.value==""||register.customer.value==""||register.open_time.value==""||register.cooperation.value==""||register.establish.value==""||register.founder.value==""||register.status.value==""||register.work_space.value==""||register.rent_price.value==""||register.rent_rate.value==""||register.age.value==""||register.education.value==""||register.department.value==""||register.Venture.value==""||register.lng.value==""||register.lat.value=="")
+{
+alert("未填滿資料");
+}
+else
+{ 
+register.submit();
+}
+
+}
+
+</script>
+<style>
+
+.btn-group{
+position: absolute;
+top: 5%;
+left: 45%;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+}
+p{
+ font-size:18px;
+}
+
+h1{
+ font-size:18px;
+ font-family:'cwTeXHei', serif;
+ letter-spacing: 2px;
+　}
+ul,li{margin:10;}
+h3{
+color: #FFFFFF;
+}
+
+#content{
+margin-top:0px;
+}
+
+</style>
+
+</head>
+<body>
+
+<div id ="content"class="container">
+<div class="column-12">
+
+<h1 align="center">新增資料</h1>
+@form(action = CSRF(routes.Makerspace.add_op()), 'name ->"register"){
+<!--<form name='register'action="/admin/add_op" method="post">-->
+<table width="80%" bordr="1" align="center">
+<tr>
+<!--<tr><td>id:</td><td><input type="text" name="id" style=width:100%  placeholder="ID"</td> </tr>-->
+<tr><td>organization:</td><td><input type="text" name="organization" style=width:100%  placeholder="組織名稱"</td></tr>
+<tr><td>type:</td><td><input type="text" name="type" style=width:100%  placeholder="種類"</td> </tr>
+<tr><td>name:</td><td><textarea name="name" class="column-12 menu-text row" placeholder="創客空間名稱" style="height: 50px; margin: 15px 0px 0px; width: 100%;"></textarea></td> </tr>
+
+
+
+<tr><td>address:</td><td><input type="text" name="address" style=width:100% placeholder="地址"</td></tr>
+<tr><td>space:</td><td><input type="text" name="space" style=width:100% placeholder="場地大小"</td></tr>
+<tr><td>device:</td><td><input type="text" name="device" style=width:100% placeholder="設備"</td></tr>
+<tr><td>sevice:</td><td><input type="text" name="sevice" style=width:100% placeholder="服務內容"</td></tr>
+<tr><td>classification</td><td><input type="text" name="classification" style=width:100% placeholder="種類"</td></tr>
+<tr><td>customer:</td><td><input type="text" name="customer" style=width:100% placeholder="用戶"</td></tr>
+<tr><td>open_time:</td><td><input type="text" name="open_time" style=width:100% placeholder="開放時間"</td></tr>
+<tr><td>cooperation:</td><td><input type="text" name="cooperation" style=width:100% placeholder="合作單位"</td></tr>
+<tr><td>establish:</td><td><input type="text" name="establish" style=width:100% placeholder="創立時間"</td></tr>
+<tr><td>founder:</td><td><input type="text" name="founder" style=width:100% placeholder="創辦人"</td></tr>
+<tr><td>status:</td><td><input type="text" name="status" style=width:100% placeholder="營運狀況"</td></tr>
+<tr><td>work_space:</td><td><input type="text" name="work_space" style=width:100% placeholder="自造空間"</td></tr>
+<tr><td>rent_price:</td><td><input type="text" name="rent_price" style=width:100% placeholder="租借價格"</td></tr>
+<tr><td>rent_rate:</td><td><input type="text" name="rent_rate" style=width:100% placeholder="租借率"</td></tr>
+<tr><td>age:</td><td><input type="text" name="age" style=width:100% placeholder="年紀"</td></tr>
+<tr><td>education:</td><td><input type="text" name="education" style=width:100% placeholder="教育"</td></tr>
+<tr><td>department:</td><td><input type="text" name="department" style=width:100% placeholder="部門"</td></tr>
+<tr><td>Venture:</td><td><input type="text" name="Venture" style=width:100% placeholder="創業" </td></tr>
+<tr><td>lng:</td><td><input type="text" name="lng" style=width:100% placeholder="經度"</td></tr>
+<tr><td>lat:</td><td><input type="text" name="lat" style=width:100% placeholder="緯度"</td></tr>
+
+
+<tr><td></td><td><input type="button" value ="確定" onclick='check()'> <input type="reset" value ="重置"></td>
+</tr>
+</table>
+<!--</form>-->
+}
+</div>
+</div> 
+</body>
+}
+}
+</html>
+

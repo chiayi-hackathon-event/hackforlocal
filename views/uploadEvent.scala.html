@@ -1,0 +1,42 @@
+@(message: String)
+@import scala.Predef;var pass="null";var admin="false";
+@(admin=controllers.Application.VerifyToken())
+@(pass=controllers.Application.getCookie("rec"))
+@import helper._
+
+@if(admin=="true"){
+@if(pass>="2"){
+        <div class="newModel">
+            @form(action = routes.Application.submitEvent(), 'enctype -> "multipart/form-data"){
+
+                @CSRF.formField
+
+                <p class="title">event title</p>
+                <input tabindex="20" type="text" name="title">
+                <p class="title">organizer</p>
+                <input tabindex="21" type="text" name="organizer">
+                <p class="title">co organizer</p>
+                <input tabindex="22" type="text" name="coOrganizer">
+                <p class="title">event start date</p>
+                <input tabindex="23" type="date" name="showStartDate">
+                <p class="title">event end date</p>
+                <input tabindex="24" type="date" name="showEndDate">
+                <p class="title">event show time</p>
+                <input tabindex="25" type="datetime" name="showTime">
+                <p class="title">location</p>
+                <input tabindex="26" type="text" name="location">
+                <p class="title">description</p>
+                <input tabindex="27" type="text" name="description">
+                <p class="title">event image</p>
+                <input tabindex="28" type="file" name="eventimage" accept="image/jpeg" >
+                <p class="title">event thumbnail image</p>
+                <input tabindex="29" type="file" name="eventimageThumbnail" accept="image/jpeg" >
+                <p class="title">external Url</p>
+                <input tabindex="30" type="text" name="externalUrls">
+                <p>
+                    <input tabindex="31" type="submit" >
+                </p>
+            }
+        </div>
+}
+}

@@ -1,0 +1,343 @@
+@(message: String, iiimodels: List[IIIModel], jBanners: String, designers:List[Member])
+
+@import org.apache.commons.lang3.StringEscapeUtils.escapeEcmaScript
+
+@header = {
+	<script type="text/javascript">
+		var bannerJSON = '', bannerList = [];
+        try {
+            bannerJSON = '@Html(escapeEcmaScript(jBanners))';
+            bannerList = JSON.parse(bannerJSON).banners;
+        } catch(e) {
+            alert('Web Service is not available now.')
+        }
+
+		$(document).ready(function() {
+
+            bannerList.forEach(function(e, i) {
+				var div = $('<div>'),
+					a = $('<a tabindex="20">').append($('<img>').attr('src', "/myUpload/" + e.bannerImage)).attr('href', e.externalUrl).attr('target', '_blank').attr('title', 'banner imag').attr('alt', 'banner imag');
+				div.append(a);
+                div.addClass('banner-block');
+				$('.banner-main').append(div);
+
+                var option = $('<a tabindex="' + (11+i) + '">').addClass('select-area-option');
+                option.append($('<img>').addClass('item-not-hover').attr('src', "@routes.Application.imageAt("images", "btn_banner.png")"));
+                option.append($('<span>')
+                    .append($('<img>').addClass('item-hover').attr('src', "@routes.Application.imageAt("images", "btn_banner_hover.png")"))
+                    .append($('<img>').addClass('item-selected').attr('src', "@routes.Application.imageAt("images", "btn_banner_selected.png")")));
+                $('.select-area').append(option);
+			});
+			var bannerDOMArr = $('.banner-main > .banner-block');
+			bannerDOMArr.hide();
+			$(bannerDOMArr[bannerDOMArr.length - 1]).show();
+
+            var bannerOption = $('.select-area-option');
+            $('.select-area-option:eq(' + (bannerDOMArr.length - 1) + ')').find('.item-hover, .item-not-hover').addClass('item-not-selected');
+            $('.select-area-option:eq(' + (bannerDOMArr.length - 1) + ')').find('.item-selected').show();
+
+            var timer;
+            function startTimer(sn) {
+    			if(bannerDOMArr.length > 1)
+                    timer = setTimeout(delay.bind({amount: bannerList.length, num: sn || 0}), 3000);
+    			function delay() {
+                    $('.item-not-selected').removeClass('item-not-selected');
+                    $('.item-selected').hide();
+                    $('.select-area-option:eq(' + (this.num % this.amount) + ')').find('.item-hover, .item-not-hover').addClass('item-not-selected');
+                    $('.select-area-option:eq(' + (this.num % this.amount) + ')').find('.item-selected').show();
+    				$(bannerDOMArr[this.num - 1 % this.amount]).fadeOut();
+    				bannerDOMArr.hide();
+    				$(bannerDOMArr[this.num % this.amount]).fadeIn();
+    				timer = setTimeout(delay.bind({amount: this.amount, num: this.num + 1}), 3000);
+    			}
+            }
+
+            function stopTimer() {
+                clearTimeout(timer);
+            }
+
+			$('.select-area-option').click(function() {
+                stopTimer();
+                $('.item-not-selected').removeClass('item-not-selected');
+                $('.item-selected').hide();
+                $($(this).find('.item-hover, .item-not-hover')).addClass('item-not-selected');
+                $($(this).find('.item-selected')).show();
+    			bannerDOMArr.hide();
+                $(bannerDOMArr[$(this).index()]).show();
+                startTimer(($(this).index() + 1) % bannerDOMArr.length);
+			});
+
+            startTimer();
+		})
+	</script>
+}
+@main("Home - Fast Lab")(message)(header) {
+
+	<section>
+		<div class="container">
+	<gcse:searchresults-only></gcse:searchresults-only>
+			<div class="banner-main column-12">
+                <div class="select-area column-12 text-center">		
+                </div>
+			</div>
+			<div class="container">
+				<div class="float-left banner-secondary">
+					<div class="banner-secondary-title">
+						<a href="@routes.Application.event" tabindex="21">
+							<img src="@routes.Application.imageAt("banners", "event.jpg")"  width="310" height="200" title="Fast Lab的活動" alt="Fast Lab的活動">
+						</a>
+						<h2 class="text-center">
+							<a href="@routes.Application.event" tabindex="21">@Messages("index.event")</a>
+						</h2>
+					</div>
+				</div>
+				<div class="float-left banner-secondary">
+					<div class="banner-secondary-title">
+						<a href="@routes.Application.resource" tabindex="22">
+							<img src="@routes.Application.imageAt("banners", "resource.jpg")"  width="310" height="200" title="Fasl Lab的資源" alt="Fasl Lab的資源">
+						</a>
+						<h2 class="text-center">
+							<a href="@routes.Application.resource" tabindex="22">@Messages("index.resource")</a>
+						</h2>
+					</div>
+				</div>
+				<div class="float-left banner-secondary">
+					<div class="banner-secondary-title">
+						<a href="@routes.Application.toolLab" tabindex="23">
+							<img src="@routes.Application.imageAt("banners", "tool.jpg")" width="310" height="200" title="Fast Lab的工具室" alt="Fast Lab的工具室">
+						</a>
+						<h2 class="text-center">
+							<a href="@routes.Application.toolLab" tabindex="23">@Messages("index.tool")</a>
+						</h2>
+					</div>
+				</div>
+				<div class="clear"></div>
+			</div>
+
+		</div>
+	</section>
+	<div class="">
+		<div class="section-bottom">
+			<img src="@routes.Application.imageAt("images", "section_bottom.png")" title="buttonimage" alt="buttonimage">
+		</div>
+	</div>
+	<section>
+        <h2><p class="text-center title-font-size">熱門創作</p></h2>
+		<div class="container container-gallery" style="margin-top: 20px;">
+			@for(iiimodel<-iiimodels) {
+				<div class="float-left text-center banner-secondary">
+					<div class="column-12 gallery-item">
+						<h2 class="column-12">@iiimodel.modelName</h2>
+						<a href="@routes.Application.modelDetail(iiimodel.modelID)" target="_blank" tabindex="24">
+							<img src="@routes.Application.imageAt("thumbnail", iiimodel.modelThumbnails(0).thumbnailFilename)" width="310" height="200" title="@iiimodel.modelName" alt="@iiimodel.modelName">
+						</a>
+						<div class="column-12 gallery-item-info">
+							<div class="clear"></div>
+						</div>
+					</div>
+				</div>
+			}
+			<div class="clear"></div>
+	</section>
+	<section>
+        <h2><p class="text-center title-font-size">設計專區</p></h2>
+		<div class="container container-designer" style="margin-top: 20px;">
+			@for(designer<-designers) {
+				<div class="float-left text-center banner-secondary">
+					<div class="column-12 gallery-item">
+						<h2 class="column-12">@designer.nickName</h2>
+						<a href="@routes.Application.designerDetail(designer.memberID)" target="_blank" tabindex="25">
+						@if(designer.bannerImageName != null) {
+							<img src="@routes.Application.imageAt("myProfile", designer.bannerImageName)" title="User's avatar" alt="User's avatar" style="width:140px;">
+						} else {
+							<img src="@routes.Application.imageAt("images", "ic_user_l.png")" title="User's avatar" alt="User's avatar" style="width:140px;">
+						}
+						</a>
+						<div class="column-12 gallery-item-info">
+							<div class="clear"></div>
+						</div>
+					</div>
+				</div>
+			}
+			<div class="clear"></div>
+	</section>
+        <section>
+        <h2><p class="text-center title-font-size">跨領域產業社群</p></h2>
+                <div class="container container-designer" style="margin-top: 20px;">
+                                <div class="float-left text-center banner-secondary">
+                                        <div class="column-12 gallery-item">
+                                                <h2 class="column-12">產業升級轉型服務團粉絲專頁</h2>
+                                                <a href="http://www.moeaidb.gov.tw/external/ctlr?PRO=link.LinkList&cate=2519" target="_blank" tabindex="25">
+               <img src="http://www.moeaidb.gov.tw/external/ctlr?PRO=filepath.DownloadFile&f=adv&t=i&id=3405" title="User's avatar" alt="social" style="height:145px;width:142px;">
+                                                </a>
+                                                <div class="column-12 gallery-item-info">
+                                                        <div class="clear"></div>
+                                                </div>
+                                        </div>
+
+
+
+                                </div>
+                               <div class="float-left text-center banner-secondary">
+                                        <div class="column-12 gallery-item">
+                                                <h2 class="column-12">黑豬金礦幫-open data</h2>
+                                                <a href="https://www.facebook.com/opendataup" target="_blank" tabindex="25">
+               <img src="http://www.moeaidb.gov.tw/external/ctlr?PRO=filepath.DownloadFile&f=adv&t=i&id=3369" title="User's avatar" alt="social" style="height:145px;width:142px;">
+                                                </a>
+                                                <div class="column-12 gallery-item-info">
+                                                        <div class="clear"></div>
+                                                </div>
+                                        </div>
+                                </div>
+                               <div class="float-left text-center banner-secondary">
+                                        <div class="column-12 gallery-item">
+                                                <h2 class="column-12">台灣製產品 MIT 微笑標章臉書粉絲專頁</h2>
+                                                <a href="http://www.facebook.com/smilemit" target="_blank" tabindex="25">
+               <img src="http://www.moeaidb.gov.tw/external/ctlr?PRO=filepath.DownloadFile&f=adv&t=i&id=3368" title="User's avatar" alt="social" style="height:145px;width:142px;">
+                                                </a>
+                                                <div class="column-12 gallery-item-info">
+                                                        <div class="clear"></div>
+                                                </div>
+                                        </div>
+                                </div>
+                               <div class="float-left text-center banner-secondary">
+                                        <div class="column-12 gallery-item">
+                                                <h2 class="column-12">Taiwan E-Scooter電動機車</h2>
+                                                <a href="https://www.facebook.com/likeTES" target="_blank" tabindex="25">
+               <img src="http://www.moeaidb.gov.tw/external/ctlr?PRO=filepath.DownloadFile&f=adv&t=i&id=3366" title="User's avatar" alt="social" style="height:145px;width:142px;">
+                                                </a>
+                                                <div class="column-12 gallery-item-info">
+                                                        <div class="clear"></div>
+                                                </div>
+                                        </div>
+                                </div>
+                               <div class="float-left text-center banner-secondary">
+                                        <div class="column-12 gallery-item">
+                                                <h2 class="column-12">台灣發明讚臉書粉絲專頁</h2>
+                                                <a href="https://www.facebook.com/itritwtm/" target="_blank" tabindex="25">
+               <img src="http://www.moeaidb.gov.tw/external/ctlr?PRO=filepath.DownloadFile&f=adv&t=i&id=3367" title="User's avatar" alt="social" style="height:145px;width:142px;">
+                                                </a>
+                                                <div class="column-12 gallery-item-info">
+                                                        <div class="clear"></div>
+                                                </div>
+                                        </div>
+                                </div>
+                               <div class="float-left text-center banner-secondary">
+                                        <div class="column-12 gallery-item">
+                                                <h2 class="column-12">經濟部產業競爭力強化中心</h2>
+                                                <a href="https://www.facebook.com/moeaiac" target="_blank" tabindex="25">
+               <img src="http://www.moeaidb.gov.tw/external/ctlr?PRO=filepath.DownloadFile&f=adv&t=i&id=3365" title="User's avatar" alt="social" style="height:145px;width:142px;">
+                                                </a>
+                                                <div class="column-12 gallery-item-info">
+                                                        <div class="clear"></div>
+                                                </div>
+                                        </div>
+                                </div>
+                        <div class="clear"></div>
+        </section>
+        <section>
+        <h2><p class="text-center title-font-size"></p></h2>
+                <div class="container container-designer" style="margin-top: 20px;">
+                                <div class="float-left text-center banner-secondary">
+                                        <div class="column-12 gallery-item">
+                                                <h2 class="column-12">貨貿官網</h2>
+                                                <a href="http://ecfagoods.tw/" target="_blank" tabindex="25">
+               <img src="http://www.moeaidb.gov.tw/external/_layout/style18/lang0/images/content/ECFAGoods.png" title="User's avatar" alt="social" style="height:75px;width:170px;">
+                                                </a>
+                                                <div class="column-12 gallery-item-info">
+                                                        <div class="clear"></div>
+                                                </div>
+                                        </div>
+
+
+
+                                </div>
+                               <div class="float-left text-center banner-secondary">
+                                        <div class="column-12 gallery-item">
+                                                <h2 class="column-12">企業輔導網</h2>
+                                                <a href="http://assist.nat.gov.tw/GIP/" target="_blank" tabindex="25">
+               <img src="http://www.moeaidb.gov.tw/external/_layout/style18/lang0/images/content/index_33.jpg" title="User's avatar" alt="social" style="height:75px;width:170px;">
+                                                </a>
+                                                <div class="column-12 gallery-item-info">
+                                                        <div class="clear"></div>
+                                                </div>
+                                        </div>
+                                </div>
+                               <div class="float-left text-center banner-secondary">
+                                        <div class="column-12 gallery-item">
+                                                <h2 class="column-12">促進投資</h2>
+                                                <a href="http://investtaiwan.nat.gov.tw/cht/show.jsp?ID=2311&LV=1&Stage=0" target="_blank" tabindex="25">
+               <img src="http://www.moeaidb.gov.tw/external/_layout/style18/lang0/images/content/banner_0218.png" title="User's avatar" alt="social" style="height:75px;width:170px;">
+                                                </a>
+                                                <div class="column-12 gallery-item-info">
+                                                        <div class="clear"></div>
+                                                </div>
+                                        </div>
+                                </div>
+                               <div class="float-left text-center banner-secondary">
+                                        <div class="column-12 gallery-item">
+                                                <h2 class="column-12">工業區港服務資訊</h2>
+                                                <a href="http://www.moeaidb.gov.tw/external/ctlr?PRO=indpark.rwdIndParkList" target="_blank" tabindex="25">
+               <img src="http://www.moeaidb.gov.tw/external/_layout/style18/lang0/images/content/indParkICON.jpg" title="User's avatar" alt="social" style="height:75px;width:170px;">
+                                                </a>
+                                                <div class="column-12 gallery-item-info">
+                                                        <div class="clear"></div>
+                                                </div>
+                                        </div>
+                                </div>
+                               <div class="float-left text-center banner-secondary">
+                                        <div class="column-12 gallery-item">
+                                                <h2 class="column-12">台灣工業用地供給與服務資訊網</h2>
+                                                <a href="http://idbpark.moeaidb.gov.tw/" target="_blank" tabindex="25">
+               <img src="http://www.moeaidb.gov.tw/external/_layout/style18/lang0/images/content/indpark_banner.jpg" title="User's avatar" alt="social" style="height:75px;width:170px;">
+                                                </a>
+                                                <div class="column-12 gallery-item-info">
+                                                        <div class="clear"></div>
+                                                </div>
+                                        </div>
+                                </div>
+                               <div class="float-left text-center banner-secondary">
+                                        <div class="column-12 gallery-item">
+                                                <h2 class="column-12">因應貿易自由化產業調整支援方案</h2>
+                                                <a href="http://www.mittw.org.tw/trade/Home/" target="_blank" tabindex="25">
+               <img src="http://www.moeaidb.gov.tw/external/ctlr?PRO=filepath.DownloadFile&f=adv&t=i&id=3545" title="User's avatar" alt="social" style="height:75px;width:170px;">
+                                                </a>
+                                                <div class="column-12 gallery-item-info">
+                                                        <div class="clear"></div>
+                                                </div>
+                                        </div>
+                                </div>
+                               <div class="float-left text-center banner-secondary">
+                                        <div class="column-12 gallery-item">
+                                                <h2 class="column-12">經濟部工業局</h2>
+                                                <a href="https://zh-tw.facebook.com/moeaidb" target="_blank" tabindex="25">
+               <img src="@routes.Application.imageAt("banners", "IDB_FB-2.png")" title="User's avatar" alt="social" style="height:75px;width:170px;">
+                                                </a>
+                                                <div class="column-12 gallery-item-info">
+                                                        <div class="clear"></div>
+                                                </div>
+                                        </div>
+                                </div>
+                               <div class="float-left text-center banner-secondary">
+                                        <div class="column-12 gallery-item">
+                                                <h2 class="column-12">經濟部</h2>
+                                                <a href="https://www.facebook.com/moea.gov.tw" target="_blank" tabindex="25">
+               <img src="http://www.moeaidb.gov.tw/external/ctlr?PRO=filepath.DownloadFile&f=adv&t=i&id=2205" title="User's avatar" alt="social" style="height:75px;width:170px;">
+                                                </a>
+                                                <div class="column-12 gallery-item-info">
+                                                        <div class="clear"></div>
+                                                </div>
+                                        </div>
+                                </div>
+                        <div class="clear"></div>
+        </section>
+	<!--section>
+		<div class="container append-gap-2">
+			<h2><p class="text-center title-font-size">Artist Collection</p></h2>
+			<h3><p class="text-center caption-font-size">Personalize these Things with Thingiverse Customizer</p></h3>
+			<div class="banner-vice">
+			</div>
+		</div>
+	</section-->
+
+}

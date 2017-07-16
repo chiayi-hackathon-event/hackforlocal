@@ -1,0 +1,152 @@
+@(message: String)
+@header = {}
+@main("NameCard - Fast Lab")("")(header) {
+
+	<section>
+                <div class ="head">
+                 <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/outsite/tool3D.css")">
+                 <script src="@routes.Assets.versioned("javascripts/outsite/jquery-1.11.3.js")" type="text/javascript"></script>
+                 <script src="@routes.Assets.versioned("javascripts/outsite/jquery.placeholder.min.js")" type="text/javascript"></script>
+                 <script src="@routes.Assets.versioned("javascripts/outsite/active.js")" type="text/javascript"></script>
+                 <script src="@routes.Assets.versioned("javascripts/outsite/analytics.js")" type="text/javascript"></script>
+                 
+                </div>
+		<div class="container">
+
+			<p class="text-center breadcrumb">
+			<noscript><div class="text-center">您的網站不支援Javascript，此部分功能受影響無法使用。
+
+</div></noscript>
+				<span>Tool1 Lab &gt;</span>
+				<span class="page-title">2D to 3D</span>
+			</p>
+		</div>
+		<div class="container">
+			<div class="float-left detail-image">
+                        <div id="progress" style="display:none">
+                         <img alt="progress" src="@routes.Assets.versioned("images/outsite/progress.gif")"/>
+                         </div>
+                        <div id="preview-1" style="display:blocked">
+<img  id="figure-1" alt="Template."  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAIAAAD2HxkiAAAd0UlEQVR4AezTwQ0AEADAQOy/pjkYoxJ3E/TTec4eQGfVAfA7E0LMhBAzIcRMCDETQsyEEDMhxEwIMRNCzIQQMyHETAgxE0LMhBAzIcRMCDETQsyEEDMhxEwIMRNCzIQQMyHETAgxE0LMhBAzIcRMCDETQsyEEDMhxEwIMRNCzIQQMyHETAgxE0LMhBAzIcRMCDETQsyEEDMhxEwIMRNCzIQQMyHETAgxE0LMhBAzIcRMCDETQsyEEDMhxEwIMRNCzIQQMyHETAgxE0LMhBAzIcRMCDETQsyEEDMhxEwIMRNCzIQQMyEPuuyVfWwcx3mHZ/eOd8fjR+Sz63PtNCcrgVobbtKiukqJ5bhCYUIwzBqxAMZ14raGCkSqJVpAFKOF0f5VVoak2tKxiQW0giojFSylTN0aNhS3SOPGBpxKrR2ggNI4ikWUVHRWQkk8kTzex27f44jD4Xzt7Md9kJoH0mJ2b+bd2eX77O/mwkhoMLQZI6HB0GaMhAZDmzESGgxtxkhoMLQZI6HB0GaMhAZDm4m3ewOtIFe4k7kyPnyx3ZsyGG5gue5ku/fQXHgDGYyQhvaymiVk9Jt971R9uojHfQ/uFi4xQhpaz6qVkDcQjkRCGiOkob2sTgmFBiKJhDRGSEPrWYUSMgZiFEmoADsJay8f29zuxzKsWlabhEIDeUpvjerXjPVniYRMfZOQhvCsKgkZQyDB6OjDscbjKaRsITISGqKgcyUUZpqi6XkD4UhLSKMjpHDO1IntcMw8cdRzPwaDJp0loVA8BcQBeiHWDyOTkEYRdBgsHg2REBkPDaGJt3sDDfy6xyzE8YVdog3UBJYrQi/yJzLSGhjaL2FgAxmwirH+rP6SyN3TeSL6VyOkAbVXwqj084VQPOTTvcr4mUQur/NQV//52fq1i7E1d9npW62uFEIWvQcjpAG1UcIWGJj+zSH6FKKSMTB86KmZfe/U0olTo3dCxkIhkXHyZqI9EgYzEPeuLMoYGAPpCkB18v0In0UmDOyhMvlDt15BjqN+KAz9aCYkbx7aIGEwA0mqyLqWRmhgayj/+LtuudT96Ufx6ZpHRshPpbcK6rVGyJuTVksY0kAGumsJbTSQMHP2hFudRbVq7wM7ycW+B4fVO5c9mhFyddNSCUMaGOvP1qeL6smeE3TIPHEUD6ZObA9ZSuYSPTZC3uRYrjvZgtuE1A/CDY/9Oibr9erk+/xk4p4QWsje+3fAMZHL41NagOyuH7nlklOZwUnoOjWdvQk36evpaIyQK4tWSBjeQOYnX50qhEioFk9GZfwMoiQkQPdnd/2vW54GCVFt3q2WFRIuYdt9Dzwd+AFlKtK7QoYOpukSRm4gA9Ovsf6sTlp6Nq4n4OH8hXcVpWbePaYvoZ3osdOZ7l//PdlzaT4IWWVCcgXRXAmbbSBDsIQMJiSRUKeUx8aCSsjcDt6b8APE78qo2FE0UcIwBvrVj0dfyKmxGz2a2TaqL6RQQhofQi5I2LPxj3ztnzcQjkIJmVUw8/KxzcjQMTRLwvYayKBoaGIgAVTEA08h9T33ENK2+x54mnkPsY99vPJ//6VZEL83pCEhEOvP8hLSfy+Tky0m3oyiHWUgWt6ytDm8gadOnRLO1E9IIbJSwrKLRrk6j0PNjwz48xkPW0nEEgbTDzXTQAbSwePD7E+0gQwRC+nW3VoFOVVn/vqawX34+qW/zidzn+365XvtdKZx7tTU+6ffW0iYv9pCzc3hyxo0iVLCTjPwwB2nhoZu1MwVlv3ky0AGWsjwXPn2nvr0JWfuSoC1TTPQ0FIik7DTDFzQbGj5qRTawCNfzO44WYx2M2qsrhSaawyc+RK56DoOPzNkCPMYAzuBaCQMZiD5k0duoC/4DCS9rh96U2M3lmS2+clJOyb7JbV+C/yDwfjwxcy2McQZGF4YY2CHYLnuZMgSERpYfPFzyLKsZJ+d7GtsLtVnJ3qtZO+awb/yW3+vtSTD7t1aAUJs/NolwUdBISQxkEZlo1t3nRqqVZzqrDt/3Zm7Wp/+mTM71XXHfcm1G+10hv8q4bsTD2XC1Ke9MzzWn718bLPaQJiADK0ibBIGM7D07y/G1tyFFgz8xT88hVyn0YuV62QCjLGHmOk3R6xEj9WVthLdPfkn/d5udHRUx8OhoUbrExXHh/ED3viVDiIipFA/4Pnnn382j/af6dHdouM0jq6D34n0vS3cFyxChlVEKAkDGAhfXLc6hxZa7eprfzZ//vtLv7kuN92iT2AhSDj73j9aXcnu+wb1byo0UGgmGIhjEBtIDxAnJP0TYd++fZDlXjuiJlixxcdDt375OPIPvElZMMpQx2DzIPcdH77YmjuuCAJKGCwAy+dOk/G17/wlHtiJHme+tHgZPLQgFa3UYgwuNrRbmYUwdKvlxqWuZPncm6l7BnRuKjQQxx14SE9jMpBHdh0zMjJi27b+27CSfTGc9pm1fV/6exQIHJt0eEJ/Z7aNeS4htMBAvlvwFaMiJoiEwQyksbq6beQ6EH2uC8rRP5V/+i3hklseYdt0/vzbyU9uVt9IYSADCJnNZpGXaTLAQL/vgD4pvbX0OcAxqwOjEwb+OqQCLyRTvKkGhu+TmwTLdSd9LQj8ZuHvbaf6nfK0W51zK3NuddaZn3ErM9f+zV/X3/bkd62uFJRCsYSdSCdyvy2cttcaVRtYLBaZn0DCoaEhfj6eKazGs2/fPmsxvV9K/yke0I41gO+PU7NiCc9qxBm6Qqy/8bEQGqgAhJT97XgVLx/b7Ks4jfAuUye240Hv/TsSuTzZkrrOTRKV/iQMYyAc7dTHnPI1IuHUPz0eeN/ZP/kfkNCKpy69uInbZOMoDDQ6A3kJec3wfJ2ZktcluNjQSS7h1FijcmbbqKIsSOjXwKVbL6AIW/yXCiCh2j0CLSGSe8hXW8VC+pAwpIHQN+Vz33Fr887clZ9/86GI9h9kS0K1ZAYikYTqhaJXJ77OJCQ2kEEopMIiBWwge5XS6XtN9wg6Enp22ioTUlfCYAZi/dCCgZUL/wn6gYQf/e2GiDZ/Z8j1o6M3mlJhIPKSkEYhJBT82iVVfAmjmyGkkEIJNasxfe/XPQJICEe1h0xxvG3Nja1EtCQMbyAcKxd+4FRmin/za1Ftfc+e/fSpbdsvvPCC/vI33ngDjufPn1cbiPxIiJEVVEioYyBDACF1JNSvRtBxj+ApIdNs0EX16aLmxlaokHH1z8H0Q5yBQGLtxra8o2eeeYY+PXz4MH3qaaBfAhTkDYQlxHxZuk6N7cYzd5xc6lFaM/2ElKGu5ss9TXgDfW2MXr6ChFQlYYQGNuO9MEl46NAhfg706DvvvENfcV0Xjlu3boXjww8/LKwcOAnVBgqTUGig7KZMfTwTJMRCYhQJ6TcJZVQn3w+8FichEoUh32+4kfgklCH87nS+jdIkDGkgox+pGckbwXv7AnVFZqCswunTpwuFguzXoaEhnSIMsshSIDPQV33aQOaUCBmVfi2G7iKdRyh9/+uWHbdT/enf+n1yMaquax7iJGyGgTSBXwq9sS/8dA8eqA0UJqHCQAWjo9I+EBrCGMUkodpAJgkVGQszdfwXJmQwIklCtDwMGbBywmRDCiFt24qn7ETa7r099au/S//SyR4KJGy2gcHei3BX4KFnBvIS8gbCfNL0Og3N2KhjIFouIW8gkkuoMBBp6MoTUkiFhJknjuLB1Intwgk6EkIj1aeLzEUtIRclpJMQKP/ozeI37kOdCithywzkoZ3U3IZnKyNOwsOHDwvnM62M0WloIbyBiJJQuG0G4rnaQNnO9TfvV0ihgcQ9IbSQgSWkkQkpo5NjEDESttFANaRrcwXBRRph9xMPZQYieStjfNko3APyKaF+cX7ngb8dOkLSEqrdE1IZP0Of8h7iXlJLSOMpJBS8fGwz6mCWJAxmIH5lqJkGIu2ulXU/llBhIPKSkEbd4gEMVISeTnGyc8XykZGR/v5+zUfAyIQECQO4x0BUFIahZxIyWHYMxZO9n92+7LWM/k4snUl8Ih+/7ZOrWcLOMfD48ePd3d3Cn3D380WYhtaXECPs4wAGwhLNKIOZd999dz6f97VP0A8PaAk97wWcPHly56mPFJU9I0gN9nD+wrvqaqW3vMMZJLS619jpjJ3qT677HLn+86OPrQgJ44FXtsZAoFAo4MHwsFhHMFC2VmZgSCI0ULgEspG5hWymgsHBwU2bNnlO4+8FvPzyy8lkUr2Q1iOkkIpq9FgtpIUQbWCDWDLkrlpDQAlbZiAN+ahPTEzA8ezZs3AcGBiA4/r16/n5CgMD9LSaCA1E8nTyBMTzu0RooN8inSBk6t6t9Clp0c4nHmZxfboI7yL8S28G6gwcGlr6dmAZstlssVjUqcx3bbMN5Cc//vjj/MKZmRlhweeeew4tJJ7OvWgD8V+WtPvUWOM0s21U/X40hUzk8pXxM8gLHSFlWPGE3b0GdTxLElYu/CCxdqPmMhKA8I6i/Qoq6OvrK5VKOjPVBjIQIXMFtNfy6LBIDAxf/5VXXiFjoZA6lXmOHDmSTqeZi8zfFKuIiUpITfSrNWLQ7kIrBCoJLXv+J/+R/NTnfa2n3wUtZBvjUWEgpIGiFxeW3PhVKGSEBtJRTDLKs34+n+dL0UIODg4yv+IY1AEMVPwqfJCQQkIYzl94FwWi9L1Dbq2CnCocnblrbmXGmZ+uTV2I35JL3PUb8V/6lGVZdrIPuhp1PJbrTpKTO4Z/4lRmUK3S/elHQ9aN9hP4VVS4UXYhCScmJuB49uxZOA4MDMBx/fr13d3diOp+WiHc3NDQxWKRLqsTDmhRyGZnIA9Tn/ZWBxBy06ZNmUwGn1ar1eFh6YawgXQMJpPJZ4tfDPYgvJBYV09RfeDWsYTO/HW3MteQcPYXtWuTRMLS29+AQVf2Hrv39stHN0Z23yYQF16d/e+TbrXcs/EPA9cl4tHxiJqZkHNzc39xTbxhiJpsNiu8jgdqG+mE9IQYiLjgJV8BHfk9DaS/KcKCr732Ghm/9NJLcCwUCuVyGQYzMzMffvghDM6dO7dlyxYYrFu3Tvn4glsrnkKmnK/kDIaV6EF2DAbZ3d+78u09VqIXIrEZN4qQ5RLacSuWaHxgFrj+9hG3XsXjwPLQC2khw9u4YcMGHIYYmYE6EBuRdjzKYlBRmXwIPG+nY6DwLrLN79y5k4z379+vs3MSg8FeGuwQ/sT4z027R4hWSLdegUhkLt7y2CE8yBXgU3IRdSqW606Skzv2XHCrcy7ke60MSdgYL0pIiCTK6GzUr/lVVCiVSjCYmJjAV7CEAwMD38yOMJP3WstugQUg0aGJrKdlBtIxSPZAitDZpb4dXV9hoGY1Bfl8nk7CdDqNr//51T/AA2EMMrcWGkjeBl9BjZaQrgP/3cpsYwTtWplz5q7Up3/mlK91Ze9N/MqGvs8/rVjdaUIukxDIPn0OPipueVomIU0bhfSkeRJqGogk/UcHiBASmMgrA/UfR/YgBw4c4CWMxED8QoQVyHLPz4RUyEUJ3dp8IwPnrsK4fnXCqVwHCZNrN/Xe/xXNN9MJQsaZ8+LX77l9xw81FxN/wphDr4WCkdQEDrq7aQ/hD083d2B0DFR/+8fHx3O5XOANYC1l2wj/IJ4GRgj9PRIKOTW2dJEX0kr2gYT0lVjPbbd+6ZivPeQKd5Jxu4SM85c+OvKZ2//4DCShfhU6zSIRkrYRRRePfmG6RG2g2j1g7969/EUoK8tGRdDRCekZrZ6BQ/BroCIGdV4IjT8hHzvsOjUrFrN7boPTWH9DpL4vH0fhaJeQlutOyn67dehf3Ho1TPVI5AlsI52EACShoq11EGYp7YOQXbt2wTGVSpErJAn5boNeJHdhduvpktBG4SqiyoEDB7Zs2QKDdevW7avsIBPUEuKNqQ30fC2e3w7Np+YTEkX91W62kCoJlz/qWJjbRPVSAghJVDzo7hZe14eXEDLw7+7514ceekg4H+uHCS8hjb6QalWIhCc/vp9c9IxB2FhIA2W7VSN7arj1jpPSd9X5QupKSAhpY1QvhbYxfE1NIRkJwUA4goRwpD186qmn4NjT00NP5iXkW+r06dMffPCBjoQ0nkLSMDqBhB89eYa+4mkgfnD1NF5CxUdBNlP/edUS0nSmkL4lpFm58ShDbSMtITYQLUoInDhxgp6skPBbnziIRO1OSwj1yWaEgclvz7O/hTrRp00yEH4VflACCClLYE0JaaJqv/AqxsMsnhrbhgfBbIxKHrIWCoasedBdWqIQkundAPB9/Prrr8disTD16Zb1FY8hd642kL7ISOW5YfoiTJYZuPC6Rv0+SFTtlyvcicKpGCoJhXRgPAYuy3hIMoq+SJIQLQ9DRRIePHiQudGrr77a1dUFEn7lx1v5uzea7//ZK7/YOI46jv/2fL61z+cINYUjgOsWAQ9IFSJyYuO4lSNAURSBEImciNgqqlBViChRmlp5SRWRSg2WsQytJV6gKU6Tcr34IShVkZpagEVIajXqA/CEcKGhdhu7Tm0H2ZZvGd8407nZ/7tzu3Pr30fR5Ldz82/v5uNvJZZJaAedLiUGLVPO4VMHHF7B+18QTsINhN/dL1pdfa7r8cDTg6kYKgktYfEIgYSUHo9QmZCyJA9MNpv1Nd58IycmJrwMY7ecFvQviB1eDCR33W9A0629pJzlycFRSPMJ4e7vG0bFpWsvavUN2e0HA8wlqRjAQ/lJaEnIeARJ8gSORxpK5B4L6QE+k/CV+wYfufW0sML27dtJa5eElhLeuHFD6Ozo6NixY4fQyd9mQUL+RcwGMthFJ+OdRTXH4Ojo6Pz8PN/jJeI8JiS/tflHoQRQkSShVt9IJNTSDZDONH55L/jHr4cRScgTUkhZURZYSAEvEv7+S8+z2llCUvAegpUh4SUUbq2DhA64GkhaQULw5qH58OZFvEgInA8eb50goVZH/tXrX3jY1zdTAxIyFIlHqBQywJrMQ7OEvH4MwUO7JAQrPa5cuaLrehgJpRgInIR2BgInoXf3LDEL6fA3RcCshN3FI76ttyYJIZXWP9/p68C+PExDfMxd3O/6vTjD5AlpI5tOFgwg5A/+8U0+DwlvfPUFKV9Rf38/LQYGBvj+QWP9YMe15/wu6GogUWtmZgbctHE2sK+vz+N5ent7Sdve3s56LPflOwUhnQ20JMDFW5m6lrm/3e9GHokzCS1JTDw6YJeEP/rnPmHkwXf7hZ49e/aQJDz8VpfQX/zamw5JaBmDlgaSlkrII4jhmoHOEu7bt6+xsZHWDQ0NUCmhw76WZ/Aiocdc2tpzicQgKcxJWA5JLdPaBt6omSS0JDHx6BezgeEhl5jPDeG+so/4u242UBjpYODIyMiWLVtcT3X58uUDBw7YHdhyX7ARMkAMOjBb+DYtPvn9P0tc1hXlJORhQoa0EcKZw8+NRshq4HBf6V1naekAGUmGmfWDsoGsPnr06PDwsMM6xWKR1b29vayenJxsa2tzOCSFHlWugTwfnH2ItJ96/G36qKXqyv8by//6q/5Ah+t0XzEIikvIkBiPUB0hQ9r4k39/x/vgw291eR88aJQPNg2ycDWQcvr0aVrU19eT9sSJE3YLnjt3zu4jIckj5v1ffYW0nz469XFXaa0aG9WGhDwh4xE4IUOaw6b7jccX7/0pqx+59bQvA+04cHVH1/Bhiw/aXwq/OIUoYdnPDDxy5AhpR0dHzWPOnDlDCwcbfVG9GBSYHr5/27H/bDyUVl3H37lRAOjytUXtSchQPx7Bp5DK4qof3DWQ0FeG1iwPKWYDC4XC1NRUf3+/w9Yhw/DO22MAHWFWeG+oZduTN0mhf7HbZa91A31TwxLyKBiPUClkyGVjxJeBAidPnqQFS0JLBgYG+EcHJ/2ybkVKwiV/7+ef3fbku7JOJZAQCRnqxCM/3W88OvDo374u6auyZtD48XFt46h2+lFJWltbWQ8fVpazzBkI5Ri0XP/69es7d+7kFwwThlpal/LNZFp3Og/YiEH/zmuGcVPKERUncEIyZEWZRMkFuq4dNndOtL9kN57JRsnn809N99D6nSesp/AZxUtYKpUsx9tpzBAykNLd3T00NMT37Nq1y+6oDlArPnihC0LT+svPVG+7pCWhHSwhA9vI5FEwHoPBh57A+Pj47t27+R5eP2rOyMiI6xYswZxDlV+WsLa25rCmRwMjZiMGA7FZktASNeMx8LJ+k9CBsw+O67re2dkJlZ6ATXYx2SxxzUMzhw4d4h+vdr4Md6M7YTEIm1xChjo2QqWQvpaVLmE6nS4Wi3y/pYECgpBmAwuFwszMjN2nPFRFaqAvWC5FI2HI7VBCEXWElBKPwbCTsKWlhdWu+UZstBzDS8gjDCbDxsbGIISENRGDgBI6oI6NELmQXiRkuNrIQ9QiraWEPPl8nrTBJJRoIFQ/BglpKQdNJHMX97M6mJC8OSG14aeTZdnKUcajHSTxWO0qZE9PD/WwSjAlpBCBgYASeoQJGTgeqyEkb2P4ZaXgRUjioeV4iUiJQVcDZaEZxs1odkoegYVkSNSGtzH8ymcfHNd1PZ1OF4tFvr+lpSXYgq4JKdiYz+dJOzY2RtqrnS973IXmkhQDIaoYBJRQCuFtBHlCyrLxQttfBAl/97mB41rY4HK1EcpCEgmfmu7xu7hECb3EoKztUELJJCkeX+m4TiUk+tGe8BLyOAhZKBT8SlijMQgoYfVQKh6hUsjAy8qVkIcXkhhIWl8SSlQCoo1BQAmjIUnxWD0PKfl8nhYBJKzFGASUMHpQSGeohCobKH1HlDA2wtsI8oQMaSPIE9KvhHJDybuBsnYElFARMB4ZwSSMLAalGwgooWooFY8Qh5C+JExADAJKqDJJikfwLGQACWs6BgElrAk2VTx6lzBiAwElRChKxSNUCiklHomEXgxcmjyv1aWh9mMQUMLaJWHxCHeFHDTcJy786flU9h4iYfQxKN1AQAmTQfKEdOCj1wdSTVtTDc3RGwgoIeJK4m28/eopLZONS8JqGAgoYYJJkpCzo32anktlmrRMjko4e2GvlFPFHoOAEm4GVLMRmJCl1dLKHWNliZSf+NazwpjpoQ7SpvScpjeX248l/PBSr6yTuEpYbQMBJdxsqCbk7T88QyU0lhdLK0vG8gKpS8uL5NFYWwUrCedfe0zW7irEIKCEmxYpNoJUIWfPPypISNwjj7yEt984Jms7RQwkpKu3NKIycxf3szqMkAt/fI4W4W3c+r3fsHrmFw+JG02cjPgrigxMQqQCKQkpMR7feeK/1XhNdWIQUELEDtVsBElCetGPQiWstoGAEiJeUE3IYDZ61w8ijEFACRFfqGYjeBDSl3uMyGIQUEIkMAoKKYsoYxBQQiQ8UmwEZYSM2EBACRG5JCAeUUIkIdRoPC5Nntfq0hChgYASIhFQQ/EYfQwCSohEicrx+NHrA6mmramGZojWQEAJkbhQKh5vv3pKy2RRQmSTEm88zhV+mMo0aZkckzBiAwElRJRCgpClVdI07z7mPOr9kW9oenNKz2l6jkqYyt2r1TfOXtgb/VujhIiiBBSytFpauUP+N1aWjOXF9Y71YqFUrkmPsbZK3CO1WcJU9p5bv+2O/k3T0W+JIF6Yu7ifFhLi0Q0tkyVtLAYCSoioD7MR/AtJYtCyn8SguEvxu3G9IEqI1BIS4zGl52ihZXIfXuqN8aVQQqQmCRCPxvKi0KPpuVSmaf61x+J9F5QQqXnM8WisLLnOWnzzZ3EffAPNMG7GfQYEqQpbHn62tLJkLC+QurS8+L+//zruE1mDEiJIzKTiPgCCbHZQQgSJGZQQQWIGJUSQmEEJESRmUEIEiRmUEEFiBiVEkJhBCREkZlBCBImZGpbw/+zTAQkAAAwEof6tV+LhYGgH4QcJISYhxCSEmIQQkxBiEkJMQohJCDEJISYhxCSEmIQQkxBiEkJMQohJCDEJISYhxCSEmIQQkxBiEkJMQohJCDEJISYhxCSEmIQQkxBiEkJMQohJCDEJISYhxCSEmIQQkxBiEkJMQohJCDEJISYhxCSEmIQQkxBiEkJMQohJCDEJISYhxCSEmIQQkxBiEkJMQohJCDEJISYhxCSEmIQQkxBiEkJMQohJCDEJISYhxCSEmIQQkxBiEkJMQohJCEvXPh0SAAAAMAzq3/odbmagAwcJISYhxCSEmIQQkxBiEkJMQohJCDEJITYUum4CZ/6eUwAAAABJRU5ErkJggg=="/>
+
+ 
+			</div> 
+			<div class="float-right detail-box" id="detail-box">
+				<div class="detail-row">
+<p class="float-left"> Email:</p><INPUT type="text" name="email" id="email"  autocomplete="off" onChange ="checkEmail(this)" size=30 maxlength=30 placeholder="輸入E-mail"><P>
+                                    <div class="clear"></div>
+				</div>
+
+                                <div class="detail-row">
+<div id="form-1" style="display:block">
+                                  <form id="name_form-1">
+<p class="float-left tools-css">姓名:</p> <input type="text" name="print_name" id="print_name_1"   autocomplete="off"  placeholder="三個中文字以內">
+                                    <input type="hidden" name="figure" value="1">
+                                    <input type="button"  value="產生視圖" onClick="validator(1)" onkeypress="validator(1)"   />
+                                  </form>
+                                  </div> <!-- end form-1 -->
+                                  <div class="clear"></div>
+                                </div>
+                                <div class="detail-row">
+                                <input type="button"  value="下一個使用者" onClick="nextuser()" onkeypress="nextuser()"/>
+                                   <div class="clear"></div>
+                                </div>
+			</div>
+			<div class="clear"></div>
+		</div>
+                <div id=private>
+<input type="checkbox" id="agreement" onclick="checkprivate()" onkeypress="checkprivate()" autocomplete="off"  ><font color="red"> [必
+填]我已閱讀隱私權聲明並同意個資蒐集、處理及利用方式</font> <br><br>
+                <span style="color: #000000; font-size: 17px;">經濟部工業局-蒐集個人資料告知事項</span>
+<p class=MsoNormal style='margin-right:5.9pt'><b><span style='font-size:11.0pt;
+'>經濟部工業局</span></b><b><span style='font-size:11.0pt;
+'>（</span></b><b><span style='font-size:11.0pt;'>下稱本局</span></b><b><span
+style='font-size:11.0pt;'>）</span></b><span style='font-size:
+11.0pt;'>委託<b>財團法人資訊工業策進會</b>執行</span><b><u><span lang=EN-US
+style='font-size:11.0pt;'>3D</span></u></b><b><u><span
+style='font-size:11.0pt;'>列印產業發展推動</span></u></b><b><u><span
+style='font-size:11.0pt;'>計畫</span></u></b><b><u><span
+lang=EN-US style='font-size:11.0pt;'>(1/5)</span></u></b><span
+style='font-size:11.0pt;'>，向您蒐集個人資料，並依個人資料保護法令，於蒐集個人資料前，向您告知下列事項，敬請詳閱。</span></p></br>
+
+
+<table class="MsoNormalTable" style="width:487.35pt;border-collapse:collapse;border:none" border="1" cellpadding="0" cellspacing="0" width="650">
+ <tbody><tr style="height:12.0pt">
+  <td style="width:104.65pt;border-top:double 1.5pt;
+  border-left:double 1.5pt;border-bottom:solid 1.0pt;border-right:solid 1.0pt;
+  border-color:windowtext;padding:0cm 5.4pt 0cm 5.4pt;height:12.0pt" valign="top" width="140">
+  <p class="MsoListParagraph" style="margin-left:11.0pt;text-indent:-11.0pt"><span style="font-size:11.0pt;" lang="EN-US">1.</span><span style="font-size:11.0pt;">蒐集目的</span></p>
+  </td>
+  <td colspan="2" style="width:382.7pt;border-top:double windowtext 1.5pt;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:double windowtext 1.5pt;
+  ;padding:0cm 5.4pt 0cm 5.4pt;height:12.0pt" width="510">
+  <p class="MsoNormal" style="margin-right:15.85pt"><span style="font-size:11.0pt;
+  ">執行前述計畫</span></p>
+  </td>
+ </tr>
+ <tr style="height:14.35pt">
+  <td style="width:104.65pt;border-top:none;border-left:
+  double windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;border-right:
+  solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:14.35pt" valign="top" width="140">
+  <p class="MsoListParagraph" style="margin-left:11.0pt;text-indent:-11.0pt"><span style="font-size:11.0pt;" lang="EN-US">2.</span><span style="font-size:11.0pt;">個人資料類別</span></p>
+  </td>
+  <td style="width:155.9pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  ;padding:0cm 5.4pt 0cm 5.4pt;height:14.35pt" valign="top" width="208">
+  <p class="MsoListParagraph" style="margin-left:0cm"><span style="font-size:
+  11.0pt;">辨識個人者</span></p>
+  </td>
+  <td style="width:8.0cm;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:double windowtext 1.5pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:14.35pt" valign="top" width="302">
+  <p class="MsoListParagraph" style="margin-left:0cm"><span style="font-size:
+  11.0pt;">電子郵件</span></p>
+  </td>
+ </tr>
+ <tr style="height:52.1pt">
+  <td style="width:104.65pt;border-top:none;border-left:
+  double windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;border-right:
+  solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:52.1pt" valign="top" width="140">
+  <p class="MsoListParagraph" style="margin-left:9.0pt;text-indent:-9.0pt"><span style="font-size:11.0pt;" lang="EN-US">3.</span><span style="font-size:11.0pt;">個人資料利用之期間、地區、對象及方式</span></p>
+  </td>
+  <td colspan="2" style="width:382.7pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:double windowtext 1.5pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:52.1pt" valign="top" width="510">
+  <p class="MsoNormal"><span style="font-size:11.0pt;">除涉及國際業務或活動外，您的個人資料僅供本局於中華民國領域、在前述蒐集目的之必要範圍內，以合理方式利用至蒐集目的消失為止。</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td style="width:104.65pt;border-top:none;border-left:
+  double windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;border-right:
+  solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt" valign="top" width="140">
+  <p class="MsoListParagraph" style="margin-left:11.0pt;text-indent:-11.0pt"><span style="font-size:11.0pt;" lang="EN-US">4.</span><span style="font-size:11.0pt;">當事人權利</span></p>
+  </td>
+  <td colspan="2" style="width:382.7pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:double windowtext 1.5pt;
+  padding:0cm 5.4pt 0cm 5.4pt" valign="top" width="510">
+  <p class="MsoListParagraph" style="margin-left:0cm"><span style="font-size:
+  11.0pt;">您可依個人資料保護法向本計畫聯絡人</span><span style="font-size:11.0pt;
+  ">（王文男</span><span style="font-size:11.0pt;
+  " lang="EN-US">:</span><span style="font-size:11.0pt;
+  " lang="EN-US">Email:wennen@@iii.org.tw</span><span style="font-size:11.0pt;">）</span><span style="font-size:11.0pt;">行使查詢或請求閱覽、製給複製本、補充或更正、停止蒐集</span><span style="font-size:11.0pt;" lang="EN-US">/</span><span style="font-size:11.0pt;">處理</span><span style="font-size:11.0pt;" lang="EN-US">/</span><span style="font-size:11.0pt;">利用及刪除您的個人資料之權利。</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td style="width:104.65pt;border-top:none;border-left:
+  double windowtext 1.5pt;border-bottom:double windowtext 1.5pt;border-right:
+  solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt" valign="top" width="140">
+  <p class="MsoListParagraph" style="margin-left:11.0pt;text-indent:-11.0pt"><span style="font-size:11.0pt;" lang="EN-US">5.</span><span style="font-size:11.0pt;">不提供正確個資之權益影響</span></p>
+  </td>
+  <td colspan="2" style="width:382.7pt;border-top:none;
+  border-left:none;border-bottom:double windowtext 1.5pt;border-right:double windowtext 1.5pt;
+  padding:0cm 5.4pt 0cm 5.4pt" valign="top" width="510">
+  <p class="MsoListParagraph" style="margin-left:0cm"><span style="font-size:
+  11.0pt;">若您不提供個人資料，本局將無法為您提供蒐集目的之相關服務。</span></p>
+  </td>
+ </tr>
+</tbody></table>
+
+                </div>
+	</section>
+
+}

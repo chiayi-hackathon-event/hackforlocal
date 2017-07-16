@@ -1,0 +1,124 @@
+
+
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FB Like統計</title>
+<link rel="stylesheet" media="screen" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link rel="stylesheet" media="screen" href="https://googledrive.com/host/0B27nlsVVtYCta2ZBaXdod0FfMEk">
+<link rel="stylesheet" href="https://googledrive.com/host/0B27nlsVVtYCtQXFtLWVGOFpWdUU">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.pack.js"></script>
+<script type="text/javascript" src="//ds.minwt.com/download/code/jquery/plugin/jquery.autoheight.js"></script>
+
+<script>
+function fetchLikeCount(url){
+    return $.Deferred(function(defer){
+        $.ajax({
+            dataType: 'jsonp',
+            url: 'https://api.facebook.com/method/fql.query?callback=callback',
+            data: {
+                query: 'SELECT share_count, like_count, comment_count FROM link_stat WHERE url="' + url + '"',
+                format: 'JSON'
+            }
+        }).then(function(res){
+            try{
+                var like_count = res[0].like_count;
+                 var share_count = res[0].share_count;
+                var comment_count = res[0].comment_count;
+                defer.resolve(like_count);
+                defer.resolve(share_count);
+                defer.resolve(comment_count);
+                document.writeln("點讚數/likes:"+like_count);
+                document.writeln("分享數/Shares:"+share_count);
+                document.writeln("討論數/Comments:"+comment_count);
+            }catch(e){
+                reject();
+            }
+        }, reject);
+        function reject(){
+            defer.reject(';(');
+        };
+    }).promise();
+}
+
+
+
+$(function(){
+    var $url = $('#url');
+    var $res = $('#res');
+    $('form').submit(function(e){
+        e.preventDefault();
+        fetchLikeCount($url.val()).always(function(res){
+            $res.text(res);
+        });
+    });
+});
+
+</script>
+
+<style>
+
+@@import url(http://fonts.googleapis.com/earlyaccess/cwtexhei.css);
+
+.btn-group{
+position: absolute;
+top: 5%;
+left: 45%;
+}
+`
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+}
+p{
+ font-size:18px;
+ font-family:'cwTeXHei', serif;
+}
+h1{
+ font-size:18px;
+ font-family:'cwTeXHei', serif;
+ letter-spacing: 2px;
+　}
+ul,li{margin:10;}
+
+.container-main{
+margin-top:50px;
+}
+
+
+
+
+
+</style>
+
+
+</head>
+
+<body>
+
+<div  class="container-main">
+<div class="column-12">
+<h1 class="article-title guideline-title text-center"><img src="http://fastlab.tw/myUpload/images/logo.png">FB Like統計/FB Like Count</h1>
+<h2><div id="includeMenu" style="text-align: center;"><!--<button type="button" onclick= 'sum_fn()'>總數</button>--></div>
+
+
+
+<form>
+<input type="text" value="http://fastlab.tw" id="url"> <input type="submit">
+</form>
+<div id="res"></div>
+
+
+</div></div>
+</body>
+</html>
+
+

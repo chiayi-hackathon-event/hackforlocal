@@ -1,0 +1,139 @@
+@(list:List[Admin_permit])
+@import helper._
+@import scala.Predef;var pass="null";var admin="false";
+@(admin=controllers.Application.VerifyToken())
+@(pass=controllers.Application.getCookie("rec"))
+@if(admin=="true"){
+@if(pass=="4"||pass=="1"){
+
+
+
+
+<title>活動管理-新增</title>
+<head>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("javascripts/datetimepicker/jquery-ui-timepicker-addon.css")">
+
+<script src="@routes.Assets.versioned("javascripts/components/jquery/dist/jquery.min.js")" type="text/javascript"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<script src="@routes.Assets.versioned("javascripts/datetimepicker/modernizr-1.7-development-only.js")" type="text/javascript"></script>
+<script src="@routes.Assets.versioned("javascripts/datetimepicker/jquery-1.9.1.js")" type="text/javascript"></script>
+<script src="@routes.Assets.versioned("javascripts/datetimepicker/jquery-ui.js")" type="text/javascript"></script>
+<script src="@routes.Assets.versioned("javascripts/datetimepicker/jquery-ui-timepicker-addon.js")" type="text/javascript"></script>
+<script src="@routes.Assets.versioned("javascripts/datetimepicker/jquery-ui-sliderAccess.js")" type="text/javascript"></script>
+
+<script>
+    $(function(){           
+
+	if ( $('[type="date"]').prop('type') != 'date' ) {
+    $('[type="date"]').datepicker({
+	dateFormat: 'yy-mm-dd',
+	timeFormat: 'HH:mm'
+	});
+	}
+
+    });
+</script>
+
+
+<script>
+//表單填寫檢查
+function check()
+{
+if(register.campaign_title.value!=""&&register.campaign_desc.value!=""&&register.campaign_start_date.value!=""&&register.campaign_end_date.value!=""&&register.create_time.value!="")
+{
+register.submit();
+}
+else
+{
+alert("未填滿資料");
+}
+
+}
+
+</script>
+<style>
+
+.btn-group{
+position: absolute;
+top: 5%;
+left: 45%;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+}
+p{
+ font-size:18px;
+}
+
+
+h1{
+ font-size:18px;
+ font-family:'cwTeXHei', serif;
+ letter-spacing: 2px;
+　}
+ul,li{margin:10;}
+h3{
+color: #FFFFFF;
+}
+
+#content{
+margin-top:0px;
+}
+
+</style>
+
+</head>
+<body>
+
+<div id ="content"class="container">
+<div class="column-12">
+<h1 align="center">新增資料</h1>
+@form(action = CSRF(routes.Sort.add_op()), 'name ->"register"){
+
+
+<!--<form name='register'action="/admin/sort_add_op" method="post">-->
+
+<table width="80%" bordr="1" align="center">
+<tr>
+<!--<tr><td>campaign_id:</td><td><input type="text" name="campaign_id" style=width:100% </td> </tr>-->
+<tr><td>campaign_title:</td><td><input type="text" name="campaign_title" class="column-12 menu-text row" placeholder="campaign_title" style="height: 50px; margin: 15px 0px 0px; width: 100%;"></textarea></td> </tr>
+<tr><td>campaign_desc:</td><td><input type="text" name="campaign_desc" class="column-12 menu-text row" placeholder="campaign_desc" style="height: 50px; margin: 15px 0px 0px; width: 100%;"></textarea></td> </tr>
+
+<tr><td>campaign_start_date:</td><td><input name="campaign_start_date" class="column-12 menu-text row" placeholder="campaign_start_date" type="date"style="height: 50px; margin: 15px 0px 0px; width: 100%;"></textarea></td> </tr>
+
+<tr><td>campaign_end_date:</td><td><input name="campaign_end_date" class="column-12 menu-text row" placeholder="campaign_end_date" type="date" style="height: 50px; margin: 15px 0px 0px; width: 100%;"></textarea></td> </tr>
+<tr><td>campaign_image:</td><td><textarea name="campaign_image" class="column-12 menu-text row" placeholder="campaign_image(optional)" style="height: 50px; margin: 15px 0px 0px; width: 100%;"></textarea></td> </tr>
+<tr><td>create_time:</td><td><input id="create_time" name="create_time" class="column-12 menu-text row" placeholder="create_time"  type="date" value="" style="height: 50px; margin: 15px 0px 0px; width: 100%;"></textarea></td> </tr>
+<input type="hidden" name="member_id" value="@list(0).memberID">
+
+
+<script>
+
+var tzoffset = (new Date(document.lastModified)).getTimezoneOffset() * 60000;
+var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0,-1);
+//var x= new Date(document.lastModified);
+//var y= x.toISOString().substring(0,16);
+//將來自create_time的ID取得type:date的時間表示 
+document.getElementById('create_time').value = localISOTime;
+</script>
+
+<tr><td></td><td><input type="button" value ="確定" onclick='check()'> <input type="reset" value ="重置"></td>
+</tr>
+</table>
+}
+<!--</form>-->
+
+</div>
+</div>
+</body>
+}
+}
+

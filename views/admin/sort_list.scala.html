@@ -1,0 +1,276 @@
+@(list:List[Map[Integer,String]],size:String)
+@import scala.Predef;var pass="null";var admin="false";
+@(admin=controllers.Application.VerifyToken())
+@(pass=controllers.Application.getCookie("rec"))
+@if(admin=="true"){
+@if(pass=="4"||pass=="1"){
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/style2.css")">
+<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/theme.blue.css")">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="@routes.Assets.versioned("javascripts/jquery.tablesorter.js")"></script>
+
+<script>
+
+//展開更多資訊
+$(function(){
+      $("#includeMenu").load("/admin/sort_menu");
+    });
+
+function Unfold(x)
+{
+var tb = document.getElementById('test1');
+var myWindow = window.open("", x, "width=1024, height=768");
+
+for(var i=0; i <tb.rows.length;i++)
+{
+if(x==i){
+
+
+for( var j=1;j< (tb.rows[i].cells.length);j++)
+{
+if(j==1)
+{
+myWindow.document.write("<table  border='2px solid black'rules='all'><tr>")
+}
+
+
+ var temp1=tb.rows[0].cells[j].innerHTML;
+ var temp2=tb.rows[x+1].cells[j].innerHTML;
+
+myWindow.document.write("<tr><td>"+temp1+"</td>");
+myWindow.document.write("<td>"+temp2+"</td></tr>");
+}
+myWindow.document.write("</tr></table>");
+}
+}
+}
+
+//表單checkbox單選功能
+var currentSelected = "";
+
+/*function choose(cb){
+        if(currentSelected!="")
+                {currentSelected.checked = false;}
+                if(cb.checked)
+                {currentSelected = cb;}
+        else    {currentSelected="";}
+        }
+*/
+//取得表單資料透過JSON傳送到Server
+var temp="";
+
+function test(a){
+var obj=document.getElementsByName("checkboxid");
+var selected=[];
+var i=0;
+      for (i; i<obj.length; i++) {
+        if (obj[i].checked) {
+          selected.push(obj[i].value);
+        }
+        }
+if(a==0){
+location.href="/admin/sort_add";
+}
+
+
+//驗證表單checkbox有沒有打勾
+//alert("你選擇的是"+selected);
+else if(selected==""|selected==undefined)
+{
+alert("請勾選您要編輯的欄位");
+}
+//判斷User選1(編輯)與選擇超過兩項,出現錯誤訊息
+else if(a==1&&selected.length>=2){
+
+alert("一次只能編輯一個項目");
+}
+else{
+//switch選項1)編輯2)刪除
+switch(a){
+
+//case 0:
+//location.href="/admin/sort_add";
+//break;
+
+case 1:
+alert("你選擇的是"+selected);
+alert("你選的是編輯");
+var URL='@routes.Sort.update()';
+var id= "&id="+selected.join();
+//alert("你選的是: " + selected.join());
+$.ajax({
+url:URL,
+data:id,
+type:"POST",
+dataType:'text',
+
+success:function(){
+alert("成功");
+location.href="/admin/sort_edit";
+},
+
+
+error:function(xhr, ajaxOptions, thrownError){
+
+         alert(xhr.status);
+           alert("失敗");
+      //  alert("失敗"+selected.join());
+        }
+});
+break;
+case 2:
+alert("你選擇的是"+selected);
+if(confirm("你選的是刪除"))
+{
+alert("確定");
+
+var URL='@routes.Sort.delete()';
+var id=  "&id="+selected.join();
+
+//alert("你選的是: " + selected.join());
+$.ajax({
+url:URL,
+data:id,
+type:"POST",
+dataType:'text',
+
+success:function(){
+alert("刪除成功");
+location.href="/admin/sort_list";
+},
+
+error:function(xhr, ajaxOptions, thrownError){
+         alert(xhr.status);
+           alert("失敗");
+        }
+});
+break;
+}
+else
+{
+alert("取消");
+break;
+}
+break;
+
+
+
+
+default:
+alert("你沒有點選要編輯的項目!!");
+location.href="/admin/sort_list";
+break;
+}
+}
+}
+
+$(function () {
+    // widgets: ['zebra'] 這個參數，能對表格的奇偶數列作分色處理
+    $("#test").tablesorter();
+});
+
+
+
+</script>
+
+<style>
+
+@@import url(http://fonts.googleapis.com/earlyaccess/cwtexhei.css);
+
+
+
+
+.btn-group{
+position: absolute;
+top: 5%;
+left: 45%;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+}
+p{
+ font-size:18px;
+ font-family:'cwTeXHei', serif;
+}
+h1{
+ font-size:18px;
+ font-family:'cwTeXHei', serif;
+ letter-spacing: 2px;
+　}
+ul,li{margin:10;}
+
+h3{
+color: #FFFFFF;
+}
+
+.container-main{
+margin-top:50px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<div class="column-12">
+<h1 class="article-title guideline-title text-center"><img src="http://fastlab.tw/myUpload/images/logo.png">活動管理/Campaigh Manager</h1>
+
+<h2><div id="includeMenu" style="text-align: center;"></div>
+<table width=auto id="test" name="test" class="tablesorter-blue">
+<thead>
+            <tr>
+
+            <th><!--<input type="submit" value="確定"</button>-->
+</th>
+	    <th>id</th>	 
+	    <th>活動標題</th>
+            <th>活動描述</th>
+            <th>開始時間</th>
+            <th>結束時間</th>
+            <th>活動快照</th>
+            <th>建立時間</th>
+	    <th>創建用戶</th>
+
+            </tr>
+
+</thead>
+
+<form>
+
+
+@for( a <- 0 to (list.get(0).size -1)) {
+<td><input type="checkbox" id="@a" class="regular-checkbox"  name="checkboxid" value="@list.get(0).get(a)" ><label for="@a"></label></td>
+
+
+@for( k <- 0 to (list.size)-1) {
+
+<td id=@a-@k><p>@list.get(k).get(a) </p></td>
+}
+
+</tr>}
+                     </table>
+
+</form>
+</div>
+
+
+</div>
+
+</body>
+</html>
+
+}
+}
+

@@ -1,0 +1,322 @@
+@(message: String,member:Member)
+
+@header = {
+    <script>(function(e,t,n){var r=e.querySelectorAll("html")[0];r.className=r.className.replace(/(^|\s)no-js(\s|$)/,"$1js$2")})(document,window,0);</script>
+    <script type="text/javascript">
+        function isAbleToDragAndDrop() {
+            var div = document.createElement('div');
+            return ('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)
+        }
+        function hasFormData() {
+            return 'FormData' in window;
+        }
+        function hasFileReader() {
+            return 'FileReader' in window;
+        }
+        var isAdvancedUpload = function() {
+            return isAbleToDragAndDrop() && hasFormData() && hasFileReader();
+        }();
+
+        $(document).ready(function() {
+            function fileUploader($form, doing, done) {
+                var $input = $form.find('input[type="file"]');
+                var droppedFiles = false;
+
+                $form.on('submit', function(e) {
+                    if ($form.hasClass('is-uploading')) return false;
+
+                    $form.addClass('is-uploading').removeClass('is-error');
+
+                    if (isAdvancedUpload) {
+                         e.preventDefault();
+
+                        var ajaxData = new FormData($form.get(0));
+
+                        if (droppedFiles) {
+                            $.each( droppedFiles, function(i, file) {
+                                ajaxData.append( $input.attr('name'), file );
+                            });
+                        }
+
+                        function progressHandlingFunction(e) {
+                            if(e.lengthComputable){
+                                var percentage = Math.floor((e.loaded / e.total) * 100);
+                                var untilNthDiv = Math.ceil(percentage / 10);
+                                doing(untilNthDiv);
+                            }
+                        }
+                        $.ajax({
+                            url: $form.attr('action'),
+                            type: $form.attr('method'),
+                            data: ajaxData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            xhr: function() {  // Custom XMLHttpRequest
+                                var myXhr = $.ajaxSettings.xhr();
+                                if(myXhr.upload){ // Check if upload property exists
+                                    $('.uploading-show').show();
+                                    $('.uploading-hide').hide();
+                                    $('.progress-bar > div').removeClass('uploaded');
+                                    myXhr.upload.addEventListener('progress', progressHandlingFunction, false);
+                                }
+                                return myXhr;
+                            },
+                            complete: function() {
+                                $form.removeClass('is-uploading');
+                                $('.uploading-show').hide();
+                                $('.uploading-hide').show();
+                            },
+                            success: function(data) {
+                                try {
+                                    var resultJSON = JSON.parse(data);
+                                    if(resultJSON.retCode == "0") done(resultJSON.files[0]);
+                                    else alert(resultJSON.retMessage);
+                                } catch (e) {
+                                    console.log(e)
+                                    alert('上傳失敗，請再上傳一次。');
+                                }
+                            },
+                            error: function(e) {
+                                console.log(e)
+                                alert('上傳失敗，請再上傳一次。');
+                                // Log the error, show an alert, whatever works for you
+                            }
+                        });
+                    } else {
+                        var iframeName  = 'uploadiframe' + new Date().getTime();
+                        $iframe   = $('<iframe name="' + iframeName + '" style="display: none;"></iframe>');
+
+                        $('body').append($iframe);
+                        $form.attr('target', iframeName);
+
+                        $iframe.one('load', function() {
+                            var data = JSON.parse($iframe.contents().find('body' ).text());
+                            $form
+                                .removeClass('is-uploading')
+                                .removeAttr('target');
+                            done($form, data);
+                            $form.removeAttr('target');
+                            $iframe.remove();
+                        });
+
+                    }
+                });
+
+                if (isAdvancedUpload) {
+                    $form.addClass('has-advanced-upload');
+
+                    $form.on('drag dragstart dragend dragover dragenter dragleave drop', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    })
+                    .on('dragover dragenter', function() {
+                        $form.addClass('is-dragover');
+                    })
+                    .on('dragleave dragend drop', function() {
+                        $form.removeClass('is-dragover');
+                    })
+                    .on('drop', function(e) {
+                        droppedFiles = e.originalEvent.dataTransfer.files;
+                        if(fileExtValid(droppedFiles, $form.attr('data-allowed-type')))
+                            $form.trigger('submit');
+                    });
+                } else {
+                    $input.on('change', function(e) { // when drag & drop is NOT supported
+                        $form.trigger('submit');
+                    });
+                }
+
+                $input.on('change', function(e) {
+                    $form.trigger('submit');
+                });
+            }
+
+            $('.chooseArea').click(function(event) {
+                event.preventDefault();
+                $(this).parents('label').trigger('click');
+            }).keypress(function(event) {
+                if(event.keyCode == 13) {
+                    event.preventDefault();
+                    $(this).parents('label').trigger('click');
+                }
+            });
+
+           function gerReg(fileTypesString) {
+                // Format likes: jpg,jpeg,png
+                var pattern = fileTypesString.replace(/,/g, "|");
+                return new RegExp(".+\.{1}(" + pattern + ")$", "g");
+            }
+
+            function fileExtValid(files, allowedFileTypes) {
+                var testPattern = gerReg(allowedFileTypes);
+                var notAllowedFiles = [];
+                files = [].slice.call(files);
+                files.forEach(function(e) {
+                    if(!testPattern.test(e.name)) notAllowedFiles.push(e.name);
+                });
+                if(notAllowedFiles.length == 0) { return true; }
+                else {
+                    console.log(notAllowedFiles)
+                    alert('下列檔案不符合格式： ' + notAllowedFiles.join(', ') + '\n目前可接受的格式： ' + allowedFileTypes);
+                    return false;
+                }
+            }
+
+            fileUploader(
+                $('#upload-box-input-photo-file'),
+                function(untilNthDiv) {
+                    [].forEach.call($('.progress-bar > div'), function(e, i) {
+                        if(i <= untilNthDiv) $(e).addClass('uploaded');
+                    });
+                },
+                function(userPhoto) {
+                    alert('Update profile image success');
+                    $('#userPhoto').attr('src', '/myUpload/myProfile/' + userPhoto.fileName);
+                    //TODO: call post method to save photo id.
+                }
+            );
+
+            $('#save-button').click(function() {
+                $.ajax({
+                    method: 'POST',
+                    url: '/submitProfile',
+                    data: {
+                        memberToken: '@controllers.Application.getCookie("memberToken")',
+                        name: $('#name').val(),
+                        email: $('#email').val(),
+                        description: $('#description').val()
+                    }
+                }).done(function(data) {
+                    alert('Update profile success');
+                }).fail(function() {
+                    alert('Server is not available now.');
+                });
+            });
+
+            $('#cancel-button').click(function() {
+                $('#name').val('');
+                $('#description').val('');
+            });
+        });
+
+    </script>
+}
+
+@main("Edit My Profile - Fast Lab")(message)(header) {
+    <section>
+        <div class="container">
+            <div class="column-12">
+                @helper.form(
+                    action = routes.Application.uploadFileByForm(),
+                    'method -> "method='post'",
+                    'enctype -> "multipart/form-data",
+                    'class -> "upload-box",
+                    'id -> "upload-box-input-photo-file",
+                    Symbol("data-allowed-type") -> "jpg,jpeg,png,gif"
+                ) {
+                    <div class="text-center">
+                        <img src="@routes.Application.imageAt("images", "ic_user_l.png")" title="icon image" alt="icon image">
+                    </div>
+                    <div class="text-center s-hide">Drag and Drop or select a file</div>
+                    <div class="column-12 uploading-hide">
+                        <label class="text-center" for="photo">
+                            <p class="column-5 column-ms-8 block-center menu-button">
+                                <a class="chooseArea" href="#" tabindex="20">Upload Photo</a>
+                            </p>
+                        </label>
+                        <button class="upload-box-button" type="submit" tabindex="21">Upload</button>
+                    </div>
+                    <div class="column-12 uploading-show" style="display:none;">
+                        <div class="block-center progress-bar">
+                            <div class="float-left"></div>
+                            <div class="float-left"></div>
+                            <div class="float-left"></div>
+                            <div class="float-left"></div>
+                            <div class="float-left"></div>
+                            <div class="float-left"></div>
+                            <div class="float-left"></div>
+                            <div class="float-left"></div>
+                            <div class="float-left"></div>
+                            <div class="float-left" style="margin-right:0;"></div>
+                            <p class="clear"></p>
+                        </div>
+                    </div>
+                    <input id="photo" type="file" name="photo" hidden/>
+
+                    <div class="upload-box-tip text-center">**在穩定的網路環境上傳**</div>
+                    <ul class="file-list text-right">
+                        <!--TODO: The user's avatar URL. -->
+                        @if(member.bannerImageName ==""){
+                            <img id="userPhoto" src="@routes.Application.imageAt("myProfile", member.bannerImageName)" title="Your avatar." alt="Your avatar." style="max-width:250px;max-height:300px;">
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+
+        <div class="container text-center my-profile-info-stat-area">
+            <div class="float-left column-3 my-profile-info-stat-block">
+                <a tabindex="22" class="info-stat-item" href="/Fast-Lab-3D-Member-Gallery/0">
+                    <img class="item-not-hover" src="@routes.Application.imageAt("images", "ic_designs_l.png")" title="icon image" alt="icon image">
+                    <img class="item-hover" src="@routes.Application.imageAt("images", "ic_designs_l_hover.png")" title="icon image" alt="icon image">
+                    <span>Designs</span>
+                </a>
+            </div>
+            <div class="float-left column-3 my-profile-info-stat-block">
+                <a tabindex="23" class="info-stat-item" href="/Fast-Lab-3D-myCollection/is_download">
+                    <img class="item-not-hover" src="@routes.Application.imageAt("images", "ic_download_l.png")" title="icon image" alt="icon image">
+                    <img class="item-hover" src="@routes.Application.imageAt("images", "ic_download_l_hover.png")" title="icon image" alt="icon image">
+                    <span>Downloads</span>                
+                </a>
+            </div>
+            <div class="float-left column-3 my-profile-info-stat-block">
+                <a tabindex="24" class="info-stat-item" href="/Fast-Lab-3D-myCollection/is_collect">
+                    <img class="item-not-hover" src="@routes.Application.imageAt("images", "ic_collections_l.png")" title="icon image" alt="icon image">
+                    <img class="item-hover" src="@routes.Application.imageAt("images", "ic_collections_l_hover.png")" title="icon image" alt="icon image">
+                    <span>Collections</span>
+                </a>
+            </div>
+            <div class="float-left column-3 my-profile-info-stat-block my-profile-info-stat-block-last">
+                <a tabindex="25" class="info-stat-item" href="/account/account_index">
+                    <img class="item-not-hover" src="@routes.Application.imageAt("images", "ic_account_l.png")" width="90px" heigt="90px" title="icon image" alt="icon image">
+                    <img class="item-hover" src="@routes.Application.imageAt("images", "ic_account_l_hover.png")" width="90px" heigt="90px" itle="icon image" alt="icon image">
+                    <span>Account</span>
+                </a>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+    </section>
+    <div class="">
+        <div class="section-bottom">
+            <img src="@routes.Application.imageAt("images", "section_bottom.png")" title="icon image" alt="icon image">
+        </div>
+    </div>
+    <section>
+        <div class="container text-center my-profile-info-edit-area">
+            <h2>About You</h2>
+            <div class="column-12">
+                <div class="column-4 column-m-6 column-s-8 block-center">
+                    @if(member.email ==""){
+                        <input tabindex="30" id="email" class="column-12 menu-text row" type="text" placeholder="電子郵件" value="@member.email">
+                    }else{
+                        <input tabindex="30" id="email" class="column-12 menu-text row" type="text" placeholder="電子郵件" value="@member.email" readonly>
+                    }
+                    <input tabindex="31" id="name" class="column-12 menu-text row" type="text" placeholder="暱稱" value="@member.nickName">
+                        <!--  <input id="description" class="column-12 menu-text row" type="text" placeholder="簡介" value="@member.description"> -->
+                    <textarea tabindex="32" name="description" id="description" class="column-12 menu-text row" placeholder="簡介" style="height:200px;">@member.description</textarea>
+                    <div class="clear"></div>
+
+                </div>
+            </div>
+            <div class="column-12">
+                <div class="column-4 column-m-6 column-s-8 block-center row">
+                    <p tabindex="33" id="save-button" class="float-left column-6 column-ms-12 menu-button">Save</p>
+                    <p tabindex="34" id="cancel-button" class="float-right column-6 column-ms-12 menu-button">Cancel</p>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+}

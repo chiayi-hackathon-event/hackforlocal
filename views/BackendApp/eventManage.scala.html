@@ -1,0 +1,33 @@
+@(event: Events, eventId: Long, showStartDate:String, showEndDate:String)
+<div class="newModel">
+    @helper.form(action = routes.Application.submitUpdateEvent(), 'enctype -> "multipart/form-data") {
+        <input id="eventId" name="eventId" value="@eventId" hidden>
+        <input id="images" name="images" value="@event.images" hidden>
+        <input id="imageThumbnail" name="imageThumbnail" value="@event.imageThumbnail" hidden>
+        <p class="title">event title</p>
+        <input type="text" name="title" value="@event.title">
+        <p class="title">organizer</p>
+        <input type="text" name="organizer" value="@event.organizer">
+        <p class="title">co organizer</p>
+        <input type="text" name="coOrganizer" value="@event.coOrganizer">
+        <p class="title">event start date</p>
+        <input type="date" name="showStartDate" value="@showStartDate">
+        <p class="title">event end date</p>
+        <input type="date" name="showEndDate" value="@showEndDate">
+        <p class="title">event show time</p>
+        <input type="datetime" name="showTime" value="@event.showTime">
+        <p class="title">location</p>
+        <input type="text" name="location" value="@event.location">
+        <p class="title">description</p>
+        <input type="text" name="description" value="@event.description">
+        <p class="title">event image</p>
+        <input type="file" name="eventimage" accept="image/jpeg">
+        <p class="title">event thumbnail image</p>
+        <input type="file" name="eventimageThumbnail" accept="image/jpeg">
+        <p class="title">external Url</p>
+        <input type="text" name="externalUrls" value="@event.externalUrls">
+        <p>
+            <input type="submit" >
+        </p>
+    }
+</div>

@@ -1,0 +1,280 @@
+@(message: String)(resourceName: String)
+@header= {
+	<script>
+		// In the following example, markers appear when the user clicks on the map.
+		// Each marker is labeled with a single alphabetical character.
+		var labels = '';
+		var labelIndex = 0;
+		function initialize() {
+			var taipei = { lat: 25.0421524, lng: 121.5354064 };
+			var points = [
+				['國立台灣工藝研究發展中心-鶯歌多媒材研發分館', 24.9664762, 121.334478, ''],
+				['國立台灣工藝研究發展中心-技術組', 23.9807747, 120.6918567, ''],
+				['智慧物聯網創客基地',25.0660637, 121.4500797, ''],
+				['布可思藝-服飾創客中心',25.0660637 ,121.4500797, ''],
+				['「衣」啟飛翔-服裝職類創客基地-武陵就業服務台', 24.8156891,120.96272, ''],
+				['「衣」啟飛翔-服裝職類創客基地-訓練四館',24.8929472 ,121.136466, ''],
+				['｢玩創意、享自造｣創客產房-青年職涯發展中心', 22.622374,120.29973, ''],
+				['｢玩創意、享自造｣創客產房-高分署訓練場',22.593389 ,120.3086121, ''],
+				['「創無限」創作工場-青年職涯發展中心', 24.15213,120.683696, ''],
+				['「創無限」創作工場-職訓工場',24.1704367 ,120.610006, ''],
+				['ICE基地-新營就業中心',23.3152519 ,120.316659, ''],
+				['台南數位文創園區/Fab Lab Tainan/胖地', 22.991824,120.2050263, ''],
+				['Fab Lab-新北高工', 24.9839572,121.4509302, ''],
+				['Fab Lab-臺中高工', 24.1134199,120.6613413, ''],
+				['Fab Lab-鳳山商工',22.6341849 ,120.35803, ''],
+				['Fab Lab-花蓮高工', 23.9986513,121.6205936, ''],
+				['科技創意發展中心-板橋高中',25.0116783 ,121.4590795, ''],
+				['積穗國小', 24.9991599, 121.481461, ''],
+				['鶯歌工商', 24.9393432,121.335057, ''],
+				['交大圖書館', 24.7890674,120.9992634, ''],
+				['WeSchool自造空間',24.7958317 ,120.9951203, ''],
+				['C-Hub成大創意基地', 22.9966097,120.2168136, ''],
+				['台科大創客空間The Roof',25.0132497 ,121.5411187, ''],
+				['創夢工廠',22.7517285 ,120.3314651, ''],
+				['再興小學創客教室',24.990528 ,121.558974, ''],
+				['亞洲大學3D列印中心', 24.0438818,120.688515, ''],
+				['大葉大學3D列印服務網',23.9992038 ,120.5947144, ''],
+				['未來產房', 23.9992038,120.5947144, ''],
+				['Fablab Taipei', 25.029191,121.51608, ''],
+				['THE Maker Workshop 造物者工坊',24.802946 ,120.953589, ''],
+				['Taipei Hacker Space',25.0529011 ,121.5168843, ''],
+				['Maker Bar',25.0416851 ,121.529657, ''],
+				['Fab Cafe', 25.0441303,121.5293995, ''],
+				['Ctrl+P',25.0673666 ,121.5212688, ''],
+				['享實做樂',24.1834561 ,120.5846777, ''],
+				['3D如水同樂會', 25.0585652,121.5439347, '']
+			];
+			var map = new google.maps.Map(document.getElementById('map'), {
+				zoom: 11,
+				center: taipei
+			});
+
+			var infoWindow = new google.maps.InfoWindow();
+
+			google.maps.event.addListener(infoWindow, 'closeclick', function() {
+				map.setZoom(11);
+			});
+
+			var markerList = new Array();
+
+			points.forEach(function(e, i) {
+				var latLng = {lat: e[1], lng: e[2]};
+				var marker = new google.maps.Marker({
+					position: latLng,
+					map: map,
+					title: e[0]
+				});
+				google.maps.event.addListener(marker, 'click', function() {
+					clickAndOpen(
+						e, 
+						this, 
+						document.getElementsByClassName("detail-item")[i], 
+						i,
+						document.getElementsByClassName("detail-item")
+					);
+				});
+				markerList.push(marker);
+			});
+
+			var pointList = document.getElementById("map-points");
+
+			pointList.innerHTML = points.reduce(function(p, c, i) {
+				return (i == 0) ?
+						p + '<div class="detail-item detail-item-selected">' + c[0] + '</div>' :
+						p + '<div class="detail-item">' + c[0] + '</div>'
+			}, "");
+
+			var menu = new Menu(7, [].map.call(document.getElementsByClassName("detail-item"), function(e) {return e;}))
+			menu.setScrollUpButton(document.getElementsByClassName("scroll-up")[0]);
+			menu.setScrollDownButton(document.getElementsByClassName("scroll-down")[0]);
+
+			var itemList = document.getElementsByClassName("detail-item");
+			[].forEach.call(itemList, function(e, i, arr) {
+				e.onclick = function() {
+					clickAndOpen(
+						points[i], 
+						markerList[i], 
+						e, 
+						i,
+						[].map.call(arr, function(e){return e;})
+					);}
+			});
+
+			function clickAndOpen(pe, marker, de, di, arr) {
+				var defaultContent = '<p>' + pe[0] + '</p>';
+				if(!!pe[3]) defaultContent = defaultContent + '<p><a tabindex="30" href="' + pe[3] + '">網址</a></p>';
+				map.setZoom(13);
+				map.setCenter(marker.getPosition());
+				infoWindow.setContent(defaultContent);
+				infoWindow.open(map, marker);
+
+				if(!menu._isInCurrentPage(di + 1)) {
+					menu.setCurrentPage(di + 1);
+					menu.goToPage();
+					menu.selectFunction(de, arr);
+				}
+				menu._isAbleToGoUp() ? menu.removeClass(menu._scrollUpButton, "scroll-tool-disabled") : menu.addClass(menu._scrollUpButton, "scroll-tool-disabled");
+				menu._isAbleToGoDown() ? menu.removeClass(menu._scrollDownButton, "scroll-tool-disabled") : menu.addClass(menu._scrollDownButton, "scroll-tool-disabled");
+			
+				menu.selectFunction(de, arr);
+			}
+
+		}
+
+		function Menu(menuSize, totalItems) {
+			this._sumPixels = function() {
+				if(arguments.length == 0) return "0px";
+				return [].map.call(arguments, function(e){return e;})
+						.reduce(function(p, c, i) {
+							try {
+								return p + parseInt(c.replace("px"));
+							} catch(e) {
+								return 0;
+							}
+						}, 0) + "px";
+			};
+			this._multipleByPixels = function(val, multi) {
+				if(arguments.length != 2) return "0px";
+				var el;
+				try {	
+					el = parseInt(val) * multi;
+				} catch(e) {
+					el = 0;
+				} finally {
+					return el + "px";
+				}
+			};
+
+			var page = this;
+			this.selectFunction = function(e, arr) {
+				[].forEach.call(arr, function(ae) {
+					page.removeClass(ae, "detail-item-selected");
+				});
+				page.addClass(e, "detail-item-selected");
+			};
+			this._totalItems = [].map.call(totalItems, function(e, i, a) {
+				e.addEventListener("click", function() {
+					page.selectFunction(e, a);
+				}, false);
+				return e;
+			});
+			this._menuSize = menuSize;
+			this._altitude = page._totalItems.length;
+			this._thickness = Math.ceil(page._altitude / page._menuSize);
+			this._firstItem = page._totalItems[0];
+			this._getHeight = function(e) {
+				var el;
+				try {
+					var elStyle = window.getComputedStyle(e, null);
+					el = page._sumPixels(
+						elStyle.getPropertyValue('height'), 
+						elStyle.marginTop, 
+						elStyle.marginBottom
+					);
+				} catch(e) {
+					el = e.currentStyle.height;
+				} finally {
+					return el;
+				}
+			};
+			this._itemHeight = page._getHeight(page._firstItem);
+			this._isAbleToScroll = page._menuSize < page._altitude;
+			this._currentPage = 1;
+			this._isInCurrentPage = function(index) {
+				if(!index) return false;
+				if(isNaN(index)) return false;
+				return page._currentPage === Math.ceil(index / page._menuSize);
+			};
+			this.setCurrentPage = function(index) {
+				page._currentPage = Math.ceil(index / page._menuSize) || 1;
+			}
+
+			this.goToPage = function(specificPage) {
+				page._firstItem.style.marginTop = page._multipleByPixels(page._itemHeight, (page._currentPage - 1) * -1 * page._menuSize);
+				page._isAbleToGoUp() ? page.removeClass(page._scrollUpButton, "scroll-tool-disabled") : page.addClass(page._scrollUpButton, "scroll-tool-disabled");
+				page._isAbleToGoDown() ? page.removeClass(page._scrollDownButton, "scroll-tool-disabled") : page.addClass(page._scrollDownButton, "scroll-tool-disabled");
+			};
+			this._isAbleToGoUp = function() {
+				return page._currentPage > 1;
+			};
+			this.pageUp = function() {
+				if(!page._isAbleToScroll) return;
+				if(!page._isAbleToGoUp()) return;
+				page._currentPage -= 1;
+				page.goToPage(page._currentPage);
+			}
+			this._isAbleToGoDown = function() {
+				return page._currentPage < page._thickness;
+			}
+			this.pageDown = function() {
+				if(!page._isAbleToScroll) return;
+				if(!page._isAbleToGoDown()) return;
+				page._currentPage += 1;
+				page.goToPage(page._currentPage);
+			};
+			this.setScrollUpButton = function(e) {
+				e.addEventListener("click", function() {
+					if(page._isAbleToGoUp()) page.pageUp();
+				}, false);
+				page._scrollUpButton = e;
+			};
+			this.setScrollDownButton = function(e) {
+				e.addEventListener("click", function() {
+					if(page._isAbleToGoDown()) page.pageDown();
+				}, false);
+				page._scrollDownButton = e;
+			};
+
+			this.hasClass = function(ele, cls) {
+			    return ele.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
+			}
+
+			this.removeClass = function(ele, cls) {
+		        if(!page.hasClass(ele, cls)) return;
+	            var reg = new RegExp('(\\s|^)'+cls+'(\\s|$)');
+	            ele.className = ele.className.replace(reg,' ');
+			}
+
+			this.addClass = function(ele, cls) {
+				if(page.hasClass(ele, cls)) return;
+				ele.className = ele.className + " " + cls;
+			}
+		}
+		// TODO: 換頁或切換物件時增減class
+
+	</script>
+}
+@main("Resource - Fast Lab")(message)(header) {
+
+	<section>
+		<noscript><div class="text-center">您的網站不支援Javascript，此部分功能受影響無法使用。</div></noscript>
+		<div class="container">
+			<h1 class="text-center breadcrumb">
+				<span>@Messages("index.resource") &gt;</span>
+				<span class="page-title">@resourceName</span>
+			</h1>
+		</div>
+		<div class="container">
+
+			<div id="map" class="float-left detail-map" style="width: 600px;height: 390px"></div>
+
+			<div class="float-right detail-box">
+				<div class="scroll-tool scroll-up text-center">Scroll Up</div>
+				<div id="map-points" class="resource-scroll-box">
+				</div>
+				<div class="scroll-tool scroll-down text-center">Scroll Down</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</section>
+	<div class="on-footer">
+		<div class="section-bottom">
+			<img src="@routes.Application.imageAt("images", "section_bottom.png")" title="button image" alt="button image">
+		</div>
+	</div>
+
+
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD90aVuwZd0nh6FMGIP4Y1-kuBgc_wIYfk&signed_in=true&libraries=places&callback=initialize" async defer></script>
+
+}

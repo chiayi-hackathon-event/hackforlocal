@@ -1,0 +1,41 @@
+.generate-large-columns(@n, @i: 1) when (@i =< @n) {
+  .column-l-@{i} {
+    width: (@i * 100% / @n);
+  }
+  .generate-large-columns(@n, (@i + 1));
+}
+
+.generate-medium-columns(@n, @i: 1) when (@i =< @n) {
+  .column-m-@{i} {
+    width: (@i * 100% / @n);
+  }
+  .generate-medium-columns(@n, (@i + 1));
+}
+
+.generate-small-columns(@n, @i: 1) when (@i =< @n) {
+  .column-s-@{i} {
+    width: (@i * 100% / @n);
+  }
+  .generate-small-columns(@n, (@i + 1));
+}
+
+.generate-columns(@n, @i: 1) when (@i =< @n) {
+  .column-@{i} {
+    width: (@i * 100% / @n);
+  }
+  .generate-columns(@n, (@i + 1));
+}
+
+.generate-ms-columns(@n, @i: 1) when (@i =< @n) {
+  .column-ms-@{i} {
+    width: (@i * 100% / @n);
+  }
+  .generate-ms-columns(@n, (@i + 1));
+}
+
+.generate-tenth-columns(@i: 1) when (@i =< 10) {
+    .column-@{i}-tenth {
+        width: (@i * 100% / 10);
+    }
+    .generate-tenth-columns((@i + 1));
+}

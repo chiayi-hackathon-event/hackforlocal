@@ -1,0 +1,32 @@
+@(iiimodels: List[IIIModel])
+@header = {
+    <script type="text/javascript">
+
+    </script>
+}
+
+
+@main("My Collection - Fast Lab")("")(header) {
+    <div class="container container-gallery">
+        <div class="inner-container-gallery block-center">
+        @if(iiimodels != null) {
+            @for(i<-0 to iiimodels.size()-1) {
+                <div class="float-left gallery-item-box">
+                    <div class="column-12 gallery-item">
+                        <h2 class="column-12">@iiimodels.get(i).modelName</h2>
+                        <a tabindex="@(20+i)" href="@routes.Application.modelDetail(iiimodels.get(i).modelID)" >
+                            <img src="@routes.Application.imageAt("thumbnail", iiimodels.get(i).modelThumbnails(0).thumbnailFilename)"  width="235" height="200" title="@iiimodels.get(i).modelName" alt="@iiimodels.get(i).modelName">
+                        </a>
+                        <div class="column-12 gallery-item-info">
+                                <!--TODO: The avatar URL of the user.  -->
+                            <img class="image-middle" src="#" title="nickname" alt="nickname">@iiimodels.get(i).member.nickName
+                        </div>
+                    </div>
+                </div>
+
+            }
+            <div class="clear"></div>
+        }
+        </div>
+    </div>
+}

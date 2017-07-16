@@ -1,0 +1,15 @@
+@(message: String)
+
+<div class="newCampaign">
+    @helper.form(action = routes.Application.submitCampaign(), 'enctype -> "multipart/form-data") {
+        <p class="title">campaign title</p>
+        <input tabindex="20" type="text" name="campaignTitle">
+        <p class="title">campaign start date</p>
+        <input tabindex="21" type="date" name="campaignStartDate">
+        <p class="title">campaign end date</p>
+        <input tabindex="22" type="date" name="campaignEndDate">
+        <p>
+            <input tabindex="23" type="submit" >
+        </p>
+    }
+</div>

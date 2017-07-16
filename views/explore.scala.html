@@ -1,0 +1,106 @@
+@(iiimodels: List[IIIModel], iiicategories: List[IIIModelCategory])
+@header = {
+}
+@main("Model Explore - Fast Lab")("")(header) {
+
+	<section>
+		<div class="container">
+			<div class="column-l-12 block-center text-center">
+				<div class="float-left column-l-4 banner-secondary menu-button switch-button-selected">
+					<div class="filter-menu">
+						<div class="filter-menu-selected">Category</div>
+						<div class="column-12 menu">
+			    			<div class="block-center text-center menu-container">
+								@for(i<-0 to iiicategories.size()-1) {
+									<div><a href="@routes.Application.explore(iiicategories.get(i).categoryID)" tabindex="20">@iiicategories.get(i).categoryName</a> </div>
+								}
+
+			    			</div>
+						</div>
+					</div>
+				</div>
+				<!--div class="float-left column-l-4 banner-secondary menu-button switch-button-selected">
+					<div class="filter-menu">
+						<div class="filter-menu-selected">Vendor3</div>
+						<div class="column-12 menu">
+			    			<div class="block-center text-center menu-container">
+
+			    				<div>Vendor1</div>
+			    				<div>Vendor2</div>
+			    				<div>Vendor3</div>
+			    			</div>
+						</div>
+					</div>
+				</div>
+				<div class="float-left column-l-4 banner-secondary menu-button switch-button-selected">
+					<div class="filter-menu">
+						<div class="filter-menu-selected">Designer</div>
+						<div class="column-12 menu">
+			    			<div class="block-center text-center menu-container">
+			    				<div>Designer1</div>
+			    				<div>Designer2</div>
+			    				<div>Designer3</div>
+			    			</div>
+						</div>
+					</div>
+				</div-->
+				<div class="clear"></div>
+			</div>
+		</div>
+		<div class="container container-gallery">
+			@for(i<-0 to iiimodels.size()-1) {
+				<div class="float-left text-center gallery-item-box banner-secondary">
+					<div class="column-12 gallery-item">
+						<h2 class="column-12">@iiimodels.get(i).modelName</h2>
+						<a href="@routes.Application.modelDetail(iiimodels.get(i).modelID)" target="_blank" tabindex="21">
+							<img src="@routes.Application.imageAt("thumbnail", iiimodels.get(i).modelThumbnails(0).thumbnailFilename)"  width="310" height="200" title="@iiimodels.get(i).modelName" alt="@iiimodels.get(i).modelName">
+						</a>
+						<div class="column-12 gallery-item-info">
+							<div class="float-left column-4 gallery-item-info-box">
+								<img class="text-bottom" src="@routes.Application.imageAt("images", "ic_collections_s.png")" alt="@iiimodels.get(i).collectCount" title="@iiimodels.get(i).collectCount">@iiimodels.get(i).collectCount
+							</div>
+							<div class="float-left column-4 gallery-item-info-box">
+								<img class="text-bottom" src="@routes.Application.imageAt("images", "ic_like_s.png")" alt="@iiimodels.get(i).likeCount" title="@iiimodels.get(i).likeCount">@iiimodels.get(i).likeCount
+							</div>
+							<div class="float-left column-4 gallery-item-info-box">
+								<img class="text-bottom" src="@routes.Application.imageAt("images", "ic_comment_s.png")" alt="@iiimodels.get(i).modelComments.size()" title="@iiimodels.get(i).modelComments.size()">@iiimodels.get(i).modelComments.size()
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+				</div>
+			}
+			<div class="clear"></div>
+		</div>
+
+
+		<div class="container container-gallery">
+			<div class="text-center block-center column-4">
+				<p class="float-left column-2 text-right">
+					<a href="#" tabindex="23">
+						<img class="image-bottom" src="@routes.Application.imageAt("images", "ic_previous.png")" title="buttonimage" alt="buttonimage" />
+					</a>
+				</p>
+				<p class="float-left column-8 text-center">
+					<a class="pagination-button pagination-button-selected" href="#" tabindex="24">1</a>
+					<a class="pagination-button" href="#" tabindex="25">2</a>
+					<a class="pagination-button" href="#" tabindex="26">3</a>
+					<a class="pagination-button" href="#" tabindex="27">4</a>
+					<a class="pagination-button" href="#" tabindex="28">5</a>
+				</p>
+				<p class="float-left column-2 text-left">
+					<a href="#" tabindex="30">
+						<img class="image-bottom" src="@routes.Application.imageAt("images", "ic_next.png")" title="buttonimage" alt="buttonimage">
+					</a>
+				</p>
+				<div class="clear"></div>
+			</div>
+		</div>
+	</section>
+	<div class="on-footer">
+		<div class="section-bottom">
+			<img src="@routes.Application.imageAt("images", "section_bottom.png")" title="buttonimage" alt="buttonimage">
+		</div>
+	</div>
+
+}

@@ -1,0 +1,74 @@
+@(iiimodels: List[IIIModel])
+@header = {
+}
+@main("Model Gallery - Fast Lab")("")(header) {
+
+  <section>
+    <div class="container">
+      <div class="column-l-8 block-center text-center">
+        <div class="float-left column-l-6 switch-button switch-button-left switch-button-selected">
+          <a href="#" tabindex="21">Newest</a>
+        </div>
+        <div class="float-left column-l-6 switch-button switch-button-right">
+          <a href="#" tabindex="22">Popular</a>
+        </div>
+        <div class="clear"></div>
+      </div>
+    </div>
+    <div class="container container-gallery">
+      @for(i<-0 to iiimodels.size()-1) {
+        <div class="float-left text-center gallery-item-box banner-secondary">
+          <div class="column-12 gallery-item">
+            <h2 class="column-12">@iiimodels.get(i).modelName</h2>
+            <a href="#" target="_blank" tabindex="@(23+i)">
+              <img src="@routes.Application.imageAt("thumbnail", iiimodels.get(i).modelThumbnails(0).thumbnailFilename)"  width="310" height="200" title="@iiimodels.get(i).modelName" alt="@iiimodels.get(i).modelName">
+            </a>
+            <div class="column-12 gallery-item-info">
+              <div class="float-left column-4 gallery-item-info-box">
+                <img class="text-bottom" src="@routes.Application.imageAt("images", "ic_collections_s.png")" title="This model's collection count." alt="This model's collection count.">25
+              </div>
+              <div class="float-left column-4 gallery-item-info-box">
+                <img class="text-bottom" src="@routes.Application.imageAt("images", "ic_like_s.png")"  title="This model's like count." alt="This model's like count.">25
+              </div>
+              <div class="float-left column-4 gallery-item-info-box">
+                <img class="text-bottom" src="@routes.Application.imageAt("images", "ic_comment_s.png")"  title="This model's comment count." alt="This model's comment count.">25
+              </div>
+              <div class="clear"></div>
+            </div>
+          </div>
+        </div>
+      }
+      <div class="clear"></div>
+    </div>
+
+
+    <div class="container container-gallery">
+      <div class="text-center block-center column-4">
+        <p class="float-left column-2 text-right">
+          <a href="#" tabindex="23">
+            <img class="image-bottom" src="@routes.Application.imageAt("images", "ic_previous.png")" title="前一頁" alt="前一頁"/>
+          </a>
+        </p>
+        <p class="float-left column-8 text-center">
+          <a class="pagination-button pagination-button-selected" href="#" tabindex="54">1</a>
+          <a class="pagination-button" href="#" tabindex="55">2</a>
+          <a class="pagination-button" href="#" tabindex="56">3</a>
+          <a class="pagination-button" href="#" tabindex="57">4</a>
+          <a class="pagination-button" href="#" tabindex="58">5</a>
+        </p>
+        <p class="float-left column-2 text-left">
+          <a href="#" tabindex="60">
+            <img class="image-bottom" src="@routes.Application.imageAt("images", "ic_next.png")" title="下一頁" alt="下一頁">
+          </a>
+        </p>
+        <div class="clear"></div>
+      </div>
+    </div>
+  </section>
+  <div class="on-footer">
+    <div class="section-bottom">
+      <img src="@routes.Application.imageAt("images", "section_bottom.png")" title="buttonimage" alt="buttonimage">
+    </div>
+  </div>
+
+}

@@ -1,0 +1,83 @@
+@(iiimodels: List[IIIModel], totalCount: Int,pageIdx:String, orderby:String)
+@header = {
+	<script type="text/javascript">
+		// $(document).ready(function() {
+		// 	$('.gallery-item-box:nth-of-type(4n)').addClass('gallery-item-box-last');
+		// 	$(window).resize(function() {
+		// 		if($( window ).width() <= 969 && !$('.gallery-item-box:nth-of-type(3n)').hasClass('gallery.item.box-last')) {
+		// 			$('.gallery-item-box:nth-of-type(4n)').removeClass('gallery-item-box-last');
+		// 			$('.gallery-item-box:nth-of-type(3n)').addClass('gallery-item-box-last');
+		// 		}
+
+		// 	})
+		// });
+	</script>
+}
+@main("Tool Gallery - Fast Lab")("")(header) {
+
+	<section>
+		<div class="container">
+			<div class="column-l-8 column-m-8 column-s-11 block-center text-center">
+				<div class="float-left column-6 switch-button switch-button-left @if(orderby.equals("0")){switch-button-selected}">
+					<a href="@routes.Application.listModel("0","1")" tabindex="21">@Messages("listM.news")</a>
+				</div>
+				<div class="float-left column-6 switch-button switch-button-right @if(orderby.equals("1")){switch-button-selected}">
+					<a href="@routes.Application.listModel("1","1")" tabindex="22">@Messages("listM.hot")</a>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+		<div class="container container-gallery">
+			<div class="inner-container-gallery block-center">
+			@if(iiimodels != null) {
+				@for(i<-0 to iiimodels.size()-1) {
+					<div class="float-left gallery-item-box">
+						<div class="column-12 gallery-item">
+							<h2 class="column-12">@iiimodels.get(i).modelName</h2>
+							<a href="@routes.Application.modelDetail(iiimodels.get(i).modelID)" >
+								<img src="@routes.Application.imageAt("thumbnail", iiimodels.get(i).modelThumbnails(0).thumbnailFilename)"  width="235" height="200">
+							</a>
+							<div class="column-12 gallery-item-info">
+								<!--TODO: The avatar URL of the user.  -->
+								<img class="image-middle" src="@iiimodels.get(i).member.bannerImageName">@iiimodels.get(i).member.nickName
+							</div>
+						</div>
+					</div>
+					
+				}
+				<div class="clear"></div>
+			}
+			</div>
+		</div>
+
+
+		<div class="container container-gallery">
+			<div class="text-center block-center column-l-4 column-m-6 column-s-10">
+				<p class="float-left column-2 text-right">
+					<a @if(Integer.valueOf(pageIdx)>5){href="@routes.Application.listModel(orderby,String.valueOf(5*((Integer.valueOf(pageIdx)-5)/5)+1))"}else{href="#"} tabindex="23">
+						<img class="image-bottom" src="@routes.Application.imageAt("images", "ic_previous.png")" />
+					</a>
+				</p>
+				<p class="float-left column-8 text-center">
+					<a class="pagination-button @if(Integer.valueOf(pageIdx) ==5*((Integer.valueOf(pageIdx)-1)/5)+1){pagination-button-selected}" href="@routes.Application.listModel(orderby,String.valueOf(5*((Integer.valueOf(pageIdx)-1)/5)+1))" tabindex="24">@String.valueOf(5*((Integer.valueOf(pageIdx)-1)/5)+1)</a>
+					<a class="pagination-button @if(Integer.valueOf(pageIdx) ==5*((Integer.valueOf(pageIdx)-1)/5)+2){pagination-button-selected}" href="@routes.Application.listModel(orderby,String.valueOf(5*((Integer.valueOf(pageIdx)-1)/5)+2))" tabindex="25">@String.valueOf(5*((Integer.valueOf(pageIdx)-1)/5)+2)</a>
+					<a class="pagination-button @if(Integer.valueOf(pageIdx) ==5*((Integer.valueOf(pageIdx)-1)/5)+3){pagination-button-selected}" href="@routes.Application.listModel(orderby,String.valueOf(5*((Integer.valueOf(pageIdx)-1)/5)+3))" tabindex="26">@String.valueOf(5*((Integer.valueOf(pageIdx)-1)/5)+3)</a>
+					<a class="pagination-button @if(Integer.valueOf(pageIdx) ==5*((Integer.valueOf(pageIdx)-1)/5)+4){pagination-button-selected}" href="@routes.Application.listModel(orderby,String.valueOf(5*((Integer.valueOf(pageIdx)-1)/5)+4))" tabindex="27">@String.valueOf(5*((Integer.valueOf(pageIdx)-1)/5)+4)</a>
+					<a class="pagination-button @if(Integer.valueOf(pageIdx) ==5*((Integer.valueOf(pageIdx)-1)/5)+5){pagination-button-selected}" href="@routes.Application.listModel(orderby,String.valueOf(5*((Integer.valueOf(pageIdx)-1)/5)+5))" tabindex="28">@String.valueOf(5*((Integer.valueOf(pageIdx)-1)/5)+5)</a>
+				</p>
+				<p class="float-left column-2 text-left">
+					<a href="@routes.Application.listModel(orderby,String.valueOf(5*((Integer.valueOf(pageIdx)-1)/5)+6))" tabindex="30">
+						<img class="image-bottom" src="@routes.Application.imageAt("images", "ic_next.png")">
+					</a>
+				</p>
+				<div class="clear"></div>
+			</div>
+		</div>
+	</section>
+	<div class="on-footer">
+		<div class="section-bottom">
+			<img src="@routes.Application.imageAt("images" ,"section_bottom.png")">
+		</div>
+	</div>
+
+}

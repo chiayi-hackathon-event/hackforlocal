@@ -1,0 +1,82 @@
+package models;
+
+import com.avaje.ebean.Model;
+import com.google.gson.annotations.Expose;
+import play.data.format.Formats;
+import play.data.validation.Constraints;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * Created by abow on 15/11/7.
+ */
+@Entity
+public class ToolModel extends Model {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "tool_id",nullable = false)
+    @Expose
+    public Long toolID;
+
+
+    @Column(name = "tool_name")
+    @Expose
+    public String toolName;
+
+    @Column(name = "average_score")
+    @Expose
+    public float averageScore = 0.0f;
+
+    @Formats.DateTime(pattern="dd/MM/yyyy HH:mm:ss")
+    @Column(name = "create_time")
+    @Expose
+    public Date create_time = new Date();
+
+    @Column(name = "description", columnDefinition = "TEXT")
+    @Expose
+    public String description;
+
+    @Column(name = "scenario", columnDefinition = "TEXT")
+    @Expose
+    public String scenario;
+
+    @Column(name = "instruction", columnDefinition = "TEXT")
+    @Expose
+    public String instruction;
+
+    @Column(name = "download")
+    @Expose
+    public int download = 0;
+
+    @Column(name = "viewed_times")
+    @Expose
+    public int viewedTimes = 0;
+
+    @Column(name = "collect_count")
+    @Expose
+    public int collectCount = 0;
+
+    @Column(name = "like_count")
+    @Expose
+    public int likeCount = 0;
+
+
+
+
+    @OneToMany(mappedBy = "tool", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+    @Expose
+    public List<ToolModelAttachment> toolAttachments;
+
+    @OneToMany(mappedBy = "tool", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+    @Expose
+    public List<ToolModelThumbnail> toollThumbnails;
+
+
+    public static Finder<Long,ToolModel> find = new Finder<Long,ToolModel>(
+            Long.class, ToolModel.class
+    );
+
+}

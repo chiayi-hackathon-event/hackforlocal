@@ -1,0 +1,29 @@
+@(message: String, tools: List[Tool])
+@header = {
+	}
+@main("Resource - Fast Lab")(message)(header) {
+
+	<section>
+		<div class="container">
+                        <noscript><div class="text-center">您的網站不支援Javascript，此部分功能受影響無法使用。</div></noscript>
+			<h1 class="text-center page-title">@Messages("index.tool")</h1>
+		</div>
+		<div class="container">
+                        @for(tool<- tools){
+			<div class="float-left banner-secondary">
+				<div class="banner-secondary-title">
+      <img src=@routes.Assets.versioned("banners/outsite"+tool.toolBanner)  width="310" height="200" alt="@tool.toolName"> 
+					<h2 class="text-center"><a href="@routes.outsite.toolDetail(tool.toolProgram)" target="_blank">@tool.toolName</a></p>
+				</div>
+			</div>
+                        }
+			<div class="clear"></div>
+		</div>
+	</section>
+	<div class="on-footer">
+		<div class="section-bottom">
+			<img src="@routes.Application.imageAt("images", "section_bottom.png")" alt="icon image">
+		</div>
+	</div>
+
+}

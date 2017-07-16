@@ -1,0 +1,147 @@
+@(message: String, toolDetail: List[Tool])
+@import helper._;
+@header = {}
+@main("ToolDetail - Fast Lab")("")(header) {
+
+<section>
+                <div class ="head">
+
+                 <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/outsite/tool3D.css")">
+                 <script src="@routes.Assets.versioned("javascripts/outsite/jquery-1.11.3.js")" type="text/javascript"></script>
+                 <script src="@routes.Assets.versioned("javascripts/outsite/jquery.placeholder.min.js")" type="text/javascript"></script>
+                 <script src="@routes.Assets.versioned("javascripts/outsite/active.js")" type="text/javascript"></script>
+                 <script src="@routes.Assets.versioned("javascripts/outsite/analytics.js")" type="text/javascript"></script>
+                 
+                </div>
+
+
+<div class="container">
+            <div class="column-12">
+            <a id="showimage"></a>
+			<p class="text-center breadcrumb">
+				<span>Tool Lab &gt;</span>
+				<span class="page-title">2D to 3D</span>
+			</p>
+            </div>
+    <div id="private" class="text-center">
+        <input type="checkbox" id="agreement" onclick="checkprivate()" onkeypress="checkprivate()" autocomplete="off"  ><font color="red"> [必填]我已閱讀隱私權聲明並同意個資蒐集、處理及利用方式</font> <br><br>
+        <div class="column-12">
+                <p class="article-title guideline-title text-center">經濟部工業局蒐集個人資料告知事項暨個人資料提供同意書</p>
+                <p class="article-content">版本：P-V4x-X</p>
+                <p class="article-content">經濟部工業局為遵守個人資料保護法令及經濟部工業局個人資料保護政策、規章，於向您蒐集個人資料前，依法向您告知下列事項，敬請詳閱。</p>
+                </div>
+
+         <div class="column-12">
+                <p class="article-title guideline-title text-center">一、蒐集目的及類別</p>
+                 <p class="article-content">經濟部工業局因辦理或執行3D列印產業發展推動計畫 業務、活動、計畫、提供服務及供經濟部工業局用於內部行政管理、陳報主管機關或其他合於經濟部工業局組織規章所定業務、寄送經濟部工業局或產業相關活動訊息之蒐集目的，而需獲取您下列個人資料類別：姓名、聯絡方式如電話號碼、職稱、電子信箱、居住或工作地址等)、身分證統一編號，或其他得以直接或間接識別您個人之資料。※您日後如不願再收到經濟部工業局所寄送之行銷訊息，可於收到前述訊息時，直接點選訊息內拒絕接受之連結。</p>
+
+                </div>
+
+         <div class="column-12">
+                <p class="article-title guideline-title text-center">二、個人資料利用之期間、地區、對象及方式</p>
+                <p class="article-content">除涉及國際業務或活動外，您的個人資料僅供經濟部工業局於中華民國領域、在前述蒐集目的之必要範圍內，以合理方式利用至蒐集目的消失為止。</p>
+                </div>
+
+         <div class="column-12">
+                <p class="article-title guideline-title text-center">三、當事人權利</p>
+                <p class="article-content">您可依前述業務、活動所定規則或依3D列印產業發展推動計畫向經濟部工業局行使下列權利：</p>
+                <p class="article-content">
+(一)    查詢或請求閱覽。
+(二)    請求製給複製本。
+(三)    請求補充或更正。
+(四)    請求停止蒐集、處理及利用
+(五)    請求刪除您的個人資料。</p>
+
+        </div>
+         <div class="column-12">
+                <p class="article-title guideline-title text-center">四、不提供個人資料之權益影響</p>
+                <p class="article-content">若您未提供正確或不提供個人資料，經濟部工業局將無法為您提供蒐集目的之相關服務。</p>
+        </div>
+         <div class="column-12">
+                <p class="article-title guideline-title text-center">五、您瞭解此一同意書符合個人資料保護法及相關法規之要求，且同意經濟部工業局留存此同意書，供日後取出查驗。</p>
+
+        </div>
+
+
+
+
+
+    </div>
+</div>
+
+
+<div class="container">
+    <!--左側縮圖欄位-->
+	<div class="column-12 float-left detail-image">
+                         <div id="progress" style="display:none">
+                         <img alt="progress" src="@routes.Assets.versioned("images/outsite/progress.gif")"/>
+                         </div>
+                         <div id="preview" style="display:none">
+                         <img  id="figure-1" class="column-6" alt="Template."  src="@toolDetail(0).toolFigure"/><br>
+                         @Html(toolDetail(0).toolAnnounce)
+                         </div><!-- end "preview-1"-->
+                         <!--<div id="announce" style="display:none">-->
+                         
+                         <!--</div>-->
+                         <div id="result" style="display:none">
+                         <img id = "show"  src="" alt = "show rander result" >
+                         <form action="download"  method="POST">
+                         <input type="submit" value="下載模型">
+			             @CSRF.formField
+                         </form>
+                         </div> <!-- end proview-->
+ 
+	</div> 
+
+    <!--右側填寫欄位-->
+	<div class="column-12 float-right detail-box" id="detail-box">
+
+            <div class="detail-row">
+                    @if(controllers.UniTools.getEmail.equals("")) {
+            Email:<input type="text" name="email" id="email"  autocomplete="off" onChange ="checkEmail(this)" size=30 maxlength=30 placeholder="輸入E-mail"><p class="tools-css">輸入您的Email</p>
+                     }else{
+                           <script>  hasemail();    </script>
+                           <input type="hidden" name="email" id="email" value="@controllers.UniTools.getEmail()">
+                          }
+            <div class="clear"></div>
+            </div>
+
+            <div class="detail-row">
+            活動碼:<input type="text" name="active_code" id="active_code"   autocomplete="off" size=30 placeholder="參加活動才需要填"><p class="tools-css">參加活動才需要填</p>
+            <div class="clear"></div>
+			</div>
+            <div class="detail-row">
+            備註欄:<textarea cols="30" rows="5" name="memo" id="memo"   autocomplete="off"  placeholder="請提供姓名、地址、電話（僅供作品寄收使用，不做其他用途）"></textarea>
+            <p class="tools-css">參加活動才需填寫。(資訊填寫不完整者，視同放棄得獎資格。)
+            <div class="clear"></div>
+            </div>
+            
+
+ 
+                                <div class="detail-row">
+                                <!--<div id="form-1" style="display:block">
+                                -->
+                                <form id="name_form">
+                                
+                                    @Html(toolDetail(0).toolForm)
+                                <input type="hidden" name="figure" value="@toolDetail(0).toolID">
+                                </form>
+                                <div class="clear"></div>
+                                 </div>
+
+                                <div class="detail-row">
+                                <input type="button"  value="檔案送出" a href="#showimage" onClick="validator(@toolDetail(0).toolID)" onkeypress="validator(@toolDetail(0).toolID)"/>
+                                <div class="clear"></div>
+                                </div>
+                                <div class="detail-row">
+                                <input type="button"  value="下一個使用者" onClick="nextuser()" onkeypress="nextuser()" />
+                                <div class="clear"></div>
+                                </div>
+	</div>
+			<div class="clear"></div>
+
+
+</div>
+</section>
+
+}

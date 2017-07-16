@@ -1,0 +1,158 @@
+@(message: String)
+@import helper._; 
+
+@header = {
+	<script src='https://www.google.com/recaptcha/api.js'></script>
+	<script>
+		window.fbAsyncInit = function() {
+			FB.init({
+				appId      : '521623248016004',
+				xfbml      : true,
+				version    : 'v2.5'
+			});
+		};
+
+		(function(d, s, id){
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) {return;}
+			js = d.createElement(s); js.id = id;
+			js.src = "//connect.facebook.net/en_US/sdk.js";
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+	</script>
+
+	<script type="text/javascript">
+
+
+		function login() {
+			FB.login(function(response) {
+				var token = response.authResponse.accessToken;
+			    if (response.authResponse) {
+			     FB.api(
+			     	'/me?fields=name,first_name,last_name,location,hometown,email,locale',
+			     	'get',
+			     	{ access_token : token },
+			     	function(user) {
+			       		var parameter = {
+			       			'FBID': user.id || '',
+			       			'FBAccessToken': token || '',
+			       			'country_id': user.locale,
+			       			'NAME': user.name,
+			       			'EMAIL': user.email
+			       		};
+	        			$.ajax({
+	            			type : 'POST',
+	            			url : '@routes.Application.FBloginForm()',
+	            			dataType : 'text',
+	            			data : JSON.stringify(parameter),
+	            			contentType: 'application/json; charset=utf-8'
+						}).done(function(data) {
+            				console.log("FBloginForm success:"+data);
+                            alert('登入成功。');
+			    location.href= ('http://fastlab.cc');
+        				}).fail(function(xhr, ajaxOptions, thrownError) {
+	                		console.log("FBloginForm fail:("+xhr.status +") message:"+ xhr.responseText);
+						});
+
+			       		//TODO: Pass the parameters to the web service.
+			     	}
+			     );
+			    } else {
+			    	console.log('User cancelled login or did not fully authorize.');
+			    }
+			}, {scope: 'email, public_profile, user_hometown, user_location'});
+		}
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#sign_in_form").submit(function(e){
+				if(!$("input[name=email]").val()) {
+					alert("請輸入Email。");
+					$("input[name=email]").focus();
+					return false;
+				}
+                var pattern = new RegExp(/^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i);
+                if(!pattern.test($("input[name=email]").val())) {
+                    alert("Email格式錯誤。");
+                    $("input[name=email]").focus();
+                    return false;
+                }
+				if(!$("input[name=password]").val()) {
+					alert("請輸入密碼。");
+					$("input[name=password]").val("");
+					$("input[name=password]").focus();
+					return false;
+				}
+			});
+		});
+	</script>
+}
+@main("Sign In - Fast Lab")(message)(header) {
+
+	<section>
+		<div class="container">
+		<noscript><div class="text-center">您的網站不支援Javascript，此部分功能受影響無法使用。</div></noscript>
+		<noscript><div class="text-center">Your browser does not support JavaScript, Can't register and login.</div></noscript>
+			<div class="column-l-6 column-m-8 column-s-8 text-center block-center">
+				<div class="float-left column-6">
+					<a href="@routes.Application.signIn" tabindex="20">
+						<input class="column-12 switch-button switch-button-left switch-button-selected" type="button" value="@Messages("sign.singin")">
+					</a>
+				</div>
+				<div class="float-left column-6">
+			<!--修改signup位置-->	<a href="@routes.Application.signUpDeclare" tabindex="21">
+						<input class="column-12 switch-button switch-button-right" type="button" value="@Messages("sign.singup")">
+					</a>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+		<div class="container">
+			<form id="sign_in_form" action="#" method="POST">
+				<div class="column-l-8 column-s-6 data-group text-center block-center">
+					<div class="column-12">
+                    @if(controllers.Application.getCookie("rememberEmail").equals("")) {
+                        <input name="email" class="column-6 column-m-8 column-s-10 menu-text" type="text" placeholder="Email address" tabindex="22"/>
+                    }else {
+                        <input name="email" class="column-6 column-m-8 column-s-10 menu-text" type="text" value=@controllers.Application.getCookie("rememberEmail") tabindex="22"/>
+                    }
+					</div>
+					<div class="column-12">
+						<input name="password" class="column-6 column-m-8 column-s-10 menu-text" type="password" placeholder="Password" tabindex="23"/>
+                                        @CSRF.formField
+					</div>
+                    <div class="column-12">
+                        <input id="remember_email" name="remember_email" type="checkbox" tabindex="26">
+                        <label>
+                            <a tabindex="27">記住帳號</a>
+                        </label>
+                    </div>
+                    <div class="column-12">
+                        <div class="g-recaptcha" data-sitekey="6LeG-h0TAAAAAMQoOAxG8N4g0DlTeFJPQpy-DKhE" style="display: inline-block;" data-tabindex="28"></div>
+                    </div>
+			<!--	</div>
+				<div class="column-l-8 button-group text-center block-center" >
+			-->		<div class="column-12">
+						<input class="column-6 column-m-8 column-s-10 menu-button" type="submit" value="@Messages("sign.singin")" tabindex="29"/>
+					</div>
+					<div class="column-12">
+						<input class="column-6 column-m-8 column-s-10 menu-fb-button" type="button" value="@Messages("sign.facebook")" onclick="login()" OnKeypress="login()" tabindex="30"/>
+					</div>
+                    <div class="column-12">
+                        <a href="@routes.Application.forgetPassword()" tabindex="31">
+                            <input class="column-6 switch-button switch-button-right" type="button" value="忘記密碼" >
+                        </a>
+                    </div>
+
+		   <div class="column-12">
+                        <a href="@routes.Account.reinst()" tabindex="32">
+                            <input class="column-6 switch-button switch-button-right" type="button" value="申請復權" >
+                        </a>
+                    </div>
+
+				</div>
+			</form>
+		</div>
+	</section>
+
+}

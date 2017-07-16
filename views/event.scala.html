@@ -1,0 +1,50 @@
+@(myEvents: List[Events])
+
+@header = {
+}
+@main("Event - Fast Lab")("")(header) {
+
+	<section>
+		<div class="container">
+			<h1 class="text-center page-title">@Messages("index.event")</h1>
+		</div>
+
+		<div class="container">
+			@for(myevent<-myEvents){
+				<div class="float-left banner-secondary">
+					<div class="banner-secondary-title">
+                        <a href="@routes.Application.eventDetail(myevent.id.toString)" target="_blank" tabindex="23">
+    						<img src="/myUpload/@myevent.imageThumbnail"  width="310" height="200" title="@myevent.title" alt="@myevent.title">
+    						<h2 class="text-center">@myevent.title</h2>
+                        </a>
+					</div>
+				</div>
+			}
+			<!--
+			<div class="float-left banner-secondary">
+				<div class="banner-secondary-title">
+					<p class="text-center"><a href="@routes.Application.eventDetail("Fast Lab揭幕式")" target="_blank">Fast Lab揭幕式</a></p>
+				</div>
+			</div>
+			<div class="float-left banner-secondary">
+				<div class="banner-secondary-title">
+					<p class="text-center"><a href="@routes.Application.eventDetail("台北資訊展 - 3D列印體驗館")" target="_blank">台北資訊展 - 3D列印體驗館</a></p>
+				</div>
+			</div>
+			-->
+			<!--
+			<div class="float-left banner-secondary">
+				<div class="banner-secondary-title">
+					<p class="text-center">Tool Lab</p>
+				</div>
+			</div>
+			-->
+			<div class="clear"></div>
+		</div>
+	</section>
+	<div class="on-footer">
+		<div class="section-bottom">
+			<img src="@routes.Application.imageAt("images", "section_bottom.png")" title="buttonimage" alt="buttonimage">
+		</div>
+	</div>
+}

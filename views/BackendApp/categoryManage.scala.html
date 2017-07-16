@@ -1,0 +1,88 @@
+@(message: String, categorys: List[IIIModelCategory])
+@import scala.Predef;var pass="null";var admin="false";
+@(admin=controllers.Application.VerifyToken())
+@(pass=controllers.Application.getCookie("rec"))
+
+@if(admin=="true"){
+@if(pass=="4"){
+
+  <style>
+  table{
+  border:1px solid;
+  }
+
+  table td{
+  border:1px solid;
+  min-width :250px;
+  }
+  </style>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script type="text/javascript">
+
+    $(document).ready(function() {
+      $('#myTable').on('click', '.updateCategory', function() {
+        var categoryID = $(this).attr("name");
+        var inputCategoryName = $("#categoryID_"+categoryID).val();
+        var parameter = {'category_id':categoryID,'categoryName':inputCategoryName};
+
+        $.ajax({
+          type : 'PUT',
+          url : '@routes.Application.updateCategory()',
+          dataType : 'text',
+          data : JSON.stringify(parameter),
+          contentType: "application/json; charset=utf-8"
+        }).done(function() {
+          alert('update category success');
+        }).fail(function() {
+          alert('update category fail');
+        });
+
+      });
+
+
+      $("#newcategory").click(function(){
+        var parameter = {'categoryName':$("#categoryName").val()};
+        $.ajax({
+          type : 'POST',
+          url : '@routes.Application.newCategory()',
+          dataType : 'text',
+          data : JSON.stringify(parameter),
+          contentType: "application/json; charset=utf-8"
+        }).done(function(data) {
+          console.log(data);
+          $('#myTable').append('<tr><td><input id="categoryID_'+data+'" type="text" value="'+$("#categoryName").val()+'"/></td><td><input type="button" value="Update" class="updateCategory" name="'+data+'" /></td></tr>');
+          $("#categoryName").val("");
+        }).fail(function() {
+          $("#categoryName").val("");
+          alert('new category fail');
+        });
+      });
+    });
+  </script>
+
+
+
+
+
+    <div class="container container-gallery">
+      <input id="categoryName" type="text" placeholder="category name"><input type="button" id="newcategory" name="newcategory" value="Add">
+      <br/><br/><br/>
+      <p>Category list</p>
+      <table id="myTable">
+        <tbody>
+        <tr>
+          <td>Category Name</td><td>Update</td>
+        </tr>
+        @for(category <- categorys) {
+          <tr>
+            <td><input id="categoryID_@category.categoryID" type="text" value="@category.categoryName"/></td>
+            <td><input type="button" value="Update" class="updateCategory" name="@category.categoryID" /></td>
+          </tr>
+        }
+        </tbody>
+      </table>
+      <div class="clear"></div>
+    </div>
+}
+}

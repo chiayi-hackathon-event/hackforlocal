@@ -1,0 +1,32 @@
+@(message: String)
+	@header = {
+	}
+@main("Resource - Fast Lab")(message)(header) {
+
+	<section>
+		<div class="container">
+			<h1 class="text-center page-title">@Messages("index.resource")</h1>
+		</div>
+		<div class="container">
+			<div class="float-left banner-secondary">
+				<div class="banner-secondary-title">
+					<img src="@routes.Application.imageAt("banners", "resource-map.jpg")"  width="310" height="200"  title="banner Image" alt="banner Image">
+					<h2 class="text-center"><a href="@routes.Application.resourceDetail("Maker Space")" target="_blank">創客空間資源</a></h2>
+				</div>
+			</div>
+			<div class="float-left banner-secondary">
+				<div class="banner-secondary-title">
+					<img src="@routes.Application.imageAt("banners", "04-ResouceLab-Fastlab-thumbnail.jpg")"  width="310" height="200" title="thumbnail Image" alt="thumbnail Image">
+					<h2 class="text-center"><a href="@routes.FixedHTMLs.resourceFastDetail()" target="_blank">點子工場招募</a></h2>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</section>
+	<div class="on-footer">
+		<div class="section-bottom">
+			<img src="@routes.Application.imageAt("images", "section_bottom.png")"  title="button image" alt="button image">
+		</div>
+	</div>
+
+}

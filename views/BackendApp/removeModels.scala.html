@@ -1,0 +1,29 @@
+@(message: String, iiimodels: List[IIIModel])
+@import scala.Predef;var pass="null";var admin="false";
+@(admin=controllers.Application.VerifyToken())
+@(pass=controllers.Application.getCookie("rec"))
+@header = {
+}
+  @if(admin=="true"){
+  @if(pass>="3"){
+
+  <div class="container container-gallery">
+    @for(i<-0 to iiimodels.size()-1) {
+      <div class="float-left text-center gallery-item-box banner-secondary">
+        <div class="column-12 gallery-item">
+          <img src="@routes.Application.imageAt("thumbnail", iiimodels.get(i).modelThumbnails(0).thumbnailFilename)"  width="235" height="200">
+          <div class="column-12 gallery-item-info">
+            <div class="float-left column-4 gallery-item-info-box">
+              <a href="@routes.BackendApp.deleteModels(iiimodels.get(i).modelID)">Remove</a>
+            </div>
+            <div class="clear"></div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <div class="clear"></div>
+  </div>
+
+}
+}

@@ -1,0 +1,34 @@
+@(message: String)
+@import scala.Predef;var pass="null";var admin="false";
+@(admin=controllers.Application.VerifyToken())
+@(pass=controllers.Application.getCookie("rec"))
+
+@import helper._
+@header = {}
+
+@if(admin=="true"){
+@if(pass>="2"){
+
+<div class="newBanner">
+  @helper.form(action = routes.Application.submitBanner(), 'enctype -> "multipart/form-data") {
+    @CSRF.formField
+
+    <p class="title">event image</p>
+    <input tabindex="20" type="file" name="eventimage" accept="image/jpeg" >
+    <p class="title">event start date</p>
+    <input tabindex="21" type="date" name="showStartDate">
+    <p class="title">event end date</p>
+    <input tabindex="22" type="date" name="showEndDate">
+    <p class="title">external Url</p>
+    <input tabindex="23" type="text" size=40 name="externalUrl">
+    <p>
+      <input tabindex="24" type="submit" >
+    </p>
+
+
+
+  }
+</div>
+}
+}
+

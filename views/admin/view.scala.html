@@ -1,0 +1,69 @@
+@(list:List[Map[Integer,String]],size:String)
+<html>
+<head>
+<script lang="text/javascript">
+</script>
+
+<style>
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+}
+p{
+ font-size:18px;
+}
+</style>
+
+</head>
+<body>
+<table width="auto" >
+            <tr>
+            <th>ID</th>
+            <th>organization</th>
+            <th>type</th>
+            <th>name</th>
+            <th>address</th>
+            <th>space</th>
+            <th>device</th>
+            <th>sevice</th>
+            <th>classification</th>
+            <th>customer</th>
+            <th>open_time</th>
+            <th>cooperation</th>
+            <th>establish</th>
+            <th>founder</th>
+            <th>status</th>
+            <th>work_space</th>
+            <th>rent_price</th>
+            <th>rent_rate</th>
+            <th>age</th>
+            <th>education</th>
+            <th>department</th>
+            <th>Venture</h1>
+            <th>lng</th>
+            <th>lat</th>
+	    <th>id</th>
+            </tr>      
+
+
+@for( a <- 0 to (list.get(0).size)-1) {
+
+
+<td><p>@a </p></td>
+@for( k <- 0 to (list.size)-1) {
+<td><p>@list.get(k).get(a) </p></td>
+}
+
+</tr>
+
+}
+                           </table>
+
+
+
+</body>
+</html>
+

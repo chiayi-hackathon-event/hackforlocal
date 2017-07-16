@@ -1,0 +1,77 @@
+@(list:List[Map[Integer,String]],size:String)
+@import helper._
+
+<html>
+<head>
+<title>編輯活動</title>
+<link rel="stylesheet" media="screen" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" media="screen" href="https://955f94d0bbdc9e74bb31fada63cefbf20b476b6c.googledrive.com/host/0B27nlsVVtYCtU2hhXzd6amJodFU">
+<link rel="https://googledrive.com/host/0B27nlsVVtYCtSDRHLWVZR2lzREk">
+<!--<script src="@routes.Assets.versioned("bootstrap/js/bootstrap.min.js")" type="text/javascript"></script>-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<style>
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+}
+p{
+ font-size:18px;
+}
+
+h1{
+ font-size:18px;
+ font-family:'cwTeXHei', serif;
+ letter-spacing: 2px;
+　}
+ul,li{margin:10;}
+h3{
+color: #FFFFFF;
+}
+
+#content{
+margin-top:0px;
+}
+
+
+</style>
+
+</head>
+
+
+<div id="content" class="container">
+<div class="column-12">
+
+<h1 align="center">修改資料</h1>
+
+@form(action = CSRF(routes.Sort.update_op())){
+<!--<form action="/admin/update_op" method="post">-->
+<table style="width:80%" align="center">
+  <tr>
+@for( a <- 0 to (list.get(0).size-1)) {
+@list
+
+<tr><td>campaign_id:</td><td><input type="text" style=width:100% name="campaign_id" value="@list.get(0).get(a)"></td></tr>
+<tr><td>campaign_title:</td><td><input type="text" name="campaign_title" style=width:100% value="@list.get(1).get(a)"></td></tr>
+<tr><td>campaign_desc:</td><td><input type="text" name="campaign_desc" style=width:100% value="@list.get(2).get(a)"></td></tr>
+<tr><td>campaign_start_date:</td><td><input type="text" name="campaign_start_date" style=width:100% value="@list.get(3).get(a)"></td></tr>
+<tr><td>campaign_end_date:</td><td><input type="text" name="campaign_end_date" style=width:100% value="@list.get(4).get(a)"></td></tr>
+<tr><td>campaign_image:</td><td><input type="text" name="campaign_image" style= width:100% value="@list.get(5).get(a)"></td></tr>
+<tr><td>create_time:</td><td><input type="text" name="create_time" style=width:100% value="@list.get(6).get(a)"></td></tr>
+<tr><td>member_id:</td><td><input type="text" name="member_id" style=width:100% value="@list.get(7).get(a)"></td></tr>
+}
+<tr><td></td><td><input type="submit" name ="submit" value ="確定"> <input type="reset" value ="重置"></td>
+
+</tr>
+</table>
+}
+<!--</form>-->
+</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,227 @@
+@(message: String)
+
+@header = {
+
+<script>
+
+function Verify(c)
+{
+if(c=1){
+var URL='@routes.Application.signUp_op()';
+var passkey= "&id=1";
+//alert("你選的是: " + selected.join());
+$.ajax({
+url:URL,
+data:passkey,
+type:"POST",
+dataType:'text',
+
+success:function(){
+alert("您已同意本網站隱私權聲明與會員個資使用條款");
+location.href="/Fast-Lab/join";
+},
+error:function(xhr, ajaxOptions, thrownError){
+
+alert(xhr.status);
+alert("失敗");
+}
+});
+
+}else{
+
+location.href="/Fast-Lab-Sign-Up-Declare";
+
+}
+
+
+
+}
+</script>
+
+
+}
+
+@main("Home - Fast Lab")(message)(header) {
+
+    <section>
+        <div class="container">
+
+
+	    <div class="column-12">
+		<p class="article-title guideline-title text-center">經濟部工業局蒐集個人資料告知事項暨個人資料提供同意書</p>
+		<p class="article-content">版本：P-V4x-IDEAS</p>
+		<p class="article-content">經濟部工業局（下稱工業局）為遵守個人資料保護法令及工業局個人資料保護政策、規章，於向您蒐集個人資料前，依法向您告知下列事項，敬請詳閱。</p>
+		</div>
+
+	 <div class="column-12">
+		<p class="article-title guideline-title text-center">一、蒐集目的及類別</p>
+		 <p class="article-content">經濟部工業局因辦理或執行3D列印產業發展推動計畫 業務、活動、計畫、提供服務及供經濟部工業局用於內部行政管理、陳報主管機關或其他合於經濟部工業局組織規章所定業務、寄送經濟部工業局或產業相關活動訊息之蒐集目的，而需獲取您下列個人資料類別：姓名、聯絡方式(如電話號碼、職稱、電子信箱、居住或工作地址等)、身分證統一編號，或其他得以直接或間接識別您個人之資料。
+※您日後如不願再收到經濟部工業局所寄送之行銷訊息，可於收到前述訊息時，直接點選訊息內拒絕接受之連結。</p>
+
+		</div>
+
+	 <div class="column-12">
+		<p class="article-title guideline-title text-center">二、個人資料利用之期間、地區、對象及方式</p>
+		<p class="article-content">除涉及國際業務或活動外，您的個人資料僅供工業局於中華民國領域、在前述蒐集目的之必要範圍內，以合理方式利用至蒐集目的消失為止。
+
+</p>
+		</div>
+
+	 <div class="column-12">
+		<p class="article-title guideline-title text-center">三、當事人權利</p>
+		<p class="article-content">您可依前述業務、活動所定規則或依3D列印產業發展推動計畫向經濟部工業局行使下列權利：</p>
+		<p class="article-content">
+(一)	查詢或請求閱覽。
+(二)	請求製給複製本。
+(三)	請求補充或更正。
+(四)	請求停止蒐集、處理及利用
+(五)	請求刪除您的個人資料。</p>
+
+	</div>
+	 <div class="column-12">
+		<p class="article-title guideline-title text-center">四、不提供個人資料之權益影響</p>
+<p class="article-content">若您未提供正確或不提供個人資料，經濟部工業局將無法為您提供蒐集目的之相關服務。</p>
+	</div>
+	 <div class="column-12">
+		<p class="article-title guideline-title text-center">五、您瞭解此一同意書符合個人資料保護法及相關法規之要求，且同意工業局留存此同意書，供日後取出查驗。</p>
+<p class="article-content">個人資料之同意提供：<br>
+一、本人已充分獲知且已瞭解上述工業局告知事項。<br>
+二、本人同意工業局於所列蒐集目的之必要範圍內，蒐集、處理及利用本人之個人資料。</p>	    
+	</div>
+
+		
+
+
+	<HR color="#000000"  size="3"> 
+
+	<div class="column-12">
+                <p class="article-title guideline-title text-center">本網站隱私權聲明同意書</p>
+                <p class="article-content"></p>
+                </div>
+
+            <div class="column-12">
+                <p class="article-title guideline-title text-center">一、會員服務條款</p>
+                <p class="article-content">1.本會員服務條款所稱之「會員」，為依照本站所定之加入會員程序加入完成並通過認證者。</p>
+                <p class="article-content">2.當您使用本站服務時，即表示您同意及遵守本服務條款的規定事項及相關法律之規定。</p>
+                <p class="article-content">3.本站保留有審核加入會員資格之權利，另外已加入會員者，本站亦保留有解除其會員資格之權利。</p>
+                <p class="article-content">4.本會員服務條款之修訂，適用於所有會員，本站有權於任何時間修改或變更本會員修款之內容，建議您隨時注意本會員修款修改或變更。您於任何修改或變更後繼續使用本站，則視為您已閱讀、瞭解並同意接受本站會員條款之修改或變更。如果您不同意網會員修款的內容，您應立即停止使用本站。</p>
+            </div>
+            <div class="column-12">
+                <p class="article-title guideline-title text-center">二、隱私權保護</p>
+                <p class="article-content">尊重並依據本網站「隱私權政策」保護您的隱私(請參閱「隱私權政策」條款)。</p>
+            </div>
+            <div class="column-12">
+                <p class="article-title guideline-title text-center">三、會員</p>
+                <p class="article-content">1.使用本站所提供之會員服務時，於加入會員時所登錄之帳號及密碼使用之。</p>
+                <p class="article-content">2.會員須善盡帳號及密碼的使用與管理之責任。對於使用該會員之帳號及密碼(無關於會員本身或其他人)利用本站服務所造成或衍生之所有行為及結果，會員須自行負擔全部責任。</p>
+                <p class="article-content">3.會員之帳號及密碼遺失，或發現無故遭第三者盜用時，應立即通知本站連絡掛失，因未即時通知，導致本站無法有效防止及修改時，所造成的所有損失，會員應自負全責。</p>
+                <p class="article-content">4.每次結束使用本服務，執行會員之登出並關閉視窗，以確保您的會員權益。</p>
+                <p class="article-content">5.盜用第三者會員之帳號及密碼，導致第三者或本公司遭其他第三人或行政機關之調查或追訴時，第三者會員或本公司有權向您請求損害賠償，包括但不限於訴訟費用、律師費及商譽損失等。</p>
+            </div>
+
+            <div class="column-12">
+                <p class="article-title guideline-title text-center">四、會員登錄資料</p>
+                <p class="article-content">1.會員登錄資料須提供您本人正確、最新及完整的資料，本網站將依據您提供的個人資料提供電子報、活動通知及。</p>
+                <p class="article-content">2.會員登錄資料不得有偽造、不實等之情事(ex如個人資料)，一經發現本網站可拒絕其加入會員資格之權利。並得以暫停或終止其會員資格，若違反中華民國相關法律，亦將依法追究。</p>
+                <p class="article-content">3.會員基本資料(ex:住址，電話及其他登錄資料)有變更時，請不定期更新相關個人資料，確保其正確及完整性。若您提供的資料有錯誤或不符等現象，本網站有權暫停或終止您的帳號，並拒絕您繼續使用本服務。</p>
+                <p class="article-content">4.未經會員本人同意，本網站原則上不會將涉及個人隱私之資料開示給第三者，唯資料共用原則…等不在此限(請參閱本站「隱私權保護聲明」相關規定)。</p>
+                <p class="article-content">5.會員應妥善保管密碼，不可將密碼洩露或提供給他人知道或使用；以同一個會員帳號和密碼使用本服務所進行的所有行為，都將被認為是該會員本人和密碼持有人的行為。</p>
+                <p class="article-content">6.會員如果發現或懷疑有第三人使用其帳號或密碼，應該立即通知本網站，採取必要的必要的防範措施。但上述通知不得解釋為本網站對會員負有任何形式之賠償或補償之責任或義務。</p>
+            </div>
+            <div class="column-12">
+                <p class="article-title guideline-title text-center">五、使用行為</p>
+                <p class="article-content">1.您使用本服務之一切行為必須符合當地或國際相關法令規範；對於使用者的一切行為，您須自行負擔全部責任。</p>
+                <p class="article-content">2.您同意絕不為非法之目的或以非法方式使用本服務，與確實遵守中華民國相關法規及網際網路之國際慣例，並保證不得利用本服務從事侵害他人權益或違法之行為。</p>
+                <p class="article-content">3.您於使用本網站會員服務時應遵守以下限制：</p>
+                <p class="article-content">a)有損他人人格或商標權、著作權等智慧財產權或其他權利內容。</p>
+                <p class="article-content">b)使用違反公共秩序或善良風俗或其他不法之文字。</p>
+                <p class="article-content">c)強烈政治、宗教色彩的偏激言論。</p>
+                <p class="article-content">d)未經本網站許可，不得利用本服務或本網站所提供其他資源，包括但不限於圖文資料庫、編寫製作網頁之軟體等，從事任何商業交易行為，或招攬廣告商或贊助人。</p>
+                <p class="article-content">e)其他違反本站「會員服務條款」的內容。</p>
+            </div>
+            <div class="column-12">
+                <p class="article-title guideline-title text-center">六、本網站專有權利</p>
+                <p class="article-content">1.本服務所載，或本服務所連結之一切軟體或內容，或本網站之廣告商或合夥人所提供之內容，均受其著作權或其他專有權利或法律所保障。</p>
+                <p class="article-content">2.當您傳輸資料至本網站提供之服務時，您即同意此一資料為全開放性(任何人均可瀏覽)。您授權並許可本網站得以重製、修飾、改編或以其他形式使用該內容之全部或一部分，及利用該內容製作衍生著作。衍生著作之著作權悉歸本網站所有。</p>
+                <p class="article-content">3.本網站同意除依本使用條款約定，將前述您的資料及衍生著作置於本網站供網路使用者瀏覽，以及本網站所屬相關媒體外，絕不非法轉供其他直接營利目的或侵害您的權利之使用。</p>
+                <p class="article-content">4.所有網頁之頁面出現之廣告看板與活動訊息，所有權及經營權均為本網站所有，使用者除事先取得本網站同意外，不得自行使用所有訊息。</p>
+                <p class="article-content">5.會員同意並授權本網站，得為提供個人化服務或相關加值服務之目的，提供所需之會員資料給合作單位(第三者)做約定範圍內之運用，如會員不同意將其資料列於合作單位(第三者)產品或服務名單內，可通知本網站於名單中刪除其資料，並同時放棄其本網站以外之購物優惠或獲獎權利。</p>
+                <p class="article-content">6.同時為提供行銷、市場分析、統計或研究、或為提供官網會員個人化服務或加值服務之目的，官網會員同意本網站、或本網站之策略合作夥伴，得記錄、保存、並利用會員在本網站所留存或產生之資料及記錄，同時在不揭露各該資料之情形下得公開或使用統計資料。</p>
+                <p class="article-content">7.對於會員所登錄之個人資料，會員同意本網站得於合理之範圍內蒐集、處理、保存、傳遞及使用該等資料，以提供使用者其他資訊或服務、或作成會員統計資料、或進行關於網路行為之調查或行銷研究。</p>
+            </div>
+            <div class="column-12">
+                <p class="article-title guideline-title text-center">七、終止授權</p>
+                <p class="article-content">您使用本服務之行為若有任何違反法令或本使用條款或危害本網站或第三者權益之虞時，本網站有權不經告知您，立即暫時或永久終止您使用本服務之授權。</p>
+            </div>
+            <div class="column-12">
+                <p class="article-title guideline-title text-center">八、免責事項</p>
+                <p class="article-content">1.下列情形發生時，本網站有權可以停止、中斷提供本服務：</p>
+                <p class="article-content">a)對本服務相關軟硬體設備進行更換、升級、保養或施工時。</p>
+                <p class="article-content">b)發生突發性之電子通信設備故障時。</p>
+                <p class="article-content">c)天災或其他不可抗力之因素致使本網站無法提供服務時。</p>
+                <p class="article-content">2.本網站對於使用者在使用本服務或使用本服務所致生之任何直接、間接、衍生之財產或非財產之損害，不負賠償責任。</p>
+                <p class="article-content">3.使用者對於上傳留言之文字、圖片及其它資料，應自行備份；本網站對於任何原因導致其內容全部或一部之滅失、毀損，不負任何責任。</p>
+                <p class="article-content">4.本網站對使用本服務之用途或所產生的結果，不負任何保證責任，亦不保證與本服務相關之軟體無缺失或會予以修正。</p>
+                <p class="article-content">5.對於您在本網站中的所有言論、意見或行為僅代表您個人；不代表本網站的立場，本網站不負任何責任。本網站對於使用者所自稱之身分，不擔保其正確性。</p>
+                <p class="article-content">6.本網站無須對發生於本服務或透過本服務所涉及之任何恐嚇、誹謗、淫穢或其他一切不法行為對您或任何人負責。</p>
+                <p class="article-content">7.對於您透過本服務所購買或取得，或透過本網站之贊助者或廣告商所刊登、銷售或交付之任何貨品或服務，您應自行承擔其可能風險或依法向商品或服務提供者交涉求償，與本網站完全無關，本網站均不負任何責任。</p>
+            </div>
+            <div class="column-12">
+                <p class="article-title guideline-title text-center">九、修改權</p>
+                <p class="article-content">1.當您開始使用本服務時，即表示您已充分閱讀、瞭解與同意接受本條款之內容。本網站有權於任何時間修改與變更本條款之內容，並將不個別通知會員，建議您定期查閱本服務條款。如您於本條款修改與變更後仍繼續使用本服務，則視為您已閱讀、瞭解與同意接受本條款修改或變更。</p>
+                <p class="article-content">2.本網站有權暫時或永久修改或中止提供本服務給您，您不得因此要求任何賠償。</p>
+            </div>
+            <div class="column-12">
+                <p class="article-title guideline-title text-center">十、智慧財產權的保護</p>
+                <p class="article-content">1.本網站所使用之軟體、程式及網站上所有內容，包括但不限於著作、圖片、檔案、資訊、資料、網站架構、網頁設計，均由本網站或其他權利人依法擁有其智慧財產權，包括但不限於商標權、專利權、著作權、營業秘密與專有技術等。</p>
+                <p class="article-content">2.任何人不得逕行使用、修改、重製、公開播送、改作、散布、發行、公開發表、進行還原工程、解編或反向組譯。如欲引用或轉載前述之軟體、程式或網站內容，必須依法取得本網站或其他權利人的事前書面同意。如有違反之情事，您應對本網站或其他權利人負損害賠償責任（包括但不限於訴訟費用及律師費用等）。</p>
+            </div>
+            <div class="column-12">
+                <p class="article-title guideline-title text-center">十一、其他規定</p>
+                <p class="article-content">1.本網站使用者條約，免責之內容，亦構成本使用條款之一部分。</p>
+                <p class="article-content">2.凡因使用本服務所生之爭執，均以台灣臺北地方法院為第一審管轄法院。</p>
+                <p class="article-content">3.若因您使用本服務之任何行為，導致本公司遭第三人或行政機關之調查或追訴時，本公司有權向您請求損害賠償，包括但不限於訴訟費用、律師費及商譽損失等。</p>
+                <p class="article-content">4.本網站針對可預知之軟硬體維護工作，有可能導致系統中斷或是暫停者，將會於該狀況發生前，以適當之方式告知會員。</p>
+            </div>
+            <div class="column-12">
+                <p class="article-title guideline-title text-center">十二、會員身份終止與本網站通知之義務：</p>
+                <p class="article-content">1.本網站具有更改各項服務內容或終止任一會員帳戶服務之權利。</p>
+                <p class="article-content">2.若會員決定終止本網站會員資格，可直接以電子郵件的方式通知本網站進行取消，本網站將儘快註銷您的會員資料。</p>
+                <p class="article-content">3.會員有通知取消本網站會員資格之義務，並自停止本網站會員身份之日起（以本網站電子郵件發出日期為準），喪失所有本服務所提供之優惠及權益。</p>
+                <p class="article-content">4.為避免惡意情事發生致使會員應享權益損失，當會員通知本網站停止會員身份時，本網站將再次以電子郵件確認無誤後，再進行註銷會員資格。</p>
+            </div>
+        </div>
+	
+	<div class="article-title text-center" style="color:red">一、本人已充分獲知且已瞭解上述經濟部工業局告知事項。<br>二、本人同意經濟部工業局於所列蒐集目的之必要範圍內，蒐集、處理及利用本人之個人資料。</div>
+	<div class="article-title text-center"><input type="checkbox"   onclick="show(this,'s2')">我同意。</div>
+
+	
+	<div class="text-center"  id="s2" style="display:none">
+ 	<div class="column-5 column-ms-8 block-center menu-button" tabindex="29"  style="width:300px;"><p type="button" onclick= 'Verify(1)'>開始註冊</p></div>	
+
+<!--
+	<div class="text-center"  id="s2" style="display:none">
+        <div class="column-5 column-ms-8 block-center menu-button" tabindex="29"  style="width:300px;"><a href="@routes.Application.signUp"><p type="button" onclick= 'Verify(1)'>開始註冊</p></div>
+-->
+
+
+        <script type="text/javascript">
+<!--
+	//show()函式需要兩個參數：obj為CheckBox元素本身；item為Div區塊的id
+	function show(obj,item){
+		//判斷CheckBox是否被勾選 若是則顯示區塊 反之則隱藏
+		document.getElementById(item).style.display = obj.checked?"block":"none";
+	}
+//-->
+</script>
+
+
+
+
+    </section>
+    <div class="on-footer">
+        <div class="section-bottom">
+            <img src="@routes.Application.imageAt("images", "section_bottom.png")"  title="button image" alt="button image">
+        </div>
+    </div>
+}

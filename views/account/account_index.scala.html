@@ -1,0 +1,101 @@
+@(message: String,list:List[Admin_permit])
+@import scala.Predef;var pass="null";var admin="false";var test="ture";
+@(admin=controllers.Application.VerifyToken())
+<--@@(admin=controllers.Account.Delete())-->
+@(pass=controllers.Application.getCookie("rec"))
+
+@header = {     } 
+
+<head>
+<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/bootstrap.css")">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.pack.js"></script>
+<script type="text/javascript" src="//ds.minwt.com/download/code/jquery/plugin/jquery.autoheight.js"></script>
+
+<style>
+h1{
+ font-size:18px;
+ font-family:'cwTeXHei', serif;
+ letter-spacing: 2px;
+　}
+ul,li{margin:10;}
+h3{
+color: #000000;
+}
+.container-main{
+margin-top:120px;
+text-align: center;
+}
+.element.style {
+        display: block;
+}
+
+
+#bs-example-navbar-collapse-1
+{
+margin-left:200px;
+}
+
+</style>
+
+<script>
+function Delete_fn(x){
+
+
+alert(x);
+if(confirm("確定要停用您自己的帳號嗎?")){
+
+var URL='@routes.Account.delete()';
+//var id=  "&id="+selected.join();
+
+//alert("你選的是: " + selected.join());
+$.ajax({
+url:URL,
+//data:"test",
+type:"POST",
+//dataType:'text',
+
+success:function(){
+alert("停用成功");
+location.href="@routes.Application.logout";
+},
+
+error:function(xhr, ajaxOptions, thrownError){
+         alert(xhr.status);
+           alert("停用失敗");
+        }
+});
+
+
+
+}
+else{
+
+alert("取消");
+
+}
+
+
+}
+
+</script>
+
+</head>
+
+@main("Model Gallery - Fast Lab")("")(header) {
+
+<section>
+<div class="container">
+
+<div class="row">
+  <div class="col-xs-6 col-md-2">
+    <div class="thumbnail"><button onclick='Delete_fn(this)'><img src="@routes.Application.imageAt("admin_images", "account_delete.png")" alt="停用帳號"  width="50" height="50">
+<h1 class="text-center">停用帳號</h1></button>
+  </div>
+  </div>
+
+</div>
+</section>
+}
+

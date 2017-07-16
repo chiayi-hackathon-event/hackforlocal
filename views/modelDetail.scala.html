@@ -1,0 +1,630 @@
+@(iiimodel:IIIModel, iiimodelmemberaction:IIIModelMemberAction, stlViewerHost:String, isCreater:Boolean, createTime:String)
+
+@import helper._ 
+@import scala.Predef;;var total="";var className="";
+
+@posted={@Html(iiimodel.description)}
+
+@header = {
+	
+	<meta property="og:title" content="@iiimodel.modelName">
+    <meta property="og:description" content=@if(iiimodel.description != "" ){"@iiimodel.description"}else{"3D列印模型，歡迎下載"}>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			try {
+				$('#modeliscollect').text(parseInt($('#modeliscollect').text()).toLocaleString());
+				$('#modeldownloadtimes').text(parseInt($('#modeldownloadtimes').text()).toLocaleString());
+			} catch(e) {
+				console.log(e);
+			}
+
+			$('.info-block').hide();
+			[].forEach.call($('.switch-button'), function(e, i) {
+				if(i == 0) $('.info-block:eq(0)').show();
+				$(e).click(function() {
+					$('.switch-button').removeClass('switch-button-selected');
+					$(this).addClass('switch-button-selected');
+					$('.info-block').hide();
+					$('.info-block:eq(' + i + ')').show();
+				});
+			});
+
+			function initImageRow(imageSize) {
+				$('.gallery-detail-view-box-image-row').height(340 * imageSize);
+				$('.gallery-detail-view-box-image-row').width(970* imageSize);
+				$('.gallery-detail-view-box-image-row > img').height(340);
+				//$('.gallery-detail-view-box-image-row > img').width(330);
+			}
+
+			var images = $('.gallery-detail-view-box-image-row > img');
+			var currentIndex = 0;
+			function moveImageRow(moveStep) {
+				if(images.length <= 1) return;
+				if(currentIndex == 0 && moveStep == -1) return;
+				if(currentIndex >= (images.length - 1) && moveStep == 1) return;
+				currentIndex = (currentIndex + moveStep) % images.length;
+				console.log(currentIndex)
+				if(moveStep < 0) {
+					$('.gallery-detail-view-box-image-row').animate({marginLeft: "+=" + 350});
+				} else {
+					$('.gallery-detail-view-box-image-row').animate({marginLeft: "+=" + -350});
+				}
+				//TODO: Refactor
+			}
+			function resetImageRow() {
+				currentIndex = 0;
+				moveImageRow(0);
+			}
+
+			initImageRow(images.length);
+
+			$('.slide-left').click(function() {
+				moveImageRow(1);
+				return false;
+			});
+
+			$('.slide-right').click(function() {
+				moveImageRow(-1);
+				return false;
+			});
+
+			$('.post-button').click(function() {
+				var commentStr = $.trim(($('.post-text > textarea').val()));
+				if (commentStr.length===0)
+				{
+					alert('留言不可為空');
+					return false;
+				}
+				else
+				{
+					var parameter = {'modelID':'@iiimodel.modelID','message':$('.post-text > textarea').val()};
+					$.ajax({
+						type : 'POST',
+						url : '@routes.Application.postComment()',
+						dataType : 'text',
+						data : JSON.stringify(parameter),
+						contentType: "application/json; charset=utf-8"
+					}).done(function() {
+						if (@controllers.Application.getCookie("memberToken").equals(""))
+						{
+							alert('Login in first');
+						}
+						else
+						{
+							var appendContainer = $('<div class="switch-button-first switch-button-last" style="min-height: 90px;"></div>');
+							appendContainer.append('<pre>' + $('.post-text > textarea').val() + '</pre>');
+							$('.post-text > textarea').val('');
+							$('.gallery-detail-post-comment-area').parent().append(appendContainer);
+							alert('Post comment successfully.');
+						}
+					}).fail(function() {
+						alert('Post service is not available now.');
+					});
+					return false;
+				}
+			});
+
+			$('#clickdownload').click(function() {
+				var parameter = {'modelID':'@iiimodel.modelID'};
+	        	$.ajax({
+	            	type : 'POST',
+	            	url : '@routes.Application.modeldownloadclick()',
+	            	dataType : 'text',
+	            	data : JSON.stringify(parameter),
+	            	contentType: "application/json; charset=utf-8"
+				}).done(function(data) {
+            		console.log(data);
+            		$('#modeldownloadtimes').text(data);
+				}).fail(function(xhr, ajaxOptions, thrownError) {
+	                console.log("clickrating fail:"+xhr.status);
+				});
+	        	return false;
+	    	});
+
+			// var viewBox = $('<div style="position:fixed;top:0;left:0;width:100%;height:100%;">')
+	    	// $('body').append()
+	    	$('.viewSTL').click(function() {
+
+				//stlviewer
+				var url = 'https://@stlViewerHost/Fast-Lab/STL-Viewer?url=https://@stlViewerHost/stlViewer/' + $(this).parent().attr('data-value');
+
+	    		window.open(url, '1');
+	    	});
+
+	    	    	$('.viewOBJ').click(function() {
+
+				//objviewer
+				var url = 'https://@stlViewerHost/Fast-Lab/OBJ-Viewer?url=https://@stlViewerHost/stlViewer/' + $(this).parent().attr('data-value');
+
+	    		window.open(url, '1');
+	    	});	
+		});
+
+          function downloadGetUrl(fileName, modelID){
+          var url = "/myAttachment/stl/" + fileName + "?modelId=" + modelID;
+          window.location = url;
+          }
+
+          function post_url(){
+
+          		var Arrayurl =""
+
+          	@for(attachment <- iiimodel.modelAttachments) {
+				
+
+				Arrayurl += 'https://@stlViewerHost/stlViewer/@attachment.fileName'+', ';
+													
+												}
+
+												//alert(url);
+												return(Arrayurl);
+          }
+
+          function printing(flow){
+          	
+
+          	switch(@iiimodel.modellicense.licenseID){
+          	case 1:
+          	case 2:
+          	case 5:
+          	case 7:	
+
+          	alert("此作品已受作者授權，可提供代印服務。");
+
+			var URL='https://ur3d.url.com.tw/order/fastlab/printservice';
+			var url=window.location.toString();
+			var date=document.lastModified;
+			var image=document.getElementById('image_post').src;
+			var URLall= post_url();
+			
+			//目前能取所有URL值
+			var parameter = {'modelID':'@iiimodel.modelID','modelName':'@iiimodel.modelName','modelurl':url,'ModelurlAll':URLall,'date':date,'image':image};
+			alert ( JSON.stringify( parameter ) ); 
+          $.ajax({
+			url:URL,
+			data:parameter,
+			type:'POST',
+			dataType:'text',
+			success:function(){
+			alert("成功");
+			},
+
+			error:function(xhr, ajaxOptions, thrownError){
+
+            alert(xhr.status);
+            alert("失敗");
+        	}
+			});	
+          break;
+
+          case 3:
+          case 4:
+          case 6:
+          alert("此作品受作者保護，無法提供代印");
+          break;	
+          	}
+
+
+
+          }
+	</script>	
+<!--	<script>
+	
+         
+	window.onload=function(){
+	
+	var list =new Array();
+	x[0]='<a href="http://creativecommons.tw/cc0"><img class="image-middle" src="" title="cc icon" alt="cc icon"></a>';
+	x[1]='<a href="http://creativecommons.tw/explore"><img class="image-middle" src="http://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by.svg" title="cc icon" alt="cc icon"></a>';
+	x[2]='<a href="http://creativecommons.tw/explore"><img class="image-middle" src="http://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc.svg" title="cc icon" alt="cc icon"></a>';
+	x[3]='<a href="http://creativecommons.tw/explore"><img class="image-middle" src="http://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-sa.svg" title="cc icon" alt="cc icon"></a>';
+	x[4]='<a href="http://creativecommons.tw/explore"><img class="image-middle" src="http://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nd.svg" title="cc icon" alt="cc icon"></a>';
+	x[5]='<a href="http://creativecommons.tw/explore"><img class="image-middle" src="http://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-nd.svg" title="cc icon" alt="cc icon"></a>';
+	x[6]='<a href="http://creativecommons.tw/explore"><img class="image-middle" src="http://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-sa.svg" title="cc icon" alt="cc icon"></a>';
+	for(var i=0;i<=6;i++)
+{
+	if(cc==i){
+	document.getElementById("CCresult").innerHTML=x[i];
+	break;
+
+}
+}
+}
+	</script>
+-->
+<style>
+.noSTL{
+	display:none;
+	} 
+</style>
+
+
+}
+@main("Model Gallery - Fast Lab")("")(header) {
+
+
+	<section>
+		
+		<div class="container">
+		<noscript><div class="text-center">您的網站不支援Javascript，此部分功能受影響無法使用。
+
+</div></noscript>
+				<p class="gallery-detail-title text-center">@iiimodel.modelName</p>
+		</div>
+		<div class="container">
+			<div class="column-12 control-box gallery-detail-view-area" style="height: 340px;"><!--Max width: 600px-->
+                @if(isCreater) {
+        			<p class="menu-button" style="position:absolute;z-index:998;top:-50px;right:0;">
+        			    <a tabindex="39" href="@routes.Application.updateModel(iiimodel.modelID)">Edit</a>
+        			</p>
+                }
+				<h2 style="z-index:999;">@iiimodel.member.nickName
+					<span class="date">@createTime</span>
+				</h2>
+				<!-- TODO: Hide this slider if there is only one image. -->
+				<div class="column-12 slider" style="z-index: 99;">
+					<div class="column-12 slider-box">
+						<div class="float-left slide-right" style="height: 100%;">
+							<img src="@routes.Application.imageAt("images", "right.png")" title="icon image" alt="icon image">
+						</div>
+						<div class="float-right slide-left" style="height: 100%;">
+							<img src="@routes.Application.imageAt("images", "left.png")" title="icon image" alt="icon image">
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+
+				<div class="column-12 text-center">
+					<div class="gallery-detail-view-box">
+						<div class="gallery-detail-view-box-image-row">
+							<!-- TODO: Bind the data. -->
+							@for(thumbnail <- iiimodel.modelThumbnails) {
+								<img id="image_post" class="float-left" src="@routes.Application.imageAt("thumbnail", thumbnail.thumbnailFilename)" title="icon image" alt="icon image">
+							}
+							<div class="clear"></div>
+						</div>
+					</div>
+				</div>
+				<!--
+				<div class="column-12 text-center control-panel">
+					<div class="float-left column-3 control-button">360度&nbsp;view</div>
+					<div class="float-left column-3 control-button">正面</div>
+					<div class="float-left column-3 control-button">側面</div>
+					<div class="float-left column-3 control-button">...</div>
+					<div class="clear"></div>
+				</div>
+				-->
+			</div>
+
+			<div class="column-12 column gallery-detail-data-area text-center">
+			<div class="row">
+			                <div class="col-md-2 col-xs-12">
+                                        <p class="column-12">
+                                         <span id="CCresult" class="text-right">
+<a href="@iiimodel.modellicense.licenseUrl"><img class="image-CC" src="@iiimodel.modellicense.licenseImg" title="@iiimodel.modellicense.licenseName" alt="@iiimodel.modellicense.licenseName"></a>
+										</span>
+
+                                        </p>
+                            </div>
+
+				<div id="clickcollect" class="col-md-2 col-xs-6">
+					<p class="column-12">
+						<img class="image-middle" src="@routes.Application.imageAt("images", "ic_click_s.png")" title="icon image" alt="icon image">
+						<span>@Messages("model.view")</span>&nbsp;&nbsp;
+						<span id="modeliscollect" class="text-right">@iiimodel.viewedTimes</span>
+					</p>
+				</div>
+				<div class="col-md-2 col-xs-6">
+					<p class="column-12">
+						<img class="image-middle" src="@routes.Application.imageAt("images", "ic_download_s.png")" title="icon image" alt="icon image">
+						<span>@Messages("model.download")</span>&nbsp;&nbsp;
+						<span id="modeldownloadtimes" class="text-right">@iiimodel.download</span>
+					</p>
+				</div>
+                                <div class="col-md-2 col-xs-6">
+                                	   <!--原留言數block-->
+                                       <!--
+                                        <p class="column-12">
+                                                <img class="image-middle" src="@routes.Application.imageAt("images", "ic_comment_s.png")" title="icon image" alt="icon image">
+                                                <span>@Messages("model.comment")</span>&nbsp;&nbsp;
+                                                <span class="text-right">@iiimodel.modelComments.size</span>
+
+                                        </p>
+                                        -->
+                                        
+                                        <p class="column-12">
+                                        		<img class="image-middle" src="@routes.Application.imageAt("images", "ic_comment_s.png")" title="icon image" alt="icon image">
+                                                <span><a class='inline' href="#inline_content">Embed</a></span>
+												<div style='display:none'>
+													<div id='inline_content' style='padding:10px; background:#fff;'>
+												@for(attachment <- iiimodel.modelAttachments) {
+													@if(attachment.fileType=="0"){
+													<br><h1>@attachment.fileShowname</h1></br>
+													<p>&lt;iframe allowfullscreen=&quot;&quot; frameborder=&quot;0&quot; height=&quot;315px&quot;  src=&quot;https://@stlViewerHost/Fast-Lab/STL-Viewer?url=https://@stlViewerHost/stlViewer/@attachment.fileName&quot; width=&quot;560px&quot;&gt;&lt;/iframe&gt;
+													</p>
+													}else{
+													<br><h1>@attachment.fileShowname</h1></br>
+													<p>&lt;iframe allowfullscreen=&quot;&quot;  frameborder=&quot;0&quot; height=&quot;315px&quot;   src=&quot;https://@stlViewerHost/Fast-Lab/OBJ-Viewer?url=https://@stlViewerHost/stlViewer/@attachment.fileName&quot; width=&quot;560px&quot;&gt;&lt;/iframe&gt;
+													</p>
+													}
+													
+												}
+
+													</div>
+												</div>
+												
+                                                <script>
+                                                $(document).ready(function() {
+
+                                                	$(".inline").colorbox({
+                                                		inline:true, width:"60%", height:"40%",
+
+                                                	});
+
+                                                	});
+
+                                             </script>
+                                          
+                                </div>
+<!--
+								<div class="col-md-2 col-xs-6">
+										
+
+<p class="column-12">
+												<img class="image-middle" src="@routes.Application.imageAt("images", "ic_printer_s.png")" title="icon image" alt="icon image">
+												<span><button type="submit" onclick="printing(this)" value="代印服務">代印服務JSON</button></span></a>&nbsp;&nbsp;
+                                                <span class="text-right"></span>
+
+										</p>
+								</div>
+-->
+
+
+								<div class="col-md-2 col-xs-6">
+										<p class="column-12">
+										<form  name ="print_service" action ="http://ur3d.url.com.tw/order/fastlab/printservice" method="post">
+										<input type="hidden" name="modelID" value='@iiimodel.modelID'>
+										<input type="hidden" name="modelName" value='@iiimodel.modelName'>
+										<input type="hidden"  id="modelurl" name="modelurl">
+										<input type="hidden" name="ModelurlAll">
+										<input type="hidden" name="date">
+										<input type="hidden" name="image">
+										<!--<input type="button" value ="代印服務" onclick='printf_test(this)'>-->
+										
+
+										</form>
+										<span><a class='cloor_pop' href="#cloor_pop_content">代印服務</a><span>
+
+								<script>
+								//表單填寫檢查
+								function printf_test(flow)
+								{
+									var url=window.location.toString();
+									document.getElementById('modelurl').value = url;
+									print_service.modelurl.value=url;
+									//var d=document.getElementById("modelurl")
+									//d.setAttribute("value",url) 			
+									print_service.ModelurlAll.value=post_url();
+									print_service.date.value=document.lastModified;
+									print_service.image.value=document.getElementById('image_post').src;
+
+
+									if(@iiimodel.modellicense.licenseID==1||@iiimodel.modellicense.licenseID==2||@iiimodel.modellicense.licenseID==5||@iiimodel.modellicense.licenseID==7){
+
+
+										if(confirm("我同意")){
+
+
+										print_service.submit();
+
+										}
+										else
+										{
+										alert("我不同意");
+										}
+										}
+
+
+
+
+									else{
+
+									alert("此作品受作者保護，無法提供代印");
+									}
+
+								}
+
+								$(document).ready(function() {
+
+                                                	$(".cloor_pop").colorbox({
+                                                		inline:true, width:"50%", height:"50%",
+
+                                                	});
+
+                                                	});
+
+								</script>
+
+
+
+
+										</p>
+								</div>
+								<style>
+									.img {
+										background-image: url("@routes.Application.imageAt("images", "fastlabtour3d.png")");
+										background-repeat: no-repeat;
+										height: 100px;
+									}
+								</style>
+								<div style='display:none'>
+									<div id='cloor_pop_content' style='padding:10px; background:#fff;'>
+										<p class="img"></p>
+										
+<h1 style="line-height: 20px;">您點選的代印服務由FASTLab合作夥伴-智邦3D列印生活
+館為您提供專業的付費代印服務，您必需遵守原創作品的Creative Common授權方式。
+</h1>
+										
+										<h1><input type="button" value ="智邦3D列印生活館代印服務" onclick='printf_test(this)' ></h1>
+										
+									
+									</div>
+								</div>
+
+
+
+				<div class="col-md-2 col-xs-12">
+                                        <p class="column-12">
+					<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.6";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+<div class="fb-like"  data-href="" data-width="100" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div></p>
+
+
+				
+				</div>
+				<div class="clear"></div>
+			</div>
+			</div>
+		</div>
+	</section>
+
+
+	<div class="">
+		<div class="section-bottom">
+			<img src="@routes.Application.imageAt("images", "section_bottom.png")" title="icon image" alt="icon image">
+		</div>
+	</div>
+	<section>
+		<div class="container">
+		<div class="col-md-12 column">
+		<div class="row clearfix">
+		<div class="float-left col-md-4 col-xs-12 gallery-detail-info-switch-button-area">
+				<div class="column-md-12 text-center">
+					<div  id="select1" class="switch-button switch-button-top switch-button-selected">
+						@Messages("model.Info")
+					</div>
+					<div  id="select2" class="switch-button">
+						@Messages("model.printInfo")
+					</div>
+					<div id="select3" class="switch-button">
+						@Messages("model.downInfo")
+					</div>
+					<div  id="select4" class="switch-button switch-button-down">
+						@Messages("model.commentInfo")
+					</div>
+				</div>
+		</div>
+			<div class="float-left col-md-8 col-xs-12 gallery-detail-info-block-area">
+			
+				<div class="info-block">
+					<div class="gallery-detail-info-container" style="min-height: 90px;">
+						
+						<pre>@posted@iiimodel.description</pre>
+						
+<script>
+//window.onload =function fn(){
+var enable = document.getElementById('hide_code');
+var show=enable.innerHTML;
+document.write("<h3>"+show+"</h3>");
+}
+</script>
+							
+						
+					</div>
+					<div class="gallery-detail-info-container switch-button-left switch-button-right" style="min-height: 90px;">
+						<pre>@iiimodel.scenario</pre>
+					</div>
+				</div>
+				<div class="info-block">
+					<div class="gallery-detail-info-container switch-button-left switch-button-right" style="min-height: 90px;">
+						<pre>@iiimodel.instruction</pre>
+					</div>
+				</div>
+				
+
+				<div class="info-block">
+
+					<div class="gallery-detail-info-container switch-button-left switch-button-right" style="min-height: 90px;"> 
+
+<div class="col-md-12 cc  text-center">
+【CC授權聲明】： @iiimodel.modellicense.licenseName
+</div>
+
+
+						@for(attachment <- iiimodel.modelAttachments) {
+							<div class="column-12">
+					
+								<p class="col-md-4 col-xs-12">@attachment.fileShowname</p>
+								<p class="col-md-4 col-xs-6">
+                                    <a tabindex="40" href="javascript:void(0)" OnKeypress="downloadGetUrl('@attachment.fileName', '@iiimodel.modelID.toString')" onclick="downloadGetUrl('@attachment.fileName', '@iiimodel.modelID.toString')">
+                                    Download
+                                    </a>
+                                          </p>                                                                       
+                                                      @(if(attachment.fileType=="0")
+                                                       {
+                                                           className = "viewSTL";
+                                                        }
+                                                        else if(attachment.fileType=="1")
+                                                        {
+                                                           className = "viewOBJ";
+                                                        }
+                                                        else
+                                                        {
+                                                        	className = "noSTL";
+                                                        }
+
+														)
+
+                                             <p class="col-md-4 col-xs-6" data-value="@attachment.fileName">
+                                             <a tabindex="41" href="#@attachment.fileShowname" class="@className">View</span></a>
+                                                                </p>
+
+                                                      
+								<div class="clear"></div>
+							</div>
+						}
+
+					</div> 
+				</div>
+				
+				
+				<div class="info-block">
+					<div class="gallery-detail-info-container  gallery-detail-post-comment-area" style="min-height: 90px;">
+						<div class="column-12 post-text">
+							<textarea class="column-12" tabindex="42"></textarea>
+						</div>
+						<div class="float-right text-center switch-button-left switch-button-right post-button">
+							Post Comment
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="switch-button-left switch-button-right" style="min-height: 90px;">
+						@for(comment <- iiimodel.modelComments) {
+							<p>@comment.memberNickname, @comment.message</p>
+						}
+					</div>
+				</div>
+				
+
+			</div>
+			</div>
+			</div>
+		</div>
+
+
+
+
+
+
+	</section>
+
+}

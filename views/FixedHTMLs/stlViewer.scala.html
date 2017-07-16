@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta charset="${_response_encoding}" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <title>Fast Lab - STL viewer</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            overflow: hidden;
+            margin: 0;
+        }
+        #progress {
+            width: 312px;
+            height: 20px;
+            border: 1px solid black;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -155px;
+            margin-top:-25px;
+            background-color: #ffffff;
+            padding: 5px;
+        }
+        #percent {
+            position: absolute;
+            left: 47%;
+        }
+        #bar {
+            height: 20px;
+            background-color: green;
+            width: 0%;
+        }
+        #message {
+            width: 400px;
+            height: 80px;
+            border: 1px solid black;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -200px;
+            margin-top:-80px;
+            background-color: #000000;
+            padding: 5px;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<script type="text/javascript" src="@routes.Assets.versioned("javascripts/components/stl.viewer/three.min.js")"></script>
+<script type="text/javascript" src="@routes.Assets.versioned("javascripts/components/stl.viewer/plane.js")"></script>
+<script type="text/javascript" src="@routes.Assets.versioned("javascripts/components/stl.viewer/mirror.js")"></script>
+<script type="text/javascript" src="@routes.Assets.versioned("javascripts/components/stl.viewer/STLLoader.js")"></script>
+<script type="text/javascript" src="@routes.Assets.versioned("javascripts/components/stl.viewer/OrbitControls.js")"></script>
+<script type="text/javascript" src="@routes.Assets.versioned("javascripts/components/stl.viewer/TransformControls.js")"></script>
+<script type="text/javascript" src="@routes.Assets.versioned("javascripts/components/stl.viewer/stats.min.js")"></script>
+<script type="text/javascript" src="@routes.Assets.versioned("javascripts/components/stl.viewer/stl.viewer.js")"></script>
+<script type="text/javascript" src="@routes.Assets.versioned("javascripts/components/obj.viewer/OBJLoader.js")"></script>
+</body>
+</html>

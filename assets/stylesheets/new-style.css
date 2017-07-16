@@ -1,0 +1,221 @@
+.header-nav-item-google {
+        margin-top:10px;
+        width:200px;
+        height:20px;
+        padding: 0 0px;
+}
+
+
+.new-color {
+  color: #fff;
+  cursor: pointer;
+}
+.new-color:hover {
+  color: #ffc800;
+  cursor: pointer;
+}
+a {
+/*原#337ab7顏色變換*/
+  color: #808080;
+  text-decoration: none;
+}
+/*underline連結底線none,#23527c>>#111;*/
+a:hover,
+a:focus {
+  color: #111;
+  text-decoration: none;
+
+}
+/*30px>>18px*/
+h2,
+.h2 {
+  font-size: 18px;
+}
+/*container padding 15xp > 0px*/
+.container {
+  padding-right: 0px;
+  padding-left: 0px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+ul li{position:relative;z-index:1;}
+
+
+ul li a{text-decoration:none;color:#777;padding:5px 10px;display:block;background:url("".png) bottom right no-repeat;}
+
+
+ul li a:hover{background:#FFD700;}
+
+label {
+  display: block;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.navbar-default {
+  background-color: #fff;
+  border-color: #e7e7e7;
+}
+
+.logo-heafer {
+  background-color: #fff;
+  padding: 8.5px;	
+}
+
+.logo-header {
+  width: 179px; 
+  height: 38px;
+}
+
+.carousel-indicators li {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin: 1px;
+  text-indent: -999px;
+  cursor: pointer;
+  background-color: #000;
+  background-color: rgba(0, 0, 0, 0);
+  border: 2px solid #000;
+  border-radius: 10px;
+}
+
+.carousel-indicators .active {
+  background-color: #ffc800;
+}
+
+.carousel-inner > .item > img,
+.carousel-inner > .item > a > img {
+  display: block;
+  max-width: 100%;
+  max-height: 290px;
+}
+
+.carousel-inner {
+    max-height:290px;
+}
+
+
+
+.select-area-option {
+    cursor: pointer;
+}
+
+/*pre*/
+
+pre {
+  overflow:hidden;
+}
+
+/*myprofine hover超連結a變白色*/
+
+.my-profile-info-stat-area > .my-profile-info-stat-block >a:hover {
+  color: #FFF;
+}
+
+/*首頁六格換圖*/
+#ic_news {
+   
+   background: url("http://fastlab.cc/myUpload/banners/ic_news.png");
+   width: 160px;
+   height: 160px;
+   display: inline-block;
+}
+
+#ic_news:hover {
+
+   background: url("http://fastlab.cc/myUpload/banners/ic_news_hover.png");
+   width: 160px;
+   height: 160px;
+   display: inline-block;
+}
+
+.ic_share {
+
+   background: url("http://fastlab.cc/myUpload/banners/ic_share.png");
+   width: 160px;
+   height: 160px;
+   display: inline-block;
+}
+
+.ic_share:hover {
+
+  background: url("http://fastlab.cc/myUpload/banners/ic_share_hover.png");
+  width: 160px;
+  height: 160px;
+  display: inline-block;
+}
+
+.ic_scad {
+
+   background: url("http://fastlab.cc/myUpload/banners/ic_scad.png");
+   width: 160px;
+   height: 160px;
+   display: inline-block;  
+}
+
+.ic_scad:hover {
+
+   background: url("https://fastlab.cc/myUpload/banners/ic_scad_hover.png");
+   width: 160px;
+   height: 160px;
+   display: inline-block;    
+}
+
+.ic_champion {
+
+   background: url("http://fastlab.cc/myUpload/banners/ic_champion.png");
+   width: 160px;
+   height: 160px;
+   display: inline-block; 
+}
+
+.ic_champion:hover {
+
+   background: url("https://fastlab.cc/myUpload/banners/ic_champion_hover.png");
+   width: 160px;
+   height: 160px;
+   display: inline-block;
+}
+
+.ic_teaching {
+   background: url("http://fastlab.cc/myUpload/banners/ic_teaching.png");
+   width: 160px;
+   height: 160px;
+   display: inline-block;
+}
+
+.ic_teaching:hover {
+
+   background: url("https://fastlab.cc/myUpload/banners/ic_teaching_hover.png");
+   width: 160px;
+   height: 160px;
+   display: inline-block;  
+}
+
+.ic_fastlab {
+   background: url("http://fastlab.cc/myUpload/banners/ic_fastlab.png");
+   width: 160px;
+   height: 160px;
+   display: inline-block;
+
+}
+
+.ic_fastlab:hover {
+
+   background: url("https://fastlab.cc/myUpload/banners/ic_fastlab_hover.png");
+   width: 160px;
+   height: 160px;
+   display: inline-block; 
+}
+
+/*上傳選單需要的select與option class*/
+
+.select-width {
+
+  text-align:center;
+  
+}

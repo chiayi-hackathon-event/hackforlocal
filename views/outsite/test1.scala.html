@@ -1,0 +1,25 @@
+@header = {}
+@main("ToolDetail - Fast Lab")("")(header) {
+
+	<section>
+                <div class ="head">
+                 <script src="@routes.Assets.versioned("javascripts/outsite/jquery-1.11.3.js")" type="text/javascript"></script>
+                 <script src="@routes.Assets.versioned("javascripts/outsite/test.js")" type="text/javascript"></script>
+                 
+                </div>
+		<div class="container">
+
+			<p class="text-center breadcrumb">
+				<span>Tool Lab &gt;</span>
+				<span class="page-title">Test</span>
+			</p>
+                <form id="name_form-1">
+<p class="float-left">姓名:</p> <input type="text" name="print_name" id="print_name_1"   autocomplete="off"  placeholder="三個中文字以內"><P>
+                                    <input type="hidden" name="figure" value="1">
+                                    <input type="button"  value="產生視圖" onClick="Submit()"   />
+                                  </form>        
+		</div>
+ 
+	</section>
+
+}

@@ -1,0 +1,18 @@
+@(message: String)
+
+@header = {}
+
+@main("Home - Fast Lab")(message)(header) {
+
+	<section>
+
+
+
+
+
+
+
+
+
+	</section>
+}

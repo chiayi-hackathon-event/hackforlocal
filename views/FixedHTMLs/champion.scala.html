@@ -1,0 +1,106 @@
+@(message: String)
+
+@header = {
+	
+<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/giho.css")">    
+
+}
+
+@main("Home - Fast Lab")(message)(header) {
+<section>
+		<div class="container">		
+				<div class="col-md-12 column">
+				<div class="row clearfix">
+				
+				    <div id="tabs" class='ui-tabs-vertical ui-helper-clearfix'>
+        <ul>
+            <li>
+                <a href="#a">設計競賽 學生組</a>
+            </li>
+            <li>
+                <a href="#b">設計競賽 社會組</a>
+            </li>
+            <li>
+                <a href="#c">軟體創意競賽</a>
+            </li>
+            <li>
+                <a href="#d">新聞摘要</a>
+            </li>
+            <li>
+                <a href="#e">影片回顧</a>
+            </li>
+        </ul>
+        <div id="a">
+            <div class="link_a">
+                <a href="http://giho.fastlab.tw/3d-student" target="_blank"><img src="/myUpload/images/giho.jpg" alt="images">
+                    <div class="link_des color-1">
+                        <h2>設計競賽 學生組</h2>
+                        <h3>根據本競賽提供之模型為基底，融入個人創意巧思，建構出呼應猴年主題的3D列印設計圖</h3>
+                        <p>限學生身分的個人或團隊參加</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div id="b">
+            <div class="link_a">
+                <a href="http://giho.fastlab.tw/3d-community" target="_blank"><img src="/myUpload/images/giho.jpg" alt="images">
+                    <div class="link_des color-2">
+                        <h2>設計競賽 社會組</h2>
+                        <h3>根據本競賽提供之模型為基底，融入個人創意巧思，建構出呼應猴年主題的3D列印設計圖</h3>
+                        <p>限無學生身分的社會人士或團隊參加</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div id="c">
+            <div class="link_a">
+                <a href="http://giho.fastlab.tw/3d-creative" target="_blank"><img src="/myUpload/images/giho.jpg" alt="images">
+                    <div class="link_des color-3">
+                        <h2>軟體創意競賽</h2>
+                        <h3>本競賽以提案概念來發掘3D列印應用之可能性</h3>
+                        <p>限具軟體相關或3D列印設計與應用專長的團體參加</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div id="d">
+            <div class="link_a">
+                <a href="http://giho.fastlab.tw/news-report" target="_blank"><img src="/myUpload/images/giho.jpg" alt="images">
+                    <div class="link_des color-4">
+                        <h2>新聞摘要</h2>
+                        <h3>此次3D列印金猴腦活動之新聞露出與相關影音連結</h3>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div id="e">
+            <div class="link_a">
+                <a href="http://giho.fastlab.tw/hilight" target="_blank"><img src="/myUpload/images/giho.jpg" alt="images">
+                    <div class="link_des color-5">
+                        <h2>回顧影片</h2>
+                        <h3>此次3D列印金猴腦活動之精采回顧影片</h3>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $('#tabs').tabs({
+            event: "mouseover"
+        });
+    </script>
+
+
+
+                <a tabindex="20" href="http://3D.fastlab.tw" target="_blank" title="banner imag"><img alt="banner imag" src="/myUpload/bannerimage/競賽Banner.jpg"></a>
+                
+        </div>
+
+
+
+				</div>
+				</div>
+		</div>
+</section>
+
+}

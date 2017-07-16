@@ -1,0 +1,20 @@
+@(message: String)
+
+@header = {}
+
+@main("Home - Fast Lab")(message)(header) {
+
+	<section>
+		<div class="container">
+
+            <div class="column-12">
+                <p class="article-title guideline-title text-center">聯絡方式 </p>
+                <p class="article-content">歡迎光臨<a href="https://zh-tw.facebook.com/moeaidb"</a>Fastlab粉絲專頁</p>
+			</div>
+	</section>
+	<div class="on-footer">
+		<div class="section-bottom">
+			<img src="@routes.Application.imageAt("images", "section_bottom.png")">
+		</div>
+	</div>
+}
